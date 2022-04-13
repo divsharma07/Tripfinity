@@ -21,17 +21,11 @@
         </activity>
         <activity
             android:name=".view.MainActivity"
-            android:exported="false" />
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.Tripfinity" />
         <activity
             android:name=".view.AuthActivity"
-            android:theme="@style/SplashTheme"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/SplashTheme" />
     </application>
 
 </manifest>
