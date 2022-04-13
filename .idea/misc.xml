@@ -3,13 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/NortheasternCoursework/Spring22/Tripfinity/Tripfinity/app/src/main/res/drawable-xxxhdpi-300x300/logoprimary.xml" value="0.1" />
-        <entry key="..\:/NortheasternCoursework/Spring22/Tripfinity/Tripfinity/app/src/main/res/drawable/bg_gradient.xml" value="0.102" />
-        <entry key="..\:/NortheasternCoursework/Spring22/Tripfinity/Tripfinity/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1995" />
-        <entry key="..\:/NortheasternCoursework/Spring22/Tripfinity/Tripfinity/app/src/main/res/drawable/splash_background.xml" value="0.102" />
-        <entry key="..\:/NortheasternCoursework/Spring22/Tripfinity/Tripfinity/app/src/main/res/layout/activity_login.xml" value="0.19166666666666668" />
-        <entry key="..\:/NortheasternCoursework/Spring22/Tripfinity/Tripfinity/app/src/main/res/layout/activity_splash_screen.xml" value="0.25416666666666665" />
-        <entry key="..\:/NortheasternCoursework/Spring22/Tripfinity/Tripfinity/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.119" />
+        <entry key="..\:/CS5520/Tripfinity/app/src/main/res/drawable/splash_background.xml" value="0.1" />
+        <entry key="..\:/CS5520/Tripfinity/app/src/main/res/layout/activity_invite.xml" value="0.22826086956521738" />
+        <entry key="..\:/CS5520/Tripfinity/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/CS5520/Tripfinity/app/src/main/res/layout/activity_splash_screen.xml" value="0.1" />
+        <entry key="..\:/CS5520/Tripfinity/app/src/main/res/layout/fragment_invite_user.xml" value="0.24010416666666667" />
       </map>
     </option>
   </component>

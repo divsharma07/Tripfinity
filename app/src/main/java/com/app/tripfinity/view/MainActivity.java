@@ -2,7 +2,9 @@ package com.app.tripfinity.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.app.tripfinity.R;
@@ -24,6 +26,11 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "Logged in as user "+ user, Toast.LENGTH_LONG);
     }
 
+    public void goToInviteActivity(View view) {
+        Intent intent = new Intent(this, InviteActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
     private User getUserFromIntent() {
         return (User) getIntent().getSerializableExtra(USER);

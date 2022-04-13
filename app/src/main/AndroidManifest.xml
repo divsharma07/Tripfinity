@@ -10,9 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Tripfinity">
         <activity
+            android:name=".view.InviteActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.SplashScreenActivity"
-            android:theme="@style/SplashTheme"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,8 +27,8 @@
             android:exported="false" />
         <activity
             android:name=".view.AuthActivity"
-            android:theme="@style/SplashTheme"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
