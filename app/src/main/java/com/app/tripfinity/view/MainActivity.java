@@ -2,7 +2,11 @@ package com.app.tripfinity.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.app.tripfinity.R;
@@ -18,10 +22,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("MainActivity ","Main Activity launched!!!");
         setContentView(R.layout.activity_main);
         User user = getUserFromIntent();
         initGoogleSignInClient();
+
         Toast.makeText(this, "Logged in as user "+ user, Toast.LENGTH_LONG);
+        Button testCreateTripButton = findViewById(R.id.createTripTest);
+        testCreateTripButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(),TripCreationActivity.class);
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
 

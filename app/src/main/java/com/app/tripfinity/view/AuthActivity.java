@@ -37,6 +37,7 @@ public class AuthActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("AuthActivity ","AuthActivity launched!!!");
         setContentView(R.layout.activity_login);
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
