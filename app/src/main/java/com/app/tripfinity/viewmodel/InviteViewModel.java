@@ -23,4 +23,8 @@ public class InviteViewModel extends AndroidViewModel {
     public LiveData<Boolean> checkUserExists(String email){
         return inviteRepo.checkUserExists(email);
     }
+
+    public LiveData<Boolean> sendInvitationToUser(String sender, String receiver){
+        return inviteRepo.sendInvitationToUser(sender,receiver);
+    }
 }

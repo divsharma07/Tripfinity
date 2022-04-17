@@ -38,9 +38,10 @@ public class InviteActivity extends AppCompatActivity {
 
     public void onInviteClicked(View view){
         EditText text = findViewById(R.id.editTextInviteEmail);
-        inviteViewModel.checkUserExists(text.getText().toString()).observe(this, userExists -> {
+        String userEmail = text.getText().toString();
+        inviteViewModel.checkUserExists(userEmail).observe(this, userExists -> {
             if(!userExists) {
-                inviteUserToApp();
+                inviteUserToApp(userEmail);
             }
             else {
                 inviteViewModel.addUserToTrip("77nrAgVzOA8xdm2wxPGa");
@@ -50,7 +51,7 @@ public class InviteActivity extends AppCompatActivity {
     }
 
 
-    private void inviteUserToApp(){
+    private void inviteUserToApp(String email){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = LayoutInflater.from(this);
 
@@ -59,15 +60,22 @@ public class InviteActivity extends AppCompatActivity {
                 //TODO: Add text on fragment
 
                 // Add action buttons
-//                .setPositiveButton("Invite", (dialog, id) -> {
-//
-//                    try {
-//                        Toast.makeText(this, "Invitation sent", Toast.LENGTH_SHORT).show();
-//                    } catch(Exception e){
-//
-//                        Toast.makeText(this, "An error occurred", Toast.LENGTH_SHORT).show();
-//                    }
-//                })
+                .setPositiveButton("Invite", (dialog, id) -> {
+
+                    try {
+                        inviteViewModel.sendInvitationToUser("", email).observe(this, inviteSent -> {
+                            if(inviteSent){
+                                Toast.makeText(this, "Invitation sent", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                Toast.makeText(this, "An error occurred", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } catch(Exception e){
+
+                        Toast.makeText(this, "An error occurred", Toast.LENGTH_SHORT).show();
+                    }
+                })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
