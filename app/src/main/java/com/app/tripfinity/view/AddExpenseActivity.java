@@ -28,7 +28,10 @@ public class AddExpenseActivity extends AppCompatActivity {
     private Button expenseButton;
     boolean[] userBoolean;
     ArrayList<Integer> langList = new ArrayList<>();
-    String[] userList = {"juhisbhagtani@gmail.com", "sharmadivyanshu1996@gmail.com", "abc@gmail.com"};
+    private String tripId = "77nrAgVzOA8xdm2wxPGa";
+    private String loggedInUser = "abc@gmail.com";
+    // All users of a trip except logged in user
+    String[] userList = {"juhisbhagtani@gmail.com", "sharmadivyanshu1996@gmail.com", "asankitsaxena@gmail.com"};
     ArrayList<String> finalUsers;
 
     @Override
@@ -50,11 +53,14 @@ public class AddExpenseActivity extends AppCompatActivity {
         expenseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("Expense name ", expenseName.getText().toString());
-                Log.d("Expense Amount ", expenseAmount.getText().toString());
-                Log.d("expense selected ", finalUsers.toString());
-                expenseViewModel.createExpense("abc@gmail.com", expenseName.getText().toString(),
-                        expenseAmount.getText().toString(), finalUsers);
+//                Log.d("Expense name ", expenseName.getText().toString());
+//                Log.d("Expense Amount ", expenseAmount.getText().toString());
+                // Logged In user involved in transaction by default
+                finalUsers.add(loggedInUser);
+//                Log.d("expense selected ", finalUsers.toString());
+
+                expenseViewModel.createExpense(loggedInUser, expenseName.getText().toString(),
+                        expenseAmount.getText().toString(), finalUsers, tripId);
             }
         });
     }

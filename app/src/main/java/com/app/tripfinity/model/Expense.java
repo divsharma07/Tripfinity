@@ -7,7 +7,7 @@ public class Expense {
     private double amount;
     private String name;
     private List<String> userIds;
-    private String expenseId;
+//    private String expenseId;
 
 
     public Expense(String addedByUser, double amount, String name, List<String> userIds) {
@@ -17,9 +17,9 @@ public class Expense {
         this.userIds = userIds;
     }
 
-    public void setExpenseId(String id) {
-        expenseId = id;
-    }
+//    public void setExpenseId(String id) {
+//        expenseId = id;
+//    }
 
     public String getAddedByUser() {
         return addedByUser;
@@ -53,7 +53,7 @@ public class Expense {
         this.userIds = userIds;
     }
 
-    public String getExpenseId() {
-        return expenseId;
-    }
+//    public String getExpenseId() {
+//        return expenseId;
+//    }
 }
