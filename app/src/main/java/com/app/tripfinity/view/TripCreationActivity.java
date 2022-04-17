@@ -1,9 +1,11 @@
 package com.app.tripfinity.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.app.tripfinity.R;
+import com.app.tripfinity.model.Trip;
 import com.app.tripfinity.viewmodel.AuthViewModel;
 import com.app.tripfinity.viewmodel.TripCreationViewModel;
 
@@ -23,6 +26,7 @@ public class TripCreationActivity extends AppCompatActivity {
     private static final String TAG = "TripCreationActivity";
     private String userId = "abc@gmail.com";
     TripCreationViewModel tripCreationViewModel;
+    LiveData<Trip> newTrip;
 
     private void initTripCreationViewModel() {
         tripCreationViewModel = new ViewModelProvider(this).get(TripCreationViewModel.class);
@@ -70,16 +74,31 @@ public class TripCreationActivity extends AppCompatActivity {
                     // create a new trip and save in fireStore
                     // need to user view model methods for this
                     try {
+                        // create a trip
+                        // add this trip id to the users collection
                         tripCreationViewModel.createNewTrip(tripNameInput.getText().toString(),
                                 startDate.getText().toString(),userId);
+
+                        tripCreationViewModel.getCreatedTripLiveData().observe(TripCreationActivity.this,trip -> {
+                            goToItineraryViewActivity(trip.getTripId(),trip.getStartDate(),trip.getTripName());
+                        });
+
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
 
-
                 }
             }
         });
+
+    }
+
+    private void goToItineraryViewActivity(String tripId,Date startDate,String tripName) {
+        Intent intent = new Intent(TripCreationActivity.this, ItineraryViewActivity.class);
+        intent.putExtra("tripId", tripId);
+        intent.putExtra("tripName", tripName);
+        intent.putExtra("startDate", startDate);
+        startActivity(intent);
 
     }
 }

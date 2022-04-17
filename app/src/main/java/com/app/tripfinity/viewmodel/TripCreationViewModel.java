@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData;
 import com.app.tripfinity.model.Trip;
 import com.app.tripfinity.model.User;
 import com.app.tripfinity.repository.TripCreationRepository;
+import com.google.firebase.firestore.DocumentReference;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,8 +20,6 @@ import java.util.Locale;
 
 public class TripCreationViewModel extends AndroidViewModel {
     TripCreationRepository tripCreationRepository;
-
-
     LiveData<Trip> createdTripLiveData;
     public TripCreationViewModel(@NonNull Application application) {
         super(application);
@@ -35,7 +34,8 @@ public class TripCreationViewModel extends AndroidViewModel {
     // add the created trip id to the users trip list
     public void createNewTrip(String tripName, String startDate, String userId) throws ParseException {
         Trip trip = tripCreationRepository.createATrip(tripName,startDate,userId);
-        createdTripLiveData = tripCreationRepository.addANewTrip(trip);
+        createdTripLiveData = tripCreationRepository.addANewTrip(trip,userId);
     }
+
 
 }

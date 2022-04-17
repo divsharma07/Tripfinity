@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.ParseException;
@@ -46,7 +47,7 @@ public class TripCreationRepository {
         List<DocumentReference> users = new ArrayList<>();
 
         users.add(usersRef.document(userId));
-        String itinerary = "Itinerary/IwXG9HvFSkYVjVY41kvG";
+        DocumentReference itinerary = null;
         Log.d(TAG,"user retrieved "+users);
         Trip trip = new Trip(startDateObj,endDateObj,tripName,false,expenses,users,itinerary);
 
@@ -76,7 +77,7 @@ public class TripCreationRepository {
 //        });
 //    }
 
-    public MutableLiveData<Trip> addANewTrip(Trip trip) {
+    public MutableLiveData<Trip> addANewTrip(Trip trip, String userId) {
         MutableLiveData<Trip> newMutableTripLiveData = new MutableLiveData<>();
         trips.add(trip).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
@@ -84,6 +85,7 @@ public class TripCreationRepository {
                 Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
                 trip.setTripId(documentReference.getId());
                 newMutableTripLiveData.setValue(trip);
+                addUsersToTrip(documentReference,userId);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -93,6 +95,26 @@ public class TripCreationRepository {
         });
 
         return newMutableTripLiveData;
+    }
+
+    public MutableLiveData<Boolean> addUsersToTrip(DocumentReference trip,String userId) {
+        MutableLiveData<Boolean> isUpdated = new MutableLiveData<>();
+        DocumentReference user = usersRef.document(userId);
+        user.update("trips", FieldValue.arrayUnion(trip)).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "DocumentSnapshot successfully updated!");
+                isUpdated.setValue(true);
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w(TAG, "Error updating document", e);
+                isUpdated.setValue(false);
+            }
+        });
+        return isUpdated;
     }
 
 }

@@ -24,10 +24,10 @@ public class Trip {
     private List<DocumentReference> users;
 
     // TODO: add model reference
-    private String itinerary;
+    private DocumentReference itinerary;
 
     public Trip(Date startDate, Date endDate, String tripName, boolean canShare, List<String> expenses,
-                List<DocumentReference> users, String itinerary) {
+                List<DocumentReference> users, DocumentReference itinerary) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.tripName = tripName;
@@ -57,7 +57,7 @@ public class Trip {
         return users;
     }
 
-    public String getItinerary() {
+    public DocumentReference getItinerary() {
         return itinerary;
     }
     public String getTripId() {
