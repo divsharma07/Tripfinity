@@ -2,7 +2,10 @@ package com.app.tripfinity.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.app.tripfinity.R;
@@ -22,6 +25,15 @@ public class MainActivity extends AppCompatActivity {
         User user = getUserFromIntent();
         initGoogleSignInClient();
         Toast.makeText(this, "Logged in as user "+ user, Toast.LENGTH_LONG);
+
+        Button test = (Button) findViewById(R.id.test);
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(MainActivity.this, AddExpenseActivity.class);
+                startActivity(myIntent);
+            }
+        });
     }
 
 
