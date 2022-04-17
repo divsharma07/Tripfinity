@@ -8,9 +8,9 @@ admin.initializeApp();
 exports.sendemail = functions.https.onCall(async (data, context) => {
     const OAuth2 = google.auth.OAuth2;
     const APP_NAME = "Tripfinity";
-    const clientID = "821614554376-k3pqfgb75dpqal3nc5ttjl07pfjo3has.apps.googleusercontent.com";
-    const clientSecret = "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";
-    const refreshToken = "1//04A-6odlZhYr1CgYIARAAGAQSNwF-L9Irti6VJH-YNIVemp_6oVOW7rdDvB19Z6hJ4Ulh9pLn21rSlViRrky63xE83COs0vNSAkI"
+    const clientID = process.env.CLIENT_ID;
+    const clientSecret = process.env.CLIENT_SECRET;
+    const refreshToken = process.env.REFRESH_TOKEN;
     
     // Checking attribute.`
     if (!(typeof data.text === "string") || data.text.length === 0) {
