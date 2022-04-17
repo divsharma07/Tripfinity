@@ -80,7 +80,6 @@ public class InviteRepository {
                     Object details = ffe.getDetails();
                     Log.d("Functions Exception", String.valueOf(details));
                 }
-
                 result.setValue(false);
             }
 
