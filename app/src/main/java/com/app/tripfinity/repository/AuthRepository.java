@@ -26,8 +26,6 @@ public class AuthRepository {
         MutableLiveData<User> authenticatedUserMutableLiveData = new MutableLiveData<>();
         firebaseAuth.signInWithCredential(googleAuthCredential).addOnCompleteListener(authTask -> {
             if (authTask.isSuccessful()) {
-//                boolean isNewUser = Objects.requireNonNull(authTask.getResult()
-//                        .getAdditionalUserInfo()).isNewUser();
                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                 if (firebaseUser != null) {
                     String uid = firebaseUser.getUid();

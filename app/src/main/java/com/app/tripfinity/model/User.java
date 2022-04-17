@@ -1,6 +1,7 @@
 package com.app.tripfinity.model;
 
 import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.GeoPoint;
 
 import java.io.Serializable;
 
@@ -8,6 +9,9 @@ public class User implements Serializable {
     private String uid;
     private String name;
     private String email;
+    private GeoPoint cityGeoPoint;
+    private String city;
+    private String topic;
     private boolean isRegistered;
     @Exclude
     public boolean isAuthenticated;
