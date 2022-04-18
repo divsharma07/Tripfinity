@@ -1,10 +1,8 @@
 package com.app.tripfinity.viewmodel;
 
 import android.app.Application;
-
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-
 import com.app.tripfinity.model.User;
 import com.app.tripfinity.repository.InviteRepository;
 

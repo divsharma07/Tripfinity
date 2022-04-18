@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.tripfinity.R;
@@ -55,6 +56,8 @@ public class InviteActivity extends AppCompatActivity {
         LayoutInflater inflater = LayoutInflater.from(this);
 
         View v = inflater.inflate(R.layout.fragment_invite_user, null);
+        TextView textView = v.findViewById(R.id.inviteFragment);
+        textView.setText(String.format("The user %s is not registered on Tripfinity. \n Invite them to the app?", email));
         builder.setView(v)
                 //TODO: Add text on fragment
 
