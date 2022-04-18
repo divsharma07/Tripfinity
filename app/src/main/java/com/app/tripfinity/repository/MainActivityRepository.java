@@ -1,16 +1,12 @@
 package com.app.tripfinity.repository;
 
-import static com.app.tripfinity.utils.HelperClass.logErrorMessage;
-
 import android.location.Address;
-import android.location.Geocoder;
 
-import androidx.lifecycle.MutableLiveData;
+import androidx.annotation.NonNull;
 
-import com.app.tripfinity.model.Topic;
-import com.app.tripfinity.model.User;
 import com.app.tripfinity.utils.Constants;
-import com.google.firebase.auth.AuthCredential;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -18,6 +14,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,36 +24,37 @@ import java.util.Objects;
 public class MainActivityRepository {
     private FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    private CollectionReference topicRef = rootRef.collection(Constants.TOPIC_COLLECTION);
+    private CollectionReference userRef = rootRef.collection(Constants.USER_COLLECTION);
     private FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
-    public void storeUserLocationAndSubscribe(List<Address> addresses, GeoPoint geoPoint) throws IOException {
+    public void storeUserLocationAndSubscribe(List<Address> addresses, GeoPoint geoPoint) {
         if (addresses.size() == 0) return;
 
-        String updatedState = addresses.get(0).getAdminArea();
+        String topicName = addresses.get(0).getAdminArea().toLowerCase(Locale.ROOT);
         String updatedCity = "";
         if (addresses.get(0).getLocality() != null) {
             updatedCity = addresses.get(0).getLocality();
         }
         String updatedCountry = addresses.get(0).getCountryName();
         if (currentUser != null) {
-            DocumentReference uidRef = topicRef.document(Objects.requireNonNull(currentUser.getEmail()));
-            uidRef.update("topic", updatedState);
-            uidRef.update("city", updatedCity);
-            uidRef.update("cityGeopoint", geoPoint);
-        }
-
-        DocumentReference topicRefDoc = topicRef.document(updatedState);
-        topicRefDoc.get().addOnCompleteListener(topicTask -> {
-            if (topicTask.isSuccessful()) {
-                DocumentSnapshot document = topicTask.getResult();
-                if (!document.exists()) {
-                    Topic newTopic = new Topic(updatedState, "State");
-                    topicRefDoc.set(newTopic);
-                } else {
-                    logErrorMessage(Objects.requireNonNull(topicTask.getException()).getMessage());
+            DocumentReference userDocRef = userRef.document(Objects.requireNonNull(currentUser.getEmail()));
+            userDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        Object oldTopic = document.get("topic");
+                        if (oldTopic!=null) {
+                            FirebaseMessaging.getInstance().unsubscribeFromTopic(oldTopic.toString());
+                        }
+                        System.out.println("hello");
+                    }
                 }
-            }
-        });
+            });
+            userDocRef.update("topic", topicName);
+            userDocRef.update("city", updatedCity);
+            userDocRef.update("cityGeopoint", geoPoint);
+            FirebaseMessaging.getInstance().subscribeToTopic(topicName);
+        }
     }
 }

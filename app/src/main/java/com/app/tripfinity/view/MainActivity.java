@@ -1,5 +1,7 @@
 package com.app.tripfinity.view;
 
+import static com.app.tripfinity.utils.HelperClass.disableFCM;
+import static com.app.tripfinity.utils.HelperClass.enableFCM;
 import static com.app.tripfinity.utils.HelperClass.logErrorMessage;
 
 import androidx.annotation.NonNull;
@@ -89,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
     private void signOut() {
         singOutFirebase();
         signOutGoogle();
+        disableFCM();
     }
 
     private void singOutFirebase() {
@@ -161,10 +164,10 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         mLocationRequest.setFastestInterval(5000);
 
         //TODO: remove these, just here for testing
-//        Locale locale = new Locale("en"); //OR Locale.getDefault()
-//        Geocoder geocoder = new Geocoder(MainActivity.this, locale);
-//        List<Address> addresses = geocoder.getFromLocation(42.3601, -71.0589, 1);
-//        mainActivityViewModel.storeUserLocationAndSubscribe(addresses, new GeoPoint(42.3601, -71.0589));
+        Locale locale = new Locale("en"); //OR Locale.getDefault()
+        Geocoder geocoder = new Geocoder(MainActivity.this, locale);
+        List<Address> addresses = geocoder.getFromLocation(42.3601, -71.0589, 1);
+        mainActivityViewModel.storeUserLocationAndSubscribe(addresses, new GeoPoint(42.3601, -71.0589));
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         LocationCallback mLocationCallback = new LocationCallback() {
             @Override
