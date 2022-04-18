@@ -5,6 +5,7 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.app.tripfinity.model.User;
 import com.app.tripfinity.repository.InviteRepository;
 
 public class InviteViewModel extends AndroidViewModel {
@@ -20,11 +21,15 @@ public class InviteViewModel extends AndroidViewModel {
         inviteRepo.addUsersToTrip(tripId);
     }
 
-    public LiveData<Boolean> checkUserExists(String email){
+    public LiveData<User> checkUserExists(String email){
         return inviteRepo.checkUserExists(email);
     }
 
     public LiveData<Boolean> sendInvitationToUser(String sender, String receiver){
         return inviteRepo.sendInvitationToUser(sender,receiver);
+    }
+
+    public void sendNotificationToUser(String sender, String token, String tripName) {
+        inviteRepo.sendNotification(sender,token, tripName);
     }
 }

@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,16 +12,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.app.tripfinity.R;
-import com.app.tripfinity.viewmodel.AuthViewModel;
 import com.app.tripfinity.viewmodel.InviteViewModel;
+import com.google.firebase.auth.FirebaseAuth;
 
-import java.net.URL;
 import java.util.Objects;
 
 
 public class InviteActivity extends AppCompatActivity {
 
     InviteViewModel inviteViewModel;
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +38,15 @@ public class InviteActivity extends AppCompatActivity {
     public void onInviteClicked(View view){
         EditText text = findViewById(R.id.editTextInviteEmail);
         String userEmail = text.getText().toString();
-        inviteViewModel.checkUserExists(userEmail).observe(this, userExists -> {
-            if(!userExists) {
+        inviteViewModel.checkUserExists(userEmail).observe(this, user -> {
+            if(user == null) {
                 inviteUserToApp(userEmail);
             }
             else {
+                inviteViewModel.sendNotificationToUser(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getDisplayName(), user.getFcmToken(), "77nrAgVzOA8xdm2wxPGa");
                 inviteViewModel.addUserToTrip("77nrAgVzOA8xdm2wxPGa");
             }
         });
-
     }
 
 

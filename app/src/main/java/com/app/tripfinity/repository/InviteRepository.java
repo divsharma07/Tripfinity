@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.app.tripfinity.Constants;
 import com.app.tripfinity.model.User;
+import com.app.tripfinity.utils.HelperClass;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -22,31 +23,33 @@ import java.util.Map;
 public class InviteRepository {
 
 
-    MutableLiveData<List<User>> users;
+    List<User> users;
     List<DocumentReference> userReferences;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseFunctions fn = FirebaseFunctions.getInstance();
 
     public InviteRepository(){
         userReferences = new ArrayList<>();
+        users = new ArrayList<>();
     }
 
-    public MutableLiveData<Boolean> checkUserExists(String email){
+    public MutableLiveData<User> checkUserExists(String email){
         Log.d("Email", email);
         DocumentReference userRef = db.collection(Constants.USER_COLLECTION).document(email);
-        MutableLiveData<Boolean> result = new MutableLiveData<>();
+        MutableLiveData<User> result = new MutableLiveData<>();
         userRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
                     Log.d("document", String.valueOf(document));
+                    users.add(document.toObject(User.class));
                     userReferences.add(userRef);
-                    result.setValue(true);
+                    result.setValue(document.toObject(User.class));
                 } else {
-                    result.setValue(false);
+                    result.setValue(null);
                 }
             } else {
-                result.setValue(false);
+                result.setValue(null);
             }
         });
         return result;
@@ -58,20 +61,14 @@ public class InviteRepository {
         tripRef.update("users", FieldValue.arrayUnion(userReferences.get(0)));
     }
 
-    private Task<String> sendEmail(String sender, String receiver) {
+
+    public MutableLiveData<Boolean> sendInvitationToUser(String sender, String receiver) {
+        MutableLiveData<Boolean> result = new MutableLiveData<>();
         Map<String, Object> data = new HashMap<>();
         data.put("text", receiver);
         data.put("push", true);
 
-        return fn
-                .getHttpsCallable("sendemail")
-                .call(data)
-                .continueWith(task -> (String) task.getResult().getData());
-    }
-
-    public MutableLiveData<Boolean> sendInvitationToUser(String sender, String receiver) {
-        MutableLiveData<Boolean> result = new MutableLiveData<>();
-        sendEmail(sender, receiver).addOnCompleteListener(task -> {
+        HelperClass.callFunction("sendemail", data).addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
                 Exception e = task.getException();
                 if (e instanceof FirebaseFunctionsException) {
@@ -86,5 +83,26 @@ public class InviteRepository {
         });
         result.setValue(true);
         return result;
+    }
+
+    public void sendNotification(String sender, String token, String tripName) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("sender", sender);
+        data.put("token", token);
+        data.put("trip", tripName);
+        data.put("push", true);
+
+        HelperClass.callFunction("invitenotification", data).addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Exception e = task.getException();
+                if (e instanceof FirebaseFunctionsException) {
+                    FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
+                    FirebaseFunctionsException.Code code = ffe.getCode();
+                    Object details = ffe.getDetails();
+                    Log.d("Functions Exception", String.valueOf(details));
+                }
+            }
+
+        });
     }
 }
