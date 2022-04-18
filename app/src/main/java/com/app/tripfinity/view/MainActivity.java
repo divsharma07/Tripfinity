@@ -160,12 +160,6 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         LocationRequest mLocationRequest = LocationRequest.create();
         mLocationRequest.setInterval(60000);
         mLocationRequest.setFastestInterval(5000);
-
-        //TODO: remove these, just here for testing
-        Locale locale = new Locale("en"); //OR Locale.getDefault()
-        Geocoder geocoder = new Geocoder(MainActivity.this, locale);
-        List<Address> addresses = geocoder.getFromLocation(42.3601, -71.0589, 1);
-        mainActivityViewModel.storeUserLocationAndSubscribe(addresses, new GeoPoint(42.3601, -71.0589));
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         LocationCallback mLocationCallback = new LocationCallback() {
             @Override
