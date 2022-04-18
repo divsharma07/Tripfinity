@@ -14,6 +14,14 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
+
+import com.app.tripfinity.R;
+import com.app.tripfinity.model.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -62,6 +70,11 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         }
     }
 
+    public void goToInviteActivity(View view) {
+        Intent intent = new Intent(this, InviteActivity.class);
+        startActivity(intent);
+        finish();
+    }
     private void initializeMainActivityViewModel() {
         mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
     }
