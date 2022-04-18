@@ -1,7 +1,6 @@
 package com.app.tripfinity.view;
 
 import static com.app.tripfinity.utils.HelperClass.disableFCM;
-import static com.app.tripfinity.utils.HelperClass.enableFCM;
 import static com.app.tripfinity.utils.HelperClass.logErrorMessage;
 
 import androidx.annotation.NonNull;
@@ -20,7 +19,6 @@ import android.location.Geocoder;
 import android.location.Location;
 
 import com.app.tripfinity.viewmodel.MainActivityViewModel;
-import com.app.tripfinity.viewmodel.SplashViewModel;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;

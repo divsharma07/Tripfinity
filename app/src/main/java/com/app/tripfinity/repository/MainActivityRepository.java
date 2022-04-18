@@ -15,10 +15,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.messaging.FirebaseMessaging;
-
-import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 public class MainActivityRepository {
