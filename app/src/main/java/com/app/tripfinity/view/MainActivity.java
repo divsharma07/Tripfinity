@@ -1,14 +1,11 @@
 package com.app.tripfinity.view;
 
-import static com.app.tripfinity.utils.HelperClass.disableFCM;
-import static com.app.tripfinity.utils.HelperClass.logErrorMessage;
-
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProvider;
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -17,34 +14,36 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.location.LocationServices;
 import com.app.tripfinity.viewmodel.MainActivityViewModel;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
-
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.GeoPoint;
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.app.tripfinity.R;
 import com.app.tripfinity.model.User;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.GeoPoint;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import static com.app.tripfinity.utils.Constants.FINE_LOCATION_REQUEST_CODE;
+import static com.app.tripfinity.utils.HelperClass.disableFCM;
+import static com.app.tripfinity.utils.HelperClass.logErrorMessage;
 
 public class MainActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener {
     private GoogleSignInClient googleSignInClient;
-    private static final int FINE_LOCATION_REQUEST_CODE = 555;
     private MainActivityViewModel mainActivityViewModel;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private final static String USER = "USER";
@@ -56,6 +55,11 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         initializeMainActivityViewModel();
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         initGoogleSignInClient();
+
+        if (!(ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
+            requestLocationPermission();
+        }
     }
 
     private void initializeMainActivityViewModel() {
@@ -111,17 +115,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         }
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            try {
-                getLocation();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                requestLocationPermission();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            getLocation();
         }
     }
 
@@ -135,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         alert.show();
     }
 
-    private void requestLocationPermission() throws IOException {
+    private void requestLocationPermission() {
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -155,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         }
     }
 
-    private void getLocation() throws IOException {
+    private void getLocation() {
         // borrowed from https://stackoverflow.com/a/50448772/4399248
         LocationRequest mLocationRequest = LocationRequest.create();
         mLocationRequest.setInterval(60000);
@@ -178,6 +172,45 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
                 }
             }
         };
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    getLocation();
+                } else {
+                    requestLocationPermission();
+                }
+            });
+        }
+        LocationServices.getFusedLocationProviderClient(this).requestLocationUpdates(mLocationRequest, mLocationCallback, null);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == FINE_LOCATION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getLocation();
+            } else {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                || ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setMessage("The location permission is permanently disabled, go to setting to enable")
+                            .setPositiveButton("Settings", (dialog, which) -> openSettings()).show();
+                }
+            }
+        }
+    }
+
+
+    private void openSettings() {
+        Intent settings = new Intent();
+        settings.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", this.getPackageName(), null);
+        settings.setData(uri);
+        this.startActivity(settings);
     }
 
     @Override
