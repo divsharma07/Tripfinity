@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -31,6 +32,7 @@ public class MainExpenseRepository {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
+//                    Log.d("firestore user call ", "Here");
                     List<User> userList = new ArrayList<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         User user = document.toObject(User.class);
@@ -49,10 +51,11 @@ public class MainExpenseRepository {
     public MutableLiveData<List<Expense>> getExpenseData(String tripId) {
         MutableLiveData<List<Expense>> list = new MutableLiveData<>();
         DocumentReference tripRef = rootRef.collection("Trips").document(tripId);
-        rootRef.collection("Expenses").whereEqualTo("tripRef", tripRef).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        rootRef.collection("Expenses").whereEqualTo("tripRef", tripRef).orderBy("timestamp", Query.Direction.DESCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
+//                    Log.d("firestore expense call ", "Here");
                     List<Expense> expenseList = new ArrayList<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Expense expense = document.toObject(Expense.class);
@@ -61,7 +64,7 @@ public class MainExpenseRepository {
                     }
                     list.setValue(expenseList);
                 } else {
-//                    Log.d(TAG, "Error getting documents: ", task.getException());
+//                    Log.d("firestore expense call ", task.getException().toString());
                 }
             }
         });

@@ -58,12 +58,13 @@ public class ExpenseActivity extends AppCompatActivity {
         expenseHistory = (Button) findViewById(R.id.expenseHistory);
         expenseAdd = (Button) findViewById(R.id.expenseAdd);
         initMainExpenseViewModel();
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
+//        Log.d("lifecycle ", "here on resume");
         userList = new ArrayList<>();
         expenseList = new ArrayList<>();
         userAmountMap = new HashMap<>();
