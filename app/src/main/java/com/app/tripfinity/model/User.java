@@ -9,9 +9,12 @@ public class User implements Serializable {
     private String uid;
     private String name;
     private String email;
-    private GeoPoint cityGeoPoint;
+    private GeoPoint geoPoint;
     private String city;
     private String topic;
+    private String state;
+    private String country;
+    private String fcmToken;
     private boolean isRegistered;
     @Exclude
     public boolean isAuthenticated;
@@ -51,5 +54,25 @@ public class User implements Serializable {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getFcmToken() {
+        return fcmToken;
     }
 }

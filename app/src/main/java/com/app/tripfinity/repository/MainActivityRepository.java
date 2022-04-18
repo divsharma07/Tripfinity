@@ -29,13 +29,18 @@ public class MainActivityRepository {
 
     public void storeUserLocationAndSubscribe(List<Address> addresses, GeoPoint geoPoint) {
         if (addresses.size() == 0) return;
-
-        String topicName = addresses.get(0).getAdminArea().toLowerCase(Locale.ROOT);
+        String topicName = "";
         String updatedCity = "";
+        String updatedState = "";
+        if (addresses.get(0).getAdminArea() != null) {
+            topicName = addresses.get(0).getAdminArea();
+            updatedState = addresses.get(0).getAdminArea();
+        } else {
+            topicName = "default";
+        }
         if (addresses.get(0).getLocality() != null) {
             updatedCity = addresses.get(0).getLocality();
         }
-        String updatedCountry = addresses.get(0).getCountryName();
         if (currentUser != null) {
             DocumentReference userDocRef = userRef.document(Objects.requireNonNull(currentUser.getEmail()));
             userDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -44,7 +49,7 @@ public class MainActivityRepository {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         Object oldTopic = document.get("topic");
-                        if (oldTopic!=null) {
+                        if (oldTopic != null) {
                             FirebaseMessaging.getInstance().unsubscribeFromTopic(oldTopic.toString());
                         }
                         System.out.println("hello");
@@ -52,8 +57,9 @@ public class MainActivityRepository {
                 }
             });
             userDocRef.update("topic", topicName);
+            userDocRef.update("state", updatedState);
             userDocRef.update("city", updatedCity);
-            userDocRef.update("cityGeopoint", geoPoint);
+            userDocRef.update("geopoint", geoPoint);
             FirebaseMessaging.getInstance().subscribeToTopic(topicName);
         }
     }
