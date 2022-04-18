@@ -2,7 +2,6 @@ package com.app.tripfinity.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,11 +9,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.app.tripfinity.R;
 import com.app.tripfinity.viewmodel.InviteViewModel;
 import com.google.firebase.auth.FirebaseAuth;
-
 import java.util.Objects;
 
 
