@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.app.tripfinity.model.Expense;
 import com.app.tripfinity.model.User;
 import com.app.tripfinity.repository.MainExpenseRepository;
 import com.google.firebase.firestore.DocumentReference;
@@ -21,11 +22,11 @@ public class MainExpenseViewModel extends AndroidViewModel {
         mainExpenseRepository = new MainExpenseRepository();
     }
 
-    public LiveData<List<DocumentReference>> getUserDataForTrip(String tripId) {
+    public LiveData<List<User>> getUserDataForTrip(String tripId) {
         return mainExpenseRepository.getUserData(tripId);
     }
 
-    public LiveData<User> getUserObjects(DocumentReference userRef) {
-        return mainExpenseRepository.getUserDataObject(userRef);
+    public LiveData<List<Expense>> getExpensesForTrip(String tripId) {
+        return mainExpenseRepository.getExpenseData(tripId);
     }
 }

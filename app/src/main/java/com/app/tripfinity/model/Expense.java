@@ -2,9 +2,10 @@ package com.app.tripfinity.model;
 
 import com.google.firebase.firestore.DocumentReference;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Expense {
+public class Expense implements Serializable {
     private String addedByUser;
     private double amount;
     private String name;
@@ -18,6 +19,9 @@ public class Expense {
         this.name = name;
         this.userIds = userIds;
         this.tripRef = tripRef;
+    }
+
+    public Expense() {
     }
 
     public String getAddedByUser() {
