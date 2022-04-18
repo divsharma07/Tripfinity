@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,13 +21,12 @@ import java.util.Objects;
 public class InviteActivity extends AppCompatActivity {
 
     InviteViewModel inviteViewModel;
-    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite);
-       // Objects.requireNonNull(getSupportActionBar()).setTitle("Invite Friends to Trip");
         initInviteViewModel();
     }
 
@@ -59,7 +57,6 @@ public class InviteActivity extends AppCompatActivity {
         TextView textView = v.findViewById(R.id.inviteFragment);
         textView.setText(String.format("The user %s is not registered on Tripfinity. \n Invite them to the app?", email));
         builder.setView(v)
-                //TODO: Add text on fragment
 
                 // Add action buttons
                 .setPositiveButton("Invite", (dialog, id) -> {
@@ -78,11 +75,7 @@ public class InviteActivity extends AppCompatActivity {
                         Toast.makeText(this, "An error occurred", Toast.LENGTH_SHORT).show();
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
+                .setNegativeButton("Cancel", (dialog, id) -> dialog.cancel());
         builder.create().show();
 
     }
