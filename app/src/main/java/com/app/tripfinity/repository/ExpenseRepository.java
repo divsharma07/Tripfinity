@@ -15,6 +15,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,25 +32,25 @@ public class ExpenseRepository {
             public void onSuccess(DocumentReference documentReference) {
                 Log.d("expense ID ", documentReference.getId());
                 expenseReference[0] = documentReference;
-                documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                Map<String, Object> hmap = new HashMap<>();
-                                hmap = document.getData();
-                                Log.d("expense DocumentSnapshot data: ", hmap.toString());
-                                Log.d("expense DocumentSnapshot amount", hmap.get("amount").toString());
-                                Log.d("expense DocumentSnapshot userIds", hmap.get("userIds").toString());
-                            } else {
-                                Log.d("expense No such document", "Here");
-                            }
-                        } else {
-                            Log.d("expense get failed with ", task.getException().toString());
-                        }
-                    }
-                });
+//                documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            DocumentSnapshot document = task.getResult();
+//                            if (document.exists()) {
+//                                Map<String, Object> hmap = new HashMap<>();
+//                                hmap = document.getData();
+//                                Log.d("expense DocumentSnapshot data: ", hmap.toString());
+//                                Log.d("expense DocumentSnapshot amount", hmap.get("amount").toString());
+//                                Log.d("expense DocumentSnapshot userIds", hmap.get("userIds").toString());
+//                            } else {
+//                                Log.d("expense No such document", "Here");
+//                            }
+//                        } else {
+//                            Log.d("expense get failed with ", task.getException().toString());
+//                        }
+//                    }
+//                });
 
                 expenseMutableLiveData.setValue(expense);
 
@@ -62,5 +63,11 @@ public class ExpenseRepository {
         });
 
         return expenseMutableLiveData;
+    }
+
+    public Expense createExpenseObject(String addedBy, double parseDouble, String name, ArrayList<String> usersList, String tripId) {
+        DocumentReference tripRef = rootRef.collection("Trips").document(tripId);
+        Expense e = new Expense(addedBy, parseDouble, name, usersList, tripRef);
+        return e;
     }
 }

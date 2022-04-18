@@ -61,6 +61,10 @@ public class AddExpenseActivity extends AppCompatActivity {
 
                 expenseViewModel.createExpense(loggedInUser, expenseName.getText().toString(),
                         expenseAmount.getText().toString(), finalUsers, tripId);
+                // TO DO
+                // Add a toast for success of add expense
+                finish();
+
             }
         });
     }
@@ -82,8 +86,10 @@ public class AddExpenseActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i, boolean b) {
                         if (b) {
                             finalUsers.add(userList[i]);
+                            Log.d("multiple user ", finalUsers.toString());
                         } else {
                             finalUsers.remove(new String(userList[i]));
+                            Log.d("multiple user ", finalUsers.toString());
                         }
                     }
                 });

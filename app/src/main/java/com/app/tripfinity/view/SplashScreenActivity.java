@@ -5,17 +5,18 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import com.app.tripfinity.model.User;
+import com.app.tripfinity.utils.Constants;
 import com.app.tripfinity.viewmodel.SplashViewModel;
 
 public class SplashScreenActivity extends AppCompatActivity {
     SplashViewModel splashViewModel;
-    private final static String USER = "USER";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         initSplashViewModel();
+        super.onCreate(savedInstanceState);
         checkIfUserIsAuthenticated();
     }
 
@@ -26,7 +27,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     private void checkIfUserIsAuthenticated() {
         splashViewModel.checkIfUserIsAuthenticated();
         splashViewModel.getIsUserAuthenticatedLiveData().observe(this, user -> {
-            if (!user.isUserAuthenticated()) {
+            if (!user.isAuthenticated) {
                 goToAuthInActivity();
                 finish();
             } else {
@@ -41,7 +42,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void getUserFromDatabase(String userEmail) {
-        splashViewModel.setUid(userEmail);
+        splashViewModel.setUserEmail(userEmail);
         splashViewModel.getUserLiveData().observe(this, user -> {
             goToMainActivity(user);
             finish();
@@ -49,10 +50,9 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void goToMainActivity(User user) {
-        Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
-        intent.putExtra(USER, user);
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra(Constants.USER, user);
         startActivity(intent);
-        finish();
     }
-
 }

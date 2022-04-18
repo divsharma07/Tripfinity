@@ -7,49 +7,41 @@ import java.io.Serializable;
 public class User implements Serializable {
     private String uid;
     private String name;
-    @SuppressWarnings("WeakerAccess")
     private String email;
+    private boolean isRegistered;
     @Exclude
-    private boolean isAuthenticated;
-    @Exclude
-    private boolean isNew, isCreated;
+    public boolean isAuthenticated;
 
-    public User() {}
-
-    public boolean isUserNew() {
-        return isNew;
+    public User() {
     }
 
-    public void setIsUserNew(boolean isNew) {
-        this.isNew = isNew;
+    @Override
+    public String toString() {
+        return name + " " + email;
+    }
+
+    public boolean isRegistered() {
+        return isRegistered;
+    }
+
+    public void setIsRegistered(boolean isNew) {
+        this.isRegistered = isNew;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setIsCreated(boolean isCreated) {
-        this.isCreated = isCreated;
-    }
-
     public String getUid() {
         return uid;
     }
 
-    public boolean isUserAuthenticated() {
-        return isAuthenticated;
-    }
-
-    public void setUserAuthenticationStatus(boolean isAuthenticated) {
-        this.isAuthenticated = isAuthenticated;
+    public String getName() {
+        return name;
     }
 
     public void setUserEmail(String email) {
         this.email = email;
-    }
-
-    public boolean isUserCreated() {
-        return isCreated;
     }
 
     public User(String uid, String name, String email) {

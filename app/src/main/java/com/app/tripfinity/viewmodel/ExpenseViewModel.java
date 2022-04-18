@@ -19,7 +19,7 @@ public class ExpenseViewModel extends AndroidViewModel {
     }
 
     public void createExpense(String addedBy, String name, String amount, ArrayList<String> usersList, String tripId) {
-        Expense e = new Expense(addedBy, Double.parseDouble(amount), name, usersList);
+        Expense e = expenseRepository.createExpenseObject(addedBy, Double.parseDouble(amount), name, usersList, tripId);
         expenseRepository.addNewExpense(e, tripId);
     }
 }
