@@ -1,5 +1,6 @@
 package com.app.tripfinity.model;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 
 import java.io.Serializable;
@@ -11,14 +12,16 @@ public class Expense implements Serializable {
     private String name;
     private List<String> userIds;
     private DocumentReference tripRef;
+    private Timestamp timestamp;
 
 
-    public Expense(String addedByUser, double amount, String name, List<String> userIds, DocumentReference tripRef) {
+    public Expense(String addedByUser, double amount, String name, List<String> userIds, DocumentReference tripRef, Timestamp timestamp) {
         this.addedByUser = addedByUser;
         this.amount = amount;
         this.name = name;
         this.userIds = userIds;
         this.tripRef = tripRef;
+        this.timestamp = timestamp;
     }
 
     public Expense() {
@@ -62,5 +65,13 @@ public class Expense implements Serializable {
 
     public void setTripRef(DocumentReference tripRef) {
         this.tripRef = tripRef;
+    }
+
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
     }
 }

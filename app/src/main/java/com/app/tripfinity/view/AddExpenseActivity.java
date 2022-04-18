@@ -31,7 +31,7 @@ public class AddExpenseActivity extends AppCompatActivity {
     private String tripId = "77nrAgVzOA8xdm2wxPGa";
     private String loggedInUser = "abc@gmail.com";
     // All users of a trip except logged in user
-    String[] userList = {"juhisbhagtani@gmail.com", "sharmadivyanshu1996@gmail.com", "asankitsaxena@gmail.com"};
+    String[] userList = {"juhisbhagtani@gmail.com", "sharmadivyanshu1996@gmail.com"};
     ArrayList<String> finalUsers;
 
     @Override

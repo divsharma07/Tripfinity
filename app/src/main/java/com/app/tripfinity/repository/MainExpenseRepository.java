@@ -1,8 +1,5 @@
 package com.app.tripfinity.repository;
 
-// Get users for this trip, make hashmap of mail and name (only registered ones)
-// GET expenses from trip ID
-// Get details of all expenses
 
 import android.util.Log;
 
