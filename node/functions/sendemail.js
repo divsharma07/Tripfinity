@@ -3,7 +3,6 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
-admin.initializeApp();
 
 exports.sendemail = functions.https.onCall(async (data, context) => {
     const OAuth2 = google.auth.OAuth2;
