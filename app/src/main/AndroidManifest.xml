@@ -12,6 +12,15 @@
         android:roundIcon="@mipmap/tripfinity_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Tripfinity">
+        <meta-data
+            android:name="firebase_messaging_auto_init_enabled"
+            android:value="false" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/logo" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
         <activity
             android:name=".view.InviteActivity"
             android:exported="false" />
@@ -25,9 +34,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <meta-data
-            android:name="firebase_messaging_auto_init_enabled"
-            android:value="false" />
         <service
             android:name=".service.NotificationService"
             android:enabled="true"
