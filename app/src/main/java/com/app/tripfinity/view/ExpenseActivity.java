@@ -2,7 +2,6 @@ package com.app.tripfinity.view;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,15 +14,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.app.tripfinity.Adapter.ExpenseAdapter;
+import com.app.tripfinity.adapter.ExpenseAdapter;
 import com.app.tripfinity.R;
 import com.app.tripfinity.model.Expense;
 import com.app.tripfinity.model.User;
-import com.app.tripfinity.viewmodel.ExpenseViewModel;
 import com.app.tripfinity.viewmodel.MainExpenseViewModel;
-import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +36,8 @@ public class ExpenseActivity extends AppCompatActivity {
     private double youOwe = 0;
     private double youAreOwed = 0;
     private String tripId = "77nrAgVzOA8xdm2wxPGa";
-    private String loggedInUser = "abc@gmail.com";
+    private String loggedInUser;
+    private String loggedInName;
     private TextView expenseUserName;
     private TextView expenseYouOwe;
     private TextView expenseYouAreOwed;
@@ -46,6 +45,7 @@ public class ExpenseActivity extends AppCompatActivity {
     private Button expenseAdd;
     private ExpenseAdapter expenseAdapter;
     private RecyclerView.LayoutManager layoutManager;
+    private FirebaseAuth firebaseAuth;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -53,13 +53,18 @@ public class ExpenseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expense);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        loggedInUser = firebaseUser.getEmail();
+        loggedInName = firebaseUser.getDisplayName();
+
         expenseUserName = (TextView) findViewById(R.id.expenseUserName);
         expenseYouOwe = (TextView) findViewById(R.id.expenseYouOwe);
         expenseYouAreOwed = (TextView) findViewById(R.id.expenseYouAreOwed);
         expenseHistory = (Button) findViewById(R.id.expenseHistory);
         expenseAdd = (Button) findViewById(R.id.expenseAdd);
-        initMainExpenseViewModel();
 
+        initMainExpenseViewModel();
     }
 
     @Override
@@ -141,6 +146,8 @@ public class ExpenseActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent myIntent = new Intent(ExpenseActivity.this, AddExpenseActivity.class);
+                        myIntent.putExtra("userEmailToName", userEmailToName);
+                        myIntent.putExtra("loggedInUser", loggedInUser);
                         startActivity(myIntent);
                     }
                 });

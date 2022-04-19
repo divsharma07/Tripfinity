@@ -7,16 +7,13 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.app.tripfinity.Adapter.ExpenseAdapter;
-import com.app.tripfinity.Adapter.HistoryExpenseAdapter;
+import com.app.tripfinity.adapter.HistoryExpenseAdapter;
 import com.app.tripfinity.R;
 import com.app.tripfinity.model.Expense;
 import com.app.tripfinity.viewmodel.HistoryExpenseViewModel;
-import com.app.tripfinity.viewmodel.MainExpenseViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.HashMap;

@@ -18,9 +18,12 @@ import com.app.tripfinity.viewmodel.ExpenseViewModel;
 import com.app.tripfinity.viewmodel.SplashViewModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AddExpenseActivity extends AppCompatActivity {
 
+    private HashMap<String, String> userEmailToName = new HashMap<>();
     private ExpenseViewModel expenseViewModel;
     private EditText expenseName;
     private EditText expenseAmount;
@@ -29,9 +32,9 @@ public class AddExpenseActivity extends AppCompatActivity {
     boolean[] userBoolean;
     ArrayList<Integer> langList = new ArrayList<>();
     private String tripId = "77nrAgVzOA8xdm2wxPGa";
-    private String loggedInUser = "abc@gmail.com";
+    private String loggedInUser;
     // All users of a trip except logged in user
-    String[] userList = {"juhisbhagtani@gmail.com", "sharmadivyanshu1996@gmail.com"};
+    String[] userList;
     ArrayList<String> finalUsers;
 
     @Override
@@ -40,6 +43,19 @@ public class AddExpenseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_expense);
         initExpenseViewModel();
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+        userEmailToName = (HashMap<String, String>) getIntent().getSerializableExtra("userEmailToName");
+        loggedInUser = getIntent().getStringExtra("loggedInUser");
+
+        String[] users = new String[userEmailToName.size() - 1];
+        int i = 0;
+
+        for (Map.Entry<String, String> entry : userEmailToName.entrySet()) {
+            if (!entry.getKey().equals(loggedInUser)) {
+                users[i++] = entry.getValue();
+            }
+        }
+        userList = users;
 
         expenseName = (EditText) findViewById(R.id.expenseName);
         expenseAmount = (EditText) findViewById(R.id.expenseAmount);

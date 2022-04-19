@@ -28,7 +28,7 @@ public class MainExpenseRepository {
     public MutableLiveData<List<User>> getUserData(String tripId) {
         MutableLiveData<List<User>> list = new MutableLiveData<>();
         DocumentReference tripRef = rootRef.collection("Trips").document(tripId);
-        rootRef.collection("Users").whereArrayContains("trips", tripRef).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        rootRef.collection("Users").whereArrayContains("trips", tripRef).whereEqualTo("registered", true).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {

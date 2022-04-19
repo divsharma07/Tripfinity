@@ -1,4 +1,4 @@
-package com.app.tripfinity.Adapter;
+package com.app.tripfinity.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
