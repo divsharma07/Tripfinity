@@ -22,4 +22,8 @@ public class HistoryExpenseViewModel extends AndroidViewModel {
     public LiveData<List<Expense>> getExpensesForTrip(String tripId) {
         return historyExpenseRepository.getExpenseData(tripId);
     }
+
+    public LiveData<Boolean> removeExpenseFromTrip(Expense expense) {
+        return historyExpenseRepository.removeExpense(expense);
+    }
 }

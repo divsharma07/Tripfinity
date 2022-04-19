@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.app.tripfinity.R;
 import com.app.tripfinity.model.Expense;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -38,6 +40,10 @@ public class HistoryExpenseAdapter extends RecyclerView.Adapter<HistoryExpenseAd
         holder.expenseAmount.setText(String.valueOf(expense.getAmount()));
         holder.addedBy.setText(userEmailToName.get(expense.getAddedByUser()));
         holder.memberCount.setText(String.valueOf(expense.getUserIds().size()));
+
+        Date date = expense.getTimestamp().toDate();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        holder.expenseDate.setText(format.format(date));
     }
 
     @Override
@@ -51,6 +57,7 @@ public class HistoryExpenseAdapter extends RecyclerView.Adapter<HistoryExpenseAd
         public TextView addedBy;
         public TextView expenseAmount;
         public TextView memberCount;
+        public TextView expenseDate;
 
         public HistoryExpenseViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -58,6 +65,7 @@ public class HistoryExpenseAdapter extends RecyclerView.Adapter<HistoryExpenseAd
             addedBy = itemView.findViewById(R.id.added_by);
             expenseAmount = itemView.findViewById(R.id.expense_amount);
             memberCount = itemView.findViewById(R.id.expense_member_count);
+            expenseDate = itemView.findViewById(R.id.expense_date);
         }
     }
 }

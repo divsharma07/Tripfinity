@@ -8,7 +8,9 @@ import androidx.lifecycle.MutableLiveData;
 import com.app.tripfinity.model.Expense;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -41,5 +43,43 @@ public class HistoryExpenseRepository {
             }
         });
         return list;
+    }
+
+    public MutableLiveData<Boolean> removeExpense(Expense expense) {
+        MutableLiveData<Boolean> deleteSuccess = new MutableLiveData<>();
+        String addedBy = expense.getAddedByUser();
+        Timestamp timestamp = expense.getTimestamp();
+        DocumentReference tripref = expense.getTripRef();
+
+        rootRef.collection("Expenses").whereEqualTo("addedByUser", addedBy).whereEqualTo("timestamp", timestamp).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        DocumentReference documentReference = document.getReference();
+
+                        // Expense delete
+                        documentReference.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    deleteSuccess.setValue(true);
+
+                                    // Delete from Trips as well
+                                    tripref.update("expenses", FieldValue.arrayRemove(documentReference));
+                                    Log.d("firestore delete call ", "Removed from db");
+                                } else {
+                                    deleteSuccess.setValue(false);
+                                }
+                            }
+                        });
+
+                    }
+                } else {
+                    Log.d("firestore delete call ", task.getException().toString());
+                }
+            }
+        });
+        return deleteSuccess;
     }
 }
