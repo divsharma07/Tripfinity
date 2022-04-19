@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Tripfinity">
         <activity
+            android:name=".view.HistoryExpenseActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.ExpenseActivity"
             android:exported="false" />
         <activity

@@ -23,6 +23,7 @@ import com.app.tripfinity.viewmodel.ExpenseViewModel;
 import com.app.tripfinity.viewmodel.MainExpenseViewModel;
 import com.google.firebase.firestore.DocumentReference;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -88,6 +89,7 @@ public class ExpenseActivity extends AppCompatActivity {
 
                 // Explore all expenses
                 for (Expense expense : expenseList) {
+                    Log.d("each expense ", expense.getTimestamp().toString());
 
                     double eachSplit = expense.getAmount() / expense.getUserIds().size();
                     List<String> userIds = expense.getUserIds();
@@ -139,6 +141,16 @@ public class ExpenseActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent myIntent = new Intent(ExpenseActivity.this, AddExpenseActivity.class);
+                        startActivity(myIntent);
+                    }
+                });
+
+                expenseHistory.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent myIntent = new Intent(ExpenseActivity.this, HistoryExpenseActivity.class);
+                        myIntent.putExtra("tripId", tripId);
+                        myIntent.putExtra("userEmailToName", userEmailToName);
                         startActivity(myIntent);
                     }
                 });

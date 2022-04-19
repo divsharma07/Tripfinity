@@ -13,10 +13,12 @@
         <entry key="app/src/main/res/drawable/splash_background.xml" value="0.127" />
         <entry key="app/src/main/res/layout/activity_add_expense.xml" value="0.4244791666666667" />
         <entry key="app/src/main/res/layout/activity_expense.xml" value="0.40989583333333335" />
+        <entry key="app/src/main/res/layout/activity_history_expense.xml" value="0.24322916666666666" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.40989583333333335" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.40989583333333335" />
         <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.40989583333333335" />
         <entry key="app/src/main/res/layout/expense_card.xml" value="0.2682291666666667" />
+        <entry key="app/src/main/res/layout/history_expense_card.xml" value="0.40989583333333335" />
       </map>
     </option>
   </component>
