@@ -7,7 +7,7 @@ exports.tripengagement = functions.firestore
     .document("Trips/{tripIdentifier}")
     .onCreate(async (snapshot, context) => {
       const tripId = context.params.tripIdValue;
-      const trip = snapshot.val()
+      const trip = snapshot
       const itinerarySnapshot = query(
         collection(db, "Itinerary"),
         where("trip", "==", tripIdentifier)
