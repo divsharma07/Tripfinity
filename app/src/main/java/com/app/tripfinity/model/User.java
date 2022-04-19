@@ -1,55 +1,56 @@
 package com.app.tripfinity.model;
 
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.GeoPoint;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class User implements Serializable {
     private String uid;
     private String name;
-    @SuppressWarnings("WeakerAccess")
     private String email;
+    private GeoPoint cityGeoPoint;
+    private String city;
+    private String topic;
+    private boolean isRegistered;
     @Exclude
-    private boolean isAuthenticated;
-    @Exclude
-    private boolean isNew, isCreated;
+    public boolean isAuthenticated;
+    private List<DocumentReference> trips;
 
     public User() {}
 
-    public boolean isUserNew() {
-        return isNew;
+    public List<DocumentReference> getTrips() {
+        return trips;
     }
 
-    public void setIsUserNew(boolean isNew) {
-        this.isNew = isNew;
+    public void setTrips(List<DocumentReference> trips) {
+        this.trips = trips;
+    }
+
+    public boolean isRegistered() {
+        return isRegistered;
+    }
+
+    public void setIsRegistered(boolean isNew) {
+        this.isRegistered = isNew;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setIsCreated(boolean isCreated) {
-        this.isCreated = isCreated;
-    }
-
     public String getUid() {
         return uid;
     }
 
-    public boolean isUserAuthenticated() {
-        return isAuthenticated;
-    }
-
-    public void setUserAuthenticationStatus(boolean isAuthenticated) {
-        this.isAuthenticated = isAuthenticated;
+    public String getName() {
+        return name;
     }
 
     public void setUserEmail(String email) {
         this.email = email;
-    }
-
-    public boolean isUserCreated() {
-        return isCreated;
     }
 
     public User(String uid, String name, String email) {
@@ -60,5 +61,27 @@ public class User implements Serializable {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public void setIsUserNew(boolean isNewUser) {
+        
+    }
+
+    public void setIsCreated(boolean b) {
+    }
+
+    public void setUserAuthenticationStatus(boolean b) {
+    }
+
+    public boolean isUserCreated() {
+        return true;
+    }
+
+    public boolean isUserNew() {
+        return true;
+    }
+
+    public boolean isUserAuthenticated() {
+        return true;
     }
 }

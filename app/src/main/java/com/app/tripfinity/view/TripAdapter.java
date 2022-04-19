@@ -11,15 +11,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.app.tripfinity.R;
+import com.app.tripfinity.model.Trip;
 
 import java.util.ArrayList;
 
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
 
-    private ArrayList<TripDetails> listTrips;
+    private ArrayList<Trip> listTrips;
     private Context context;
 
-    public TripAdapter(ArrayList<TripDetails> listTrips, Context context) {
+    public TripAdapter(ArrayList<Trip> listTrips, Context context) {
         this.listTrips = listTrips;
         this.context = context;
     }
@@ -33,9 +34,9 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        TripDetails tripDetails = listTrips.get(position);
-        holder.trip_name.setText(tripDetails.getTrip_name());
-        holder.start_date.setText(tripDetails.getStart_date());
+        Trip tripDetails = listTrips.get(position);
+        holder.trip_name.setText(tripDetails.getTripName());
+        holder.start_date.setText(tripDetails.getStartDate().toString());
     }
 
     @Override

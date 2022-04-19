@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TripFragment()).commit();
-        Toast.makeText(this, user.getEmail(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, user.getEmail(), Toast.LENGTH_SHORT).show();
 
 
 
