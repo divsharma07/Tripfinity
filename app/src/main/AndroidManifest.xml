@@ -10,21 +10,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Tripfinity">
         <activity
-            android:name=".view.SplashScreenActivity"
-            android:theme="@style/SplashTheme"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".view.MainActivity"
+            android:name=".view.AddPlaceActivity"
             android:exported="false" />
         <activity
-            android:name=".view.AuthActivity"
-            android:theme="@style/SplashTheme"
+            android:name=".view.ItineraryViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.TripCreationActivity"
+            android:exported="false" /> <!-- <activity -->
+        <!-- android:name=".view.SplashScreenActivity" -->
+        <!-- android:exported="true" -->
+        <!-- android:theme="@style/SplashTheme"> -->
+        <!-- &lt;!&ndash;            <intent-filter>&ndash;&gt; -->
+        <!-- &lt;!&ndash;                <action android:name="android.intent.action.MAIN" />&ndash;&gt; -->
+        <!-- &lt;!&ndash;                <category android:name="android.intent.category.LAUNCHER" />&ndash;&gt; -->
+        <!-- &lt;!&ndash;            </intent-filter>&ndash;&gt; -->
+        <!-- </activity> -->
+        <activity
+            android:name=".view.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
