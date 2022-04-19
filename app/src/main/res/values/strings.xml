@@ -10,4 +10,10 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="web_client_id">365162315399-gil6o9cegj8idf6b8pit08ovic3cv55d.apps.googleusercontent.com</string>
+    <string name="invite_email">Enter Email</string>
+    <string name="invite">Invite</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="invitation_fragment_text">This user is not registered on Tripfinity. Send them an invite?</string>
+    <string name="logout">Logout</string>
 </resources>

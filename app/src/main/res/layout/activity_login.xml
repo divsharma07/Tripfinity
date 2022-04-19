@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AuthActivity">
+    tools:context="view.AuthActivity">
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/google_sign_in_button"
         android:layout_width="220dp"
         android:layout_height="53dp"
         android:layout_marginStart="8dp"
+
         android:layout_marginEnd="8dp"
         app:buttonSize="wide"
         app:colorScheme="dark"
