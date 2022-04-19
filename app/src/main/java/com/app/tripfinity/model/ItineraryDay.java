@@ -19,7 +19,7 @@ public class ItineraryDay {
     }
 
     public String getId() {
-        return id.toString();
+        return id;
     }
 
 

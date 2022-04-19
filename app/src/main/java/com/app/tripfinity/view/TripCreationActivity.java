@@ -12,6 +12,7 @@ import android.view.View;
 
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.app.tripfinity.R;
 import com.app.tripfinity.model.Trip;
@@ -40,7 +41,7 @@ public class TripCreationActivity extends AppCompatActivity {
         EditText tripNameInput = findViewById(R.id.tripName);
         // take start date from the user
 
-        EditText startDate = findViewById(R.id.startDateButton);
+        TextView startDate = findViewById(R.id.startDateButton);
 
         Button createTrip = findViewById(R.id.createTrip);
         startDate.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +81,12 @@ public class TripCreationActivity extends AppCompatActivity {
                                 startDate.getText().toString(),userId);
 
                         tripCreationViewModel.getCreatedTripLiveData().observe(TripCreationActivity.this,trip -> {
-                            goToItineraryViewActivity(trip.getTripId(),trip.getStartDate(),trip.getTripName());
+                            Log.d(TAG,"Created Trip Id: "+trip.getTripId());
+                            tripCreationViewModel.createNewItinerary(trip.getTripId());
+                            tripCreationViewModel.getCreatedItineraryLiveData().observe(TripCreationActivity.this,itinerary -> {
+                                goToItineraryViewActivity(trip.getTripId(),trip.getStartDate(),trip.getTripName(),itinerary.getId());
+                            });
+
                         });
 
                     } catch (ParseException e) {
@@ -93,11 +99,12 @@ public class TripCreationActivity extends AppCompatActivity {
 
     }
 
-    private void goToItineraryViewActivity(String tripId,Date startDate,String tripName) {
+    private void goToItineraryViewActivity(String tripId,Date startDate,String tripName,String itineraryId) {
         Intent intent = new Intent(TripCreationActivity.this, ItineraryViewActivity.class);
         intent.putExtra("tripId", tripId);
         intent.putExtra("tripName", tripName);
         intent.putExtra("startDate", startDate);
+        intent.putExtra("itineraryId", itineraryId);
         startActivity(intent);
 
     }

@@ -34,19 +34,22 @@ public class ItineraryRepository {
 
     private static final String TAG = "ItineraryRepository";
     public static final String TRIP_COLLECTION = "Trips";
-    public static final String USER_COLLECTION = "Users";
     public static final String ITINERARY_COLLECTION = "Itinerary";
-    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
     private CollectionReference trips = rootRef.collection(TRIP_COLLECTION);
-    private CollectionReference usersRef = rootRef.collection(USER_COLLECTION);
     private CollectionReference itineraryRef = rootRef.collection(ITINERARY_COLLECTION);
     MutableLiveData<Itinerary> newMutableLiveData;
-
-    public ItineraryRepository() {
+    private static ItineraryRepository itineraryRepository;
+    private ItineraryRepository() {
         newMutableLiveData = new MutableLiveData<>();
     }
 
+    public static ItineraryRepository getInstance() {
+        if(itineraryRepository == null) {
+            itineraryRepository = new ItineraryRepository();
+        }
+        return itineraryRepository;
+    }
 
     public MutableLiveData<Itinerary> updateItinerary(String tripId) {
 
@@ -60,22 +63,21 @@ public class ItineraryRepository {
                     if (documents.isEmpty()) {
                         Log.d(TAG, "No Itinerary with the given trip found");
 
-                        // create a new Day and add to the newly created Itinerary.
-                        ItineraryDay itineraryDay = new ItineraryDay();
                         List<ItineraryDay> itineraryDayList = new ArrayList<>();
-                        itineraryDayList.add(itineraryDay);
+                        ItineraryDay day = new ItineraryDay();
+                        itineraryDayList.add(day);
                         Itinerary itinerary = new Itinerary(itineraryDayList,tripRef);
 
                         // save the newly created itinerary.
-                        itineraryRef.add(itinerary).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        itineraryRef.document(itinerary.getId()).set(itinerary)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                            public void onSuccess(Void unused) {
+                                Log.d(TAG, "DocumentSnapshot written with ID: " + itinerary.getId());
                                 newMutableLiveData.setValue(itinerary);
-
-
                             }
-                        }).addOnFailureListener(new OnFailureListener() {
+                        })
+                       .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 Log.d(TAG, "Error adding document", e);

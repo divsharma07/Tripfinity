@@ -82,7 +82,7 @@ public class TripCreationRepository {
         trips.add(trip).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
-                Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                Log.d(TAG, "DocumentSnapshot Trip with ID: " + documentReference.getId());
                 trip.setTripId(documentReference.getId());
                 newMutableTripLiveData.setValue(trip);
                 addUsersToTrip(documentReference,userId);

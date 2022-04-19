@@ -10,16 +10,17 @@ import com.app.tripfinity.model.Itinerary;
 import com.app.tripfinity.repository.ItineraryRepository;
 
 public class ItineraryViewModel extends AndroidViewModel {
-    private ItineraryRepository itineraryRepository;
+    ItineraryRepository itineraryRepository;
+    private LiveData<Itinerary> createdItineraryLiveData;
 
     public LiveData<Itinerary> getCreatedItineraryLiveData() {
         return createdItineraryLiveData;
     }
 
-    private LiveData<Itinerary> createdItineraryLiveData;
+
     public ItineraryViewModel(@NonNull Application application) {
         super(application);
-        itineraryRepository = new ItineraryRepository();
+        itineraryRepository = ItineraryRepository.getInstance();
     }
 
     // Need to check if an itinerary with a trip id exists or not
