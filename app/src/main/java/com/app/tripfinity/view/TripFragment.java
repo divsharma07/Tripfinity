@@ -44,6 +44,7 @@ public class TripFragment extends Fragment {
     private ProgressBar progressBar;
     private FirestoreRecyclerAdapter adapter;
     private TextView emptyView;
+    private OnItemClickListener listener;
 
     @androidx.annotation.Nullable
     @Override
@@ -61,21 +62,11 @@ public class TripFragment extends Fragment {
 
         db = FirebaseFirestore.getInstance();
 
-        final int[] tripCount = {0};
 
-
-
-        Trip trip = new Trip();
-        trip.setTripName("Trip1");
-        trip.setStartDate(new Date());
 
         DocumentReference documentReference = db.collection("Users").document(user);
 
-        trips = new ArrayList<>();
 
-        trips.add(trip);
-        trips.add(trip);
-        trips.add(trip);
 
         //tripAdapter = new TripAdapter(trips, getActivity());
 
@@ -83,7 +74,7 @@ public class TripFragment extends Fragment {
 
         //progressBar.setVisibility(View.GONE);
 
-        Query query = db.collection("TripTest").whereArrayContains("users", documentReference);
+        Query query = db.collection("Trips").whereArrayContains("users", documentReference);
 
         FirestoreRecyclerOptions<Trip> options = new FirestoreRecyclerOptions.Builder<Trip>().setQuery(query, Trip.class).build();
 
@@ -100,8 +91,8 @@ public class TripFragment extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull TripViewHolder holder, int position, @NonNull Trip model) {
                 if ( (model.getTripName() != null && model.getTripName().length() != 0) && model.getStartDate() != null) {
-                    tripCount[0]++;
                     progressBar.setVisibility(View.GONE);
+                    Log.d("onBindViewHolder ", "" + model.getTripName());
                     holder.trip_name.setText(model.getTripName());
                     holder.start_date.setText(model.getStartDate() + "");
                     Log.d("Inside onBindViewHolder", "Trip Name -> " + model.getTripName());
@@ -123,6 +114,8 @@ public class TripFragment extends Fragment {
             }
         };
 
+
+
 //        if (tripCount[0] == 0) {
 //            progressBar.setVisibility(View.GONE);
 //            Toast.makeText(getActivity(), "You are not into any trips :/", Toast.LENGTH_SHORT).show();
@@ -134,6 +127,22 @@ public class TripFragment extends Fragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManagerWrapper(view.getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
+
+
+        setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                Trip trip = documentSnapshot.toObject(Trip.class);
+                String id = documentSnapshot.getId();
+                Toast.makeText(getContext(), "Position = " + position + "   Id = " + id, Toast.LENGTH_SHORT).show();
+
+                //TODO: call the Ankit's itinerary activity from here.
+
+
+            }
+        });
+
+
 
         //Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT).show();
 
@@ -156,14 +165,28 @@ public class TripFragment extends Fragment {
             trip_name = itemView.findViewById(R.id.trip_name);
             start_date = itemView.findViewById(R.id.start_date);
 
+
             itemView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View view) {
                     int position = getAbsoluteAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION && listener != null) {
+                        listener.onItemClick((DocumentSnapshot) adapter.getSnapshots().getSnapshot(position), position);
+                    }
                 }
             });
+
+
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(DocumentSnapshot documentSnapshot, int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 
     @Override
