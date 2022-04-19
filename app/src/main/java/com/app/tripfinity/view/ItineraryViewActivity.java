@@ -125,7 +125,7 @@ public class ItineraryViewActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.days);
         recyclerView.setHasFixedSize(true);
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        adapter = new ItineraryDaysAdapter(days);
+        adapter = new ItineraryDaysAdapter(days,itineraryId,this);
         recyclerView.setLayoutManager(dataLayoutManager);
         recyclerView.setAdapter(adapter);
         firestore.collection("Itinerary").document(itineraryId)
