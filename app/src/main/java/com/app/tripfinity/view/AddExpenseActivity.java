@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.tripfinity.R;
 import com.app.tripfinity.viewmodel.ExpenseViewModel;
@@ -104,8 +105,8 @@ public class AddExpenseActivity extends AppCompatActivity {
 
                 expenseViewModel.createExpense(loggedInUser, expenseName.getText().toString(),
                         expenseAmount.getText().toString(), finalUsers, tripId);
-                // TO DO
-                // Add a toast for success of add expense
+
+                Toast.makeText(AddExpenseActivity.this, "Expense Added Successfully!", Toast.LENGTH_LONG).show();
                 finish();
 
             }
