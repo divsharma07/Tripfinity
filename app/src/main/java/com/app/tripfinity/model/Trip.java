@@ -10,6 +10,11 @@ public class Trip {
     private Date startDate;
     private Date endDate;
     private String tripName;
+
+    public boolean isCanShare() {
+        return canShare;
+    }
+
     private boolean canShare;
 
     // TODO: add model reference
@@ -21,6 +26,10 @@ public class Trip {
     // TODO: add model reference
     private DocumentReference itinerary;
 
+    private String destination;
+
+    public Trip(Date startDate, Date endDate, String tripName, boolean canShare, List<String> expenses,
+                List<DocumentReference> users, DocumentReference itinerary, String destination) {
 
     public boolean isCanShare() {
         return canShare;
@@ -38,6 +47,11 @@ public class Trip {
         this.expenses = expenses;
         this.users = users;
         this.itinerary = itinerary;
+        this.destination = destination;
+    }
+
+    public String getDestination() {
+        return destination;
     }
 
     public Date getStartDate() {
@@ -60,7 +74,7 @@ public class Trip {
         return tripName;
     }
 
-    public List<DocumentReference> getExpenses() {
+    public List<String> getExpenses() {
         return expenses;
     }
 
@@ -93,10 +107,6 @@ public class Trip {
 
     public void setUsers(List<DocumentReference> users) {
         this.users = users;
-    }
-
-    public void setItinerary(DocumentReference itinerary) {
-        this.itinerary = itinerary;
     }
 
 }

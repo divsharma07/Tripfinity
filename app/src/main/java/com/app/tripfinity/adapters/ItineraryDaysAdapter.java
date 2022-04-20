@@ -33,7 +33,6 @@ public class ItineraryDaysAdapter extends RecyclerView.Adapter<ItineraryDayViewH
     private Context context;
     public ItineraryDaysAdapter(List<ItineraryDay> days, String itineraryId, Context context) {
         this.days = days;
-        places = new ArrayList<>();
         this.itineraryId = itineraryId;
         this.context = context;
     }
@@ -52,7 +51,7 @@ public class ItineraryDaysAdapter extends RecyclerView.Adapter<ItineraryDayViewH
         holder.day.setText(days.get(position).getId());
         Log.d(TAG,"createRecyclerUserView called ");
 
-        PlaceAdapter adapter = new PlaceAdapter(places);
+        PlaceAdapter adapter = new PlaceAdapter(new ArrayList<>());
         holder.placesRecyclerView.setAdapter(adapter);
 
         holder.addPlaces.setOnClickListener(new View.OnClickListener() {
@@ -61,9 +60,14 @@ public class ItineraryDaysAdapter extends RecyclerView.Adapter<ItineraryDayViewH
             public void onClick(View v) {
                 Log.d(TAG,"Onclick on recycler view");
                 Intent intent = new Intent(context, AddPlaceActivity.class);
+                intent.putExtra("ItineraryId", itineraryId);
+                intent.putExtra("dayId", days.get(holder.getBindingAdapterPosition()).getId());
                 context.startActivity(intent);
+
             }
         });
+        adapter.setItems(days.get(holder.getBindingAdapterPosition()).getPlaces());
+        adapter.notifyDataSetChanged();
 
 
     }

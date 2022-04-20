@@ -7,10 +7,13 @@
     tools:context=".view.ItineraryViewActivity">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tripNameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Trip Name"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textSize="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.022"
@@ -23,7 +26,7 @@
         android:layout_marginTop="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/tripNameTextView" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
