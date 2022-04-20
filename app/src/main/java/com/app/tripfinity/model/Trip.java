@@ -17,17 +17,16 @@ public class Trip {
 
     private boolean canShare;
 
-    // TODO: add model reference
     private List<String> expenses;
 
-    // TODO: add model reference
     private List<DocumentReference> users;
 
-    // TODO: add model reference
     private DocumentReference itinerary;
 
+    private String destination;
+
     public Trip(Date startDate, Date endDate, String tripName, boolean canShare, List<String> expenses,
-                List<DocumentReference> users, DocumentReference itinerary) {
+                List<DocumentReference> users, DocumentReference itinerary, String destination) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.tripName = tripName;
@@ -35,6 +34,11 @@ public class Trip {
         this.expenses = expenses;
         this.users = users;
         this.itinerary = itinerary;
+        this.destination = destination;
+    }
+
+    public String getDestination() {
+        return destination;
     }
 
     public Date getStartDate() {

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.app.tripfinity.R;
 import com.app.tripfinity.viewmodel.PlaceViewModel;
@@ -18,6 +19,7 @@ import com.app.tripfinity.viewmodel.TripCreationViewModel;
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
@@ -30,7 +32,7 @@ import java.util.List;
 public class AddPlaceActivity extends AppCompatActivity {
     private static final String TAG = "AddPlaceActivity";
     private static final int AUTOCOMPLETE_REQUEST_CODE = 1;
-    private EditText searchBar;
+    private TextView searchBar;
     private String ItineraryId;
     private String dayId;
     PlaceViewModel placeViewModel;
@@ -39,7 +41,7 @@ public class AddPlaceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_place);
         initPlaceModel();
-        String apiKey = "AIzaSyBS_y5Gn0vwx0hFLS-QjzjbZ-O2E6GIczw";
+        String apiKey = getString(R.string.google_maps_api_key);
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), apiKey);
         }
@@ -61,7 +63,7 @@ public class AddPlaceActivity extends AppCompatActivity {
 
                 // Start the autocomplete intent.
                 Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
-                        .build(AddPlaceActivity.this);
+                        .setTypeFilter(TypeFilter.CITIES).build(AddPlaceActivity.this);
                 startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
             }
         });

@@ -22,48 +22,39 @@ import com.app.tripfinity.adapters.ItineraryDaysAdapter;
 import com.app.tripfinity.model.Itinerary;
 import com.app.tripfinity.model.ItineraryDay;
 import com.app.tripfinity.viewmodel.ItineraryViewModel;
-import com.app.tripfinity.viewmodel.TripCreationViewModel;
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.api.LogDescriptor;
-import com.google.firebase.firestore.DocumentReference;
+
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
+
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ItineraryViewActivity extends AppCompatActivity {
+    private static final String TAG = "ItineraryViewActivity";
     private ItineraryViewModel itineraryViewModel;
     private String tripId;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager dataLayoutManager;
     private ItineraryDaysAdapter adapter;
     private String itineraryId;
-    FirestoreRecyclerOptions<Itinerary> options;
     private List<ItineraryDay> days;
 
 
-    //TODO: user Id of the user who is creating the trip needs to be included.
-    //TODO: save topic name from user into trip as source location.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("ItineraryViewActivity","On create Called");
+        Log.d(TAG,"On create Called");
         setContentView(R.layout.activity_itinerary_view);
         initItineraryViewModel();
         Intent intent = getIntent();
         itineraryId = intent.getStringExtra("itineraryId");
         tripId = intent.getStringExtra("tripId");
-
+        TextView tripName = findViewById(R.id.tripNameTextView);
+        tripName.setText(intent.getStringExtra("tripName"));
         FloatingActionButton addDaysButton = findViewById(R.id.floatingActionButton);
 
         addDaysButton.setOnClickListener(new View.OnClickListener() {
@@ -127,7 +118,7 @@ public class ItineraryViewActivity extends AppCompatActivity {
     }
 
     private void createRecyclerView() {
-        Log.d("ItineraryViewActivity","createRecyclerUserView called "+itineraryId);
+        Log.d(TAG,"Creating recycler view for Itinerary: "+itineraryId);
         days = new ArrayList<>();
         dataLayoutManager = new LinearLayoutManager(this);
         recyclerView = findViewById(R.id.days);
@@ -156,13 +147,5 @@ public class ItineraryViewActivity extends AppCompatActivity {
         itineraryViewModel = new ViewModelProvider(this).get(ItineraryViewModel.class);
     }
 
-    // Need to add dynamic elements inside recycler view.
-
-
-
-
-    // if an itinerary with the trip id exists then display all the days of that itinerary
-    //      display all the places for a day
-    //      for each place display the place name which should be clickable
 
 }

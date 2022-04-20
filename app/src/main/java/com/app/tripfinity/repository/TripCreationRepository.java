@@ -39,7 +39,8 @@ public class TripCreationRepository {
 //    public interface UserCallback {
 //        void onCallback(DocumentReference user);
 //    }
-    public Trip createATrip(String tripName, String startDate, String userId) throws ParseException {
+    public Trip createATrip(String tripName, String startDate, String userId, String destination)
+            throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-M-dd", Locale.ENGLISH);
         Date startDateObj = formatter.parse(startDate);
         Date endDateObj = startDateObj;
@@ -49,7 +50,7 @@ public class TripCreationRepository {
         users.add(usersRef.document(userId));
         DocumentReference itinerary = null;
         Log.d(TAG,"user retrieved "+users);
-        Trip trip = new Trip(startDateObj,endDateObj,tripName,false,expenses,users,itinerary);
+        Trip trip = new Trip(startDateObj,endDateObj,tripName,false,expenses,users,itinerary,destination);
 
         return trip;
     }

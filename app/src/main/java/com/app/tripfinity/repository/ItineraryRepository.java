@@ -69,10 +69,7 @@ public class ItineraryRepository {
                     if (documents.isEmpty()) {
                         Log.d(TAG, "No Itinerary with the given trip found");
 
-                        List<ItineraryDay> itineraryDayList = new ArrayList<>();
-                        ItineraryDay day = new ItineraryDay();
-                        itineraryDayList.add(day);
-                        Itinerary itinerary = new Itinerary(itineraryDayList,tripRef);
+                        Itinerary itinerary = new Itinerary(new ArrayList<>(),tripRef);
 
                         // save the newly created itinerary.
                         itineraryRef.document(itinerary.getId()).set(itinerary)
@@ -81,6 +78,13 @@ public class ItineraryRepository {
                             public void onSuccess(Void unused) {
                                 Log.d(TAG, "DocumentSnapshot written with ID: " + itinerary.getId());
                                 newMutableLiveData.setValue(itinerary);
+
+                                DocumentReference newItineraryRef = itineraryRef.document(itinerary.getId());
+
+                                // update trip with the new itinerary Id
+                                tripRef.update("itinerary",newItineraryRef);
+
+
                             }
                         })
                        .addOnFailureListener(new OnFailureListener() {
@@ -89,6 +93,7 @@ public class ItineraryRepository {
                                 Log.d(TAG, "Error adding document", e);
                             }
                         });
+
                     } else {
                         // update the document
                         String itineraryId = documents.get(0).getId();
