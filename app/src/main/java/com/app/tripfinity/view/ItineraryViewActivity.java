@@ -72,6 +72,7 @@ public class ItineraryViewActivity extends AppCompatActivity {
                 // if itinerary does not exist then it needs to be created and
                 // the day should be added.
                 // else a new day should be added to the existing itinerary.
+
                 itineraryViewModel.updateItinerary(tripId);
                 // once the itinerary is created, get all the days from it and
                 // display in the recycler view.
@@ -134,6 +135,7 @@ public class ItineraryViewActivity extends AppCompatActivity {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 Itinerary itinerary = value.toObject(Itinerary.class);
+                Log.d("onEvent", "Itinerary id ->" + itinerary);
                 adapter.setItems(itinerary.getDays());
                 adapter.notifyDataSetChanged();
 

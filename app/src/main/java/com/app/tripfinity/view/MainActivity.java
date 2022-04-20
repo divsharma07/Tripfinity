@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.hardware.camera2.TotalCaptureResult;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -36,9 +37,8 @@ public class MainActivity extends AppCompatActivity {
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TripFragment()).commit();
+
         //Toast.makeText(this, user.getEmail(), Toast.LENGTH_SHORT).show();
-
-
 
     }
 

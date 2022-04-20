@@ -21,6 +21,7 @@ public class Trip {
     // TODO: add model reference
     private DocumentReference itinerary;
 
+
     public boolean isCanShare() {
         return canShare;
     }

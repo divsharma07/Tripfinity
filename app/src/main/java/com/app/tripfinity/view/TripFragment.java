@@ -1,6 +1,7 @@
 package com.app.tripfinity.view;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 //import android.support.v4.app.Fragment;
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +26,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -45,6 +48,7 @@ public class TripFragment extends Fragment {
     private FirestoreRecyclerAdapter adapter;
     private TextView emptyView;
     private OnItemClickListener listener;
+    private FloatingActionButton addButton;
 
     @androidx.annotation.Nullable
     @Override
@@ -54,25 +58,15 @@ public class TripFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         progressBar = view.findViewById(R.id.idProgressBar);
 
-        String user = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
+        addButton = (FloatingActionButton) view.findViewById(R.id.fab_add);
 
-        //Toast.makeText(getActivity(), "-- User- -- -- " + user, Toast.LENGTH_SHORT).show();
+        String user = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
 
         emptyView = view.findViewById(R.id.empty_view);
 
         db = FirebaseFirestore.getInstance();
 
-
-
         DocumentReference documentReference = db.collection("Users").document(user);
-
-
-
-        //tripAdapter = new TripAdapter(trips, getActivity());
-
-        //recyclerView.setAdapter(tripAdapter);
-
-        //progressBar.setVisibility(View.GONE);
 
         Query query = db.collection("Trips").whereArrayContains("users", documentReference);
 
@@ -104,30 +98,19 @@ public class TripFragment extends Fragment {
                 super.onDataChanged();
 
                 if (getItemCount() != 0) {
-                    //Toast.makeText(getActivity(), "Awesome", Toast.LENGTH_SHORT).show();
                     emptyView.setVisibility(View.GONE);
                 } else {
                     progressBar.setVisibility(View.GONE);
-                    //Toast.makeText(getActivity(), "You are not into any trips :/", Toast.LENGTH_SHORT).show();
                     emptyView.setVisibility(View.VISIBLE);
                 }
             }
         };
 
-
-
-//        if (tripCount[0] == 0) {
-//            progressBar.setVisibility(View.GONE);
-//            Toast.makeText(getActivity(), "You are not into any trips :/", Toast.LENGTH_SHORT).show();
-//
-//        }
-
         recyclerView.setHasFixedSize(true);
-        //recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         recyclerView.setLayoutManager(new LinearLayoutManagerWrapper(view.getContext(), LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(adapter);
 
+        recyclerView.setAdapter(adapter);
 
         setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -138,19 +121,19 @@ public class TripFragment extends Fragment {
 
                 //TODO: call the Ankit's itinerary activity from here.
 
+                Intent intent = new Intent(getActivity(), ItineraryViewActivity.class);
+                intent.putExtra("tripId", id);
+                intent.putExtra("tripName", trip.getTripName());
+                intent.putExtra("startDate", trip.getStartDate());
+                intent.putExtra("itineraryId", trip.getItinerary().getId());
+
+                Log.d("Inside Fragment",  "Itinerary -> " + trip.getItinerary().getId());
+                startActivity(intent);
 
             }
         });
 
-
-
-        //Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT).show();
-
-        //progressBar.setVisibility(View.GONE);
-
-        //db.collection("Users").document(user).get();
-
-        //db.collection("Trips").document()
+        addButtonClick();
         
         return  view;
     }
@@ -177,7 +160,6 @@ public class TripFragment extends Fragment {
                 }
             });
 
-
         }
     }
 
@@ -199,5 +181,15 @@ public class TripFragment extends Fragment {
     public void onStop() {
         super.onStop();
         adapter.stopListening();
+    }
+
+    private void addButtonClick() {
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(),TripCreationActivity.class);
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 }

@@ -55,7 +55,7 @@ public class TripCreationActivity extends AppCompatActivity {
                         (view, year1, monthOfYear, dayOfMonth) -> {
                             Date dateFromUser = new Date();
                             // set day of month , month and year value in the edit text
-                            startDate.setText(new StringBuilder().append( year1 ).append( "-" )
+                            startDate.setText(new StringBuilder().append(year1).append( "-" )
                                     .append( monthOfYear+1 ).append( "-" ).append( dayOfMonth ));
 
                         }, year, month, day);
