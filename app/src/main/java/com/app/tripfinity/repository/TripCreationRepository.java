@@ -44,7 +44,7 @@ public class TripCreationRepository {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-M-dd", Locale.ENGLISH);
         Date startDateObj = formatter.parse(startDate);
         Date endDateObj = startDateObj;
-        List<String> expenses = new ArrayList<>();
+        List<DocumentReference> expenses = new ArrayList<>();
         List<DocumentReference> users = new ArrayList<>();
 
         users.add(usersRef.document(userId));

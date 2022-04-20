@@ -17,7 +17,7 @@ public class Trip {
 
     private boolean canShare;
 
-    private List<String> expenses;
+    private List<DocumentReference> expenses;
 
     private List<DocumentReference> users;
 
@@ -25,7 +25,7 @@ public class Trip {
 
     private String destination;
 
-    public Trip(Date startDate, Date endDate, String tripName, boolean canShare, List<String> expenses,
+    public Trip(Date startDate, Date endDate, String tripName, boolean canShare, List<DocumentReference> expenses,
                 List<DocumentReference> users, DocumentReference itinerary, String destination) {
         this.startDate = startDate;
         this.endDate = endDate;
@@ -53,7 +53,7 @@ public class Trip {
         return tripName;
     }
 
-    public List<String> getExpenses() {
+    public List<DocumentReference> getExpenses() {
         return expenses;
     }
 
