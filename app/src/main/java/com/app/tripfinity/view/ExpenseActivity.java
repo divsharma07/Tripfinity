@@ -79,7 +79,7 @@ public class ExpenseActivity extends AppCompatActivity {
         youOwe = 0;
         youAreOwed = 0;
 
-        expenseUserName.setText("Hello " + "abc,");
+        expenseUserName.setText("Hello " + loggedInName + ",");
 
         mainExpenseViewModel.getUserDataForTrip(tripId).observe(ExpenseActivity.this, list -> {
             Log.d("user list size in view ", String.valueOf(list.size()));

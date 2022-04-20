@@ -17,6 +17,7 @@
             android:exported="false" />
         <activity
             android:name=".view.AddExpenseActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".view.SplashScreenActivity"

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.app.tripfinity.R;
 import com.app.tripfinity.viewmodel.ExpenseViewModel;
 import com.app.tripfinity.viewmodel.SplashViewModel;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +36,7 @@ public class AddExpenseActivity extends AppCompatActivity {
     private String loggedInUser;
     // All users of a trip except logged in user
     String[] userList;
+    String[] emails;
     ArrayList<String> finalUsers;
 
     @Override
@@ -48,13 +50,17 @@ public class AddExpenseActivity extends AppCompatActivity {
         loggedInUser = getIntent().getStringExtra("loggedInUser");
 
         String[] users = new String[userEmailToName.size() - 1];
+        emails = new String[userEmailToName.size() - 1];
         int i = 0;
 
         for (Map.Entry<String, String> entry : userEmailToName.entrySet()) {
             if (!entry.getKey().equals(loggedInUser)) {
-                users[i++] = entry.getValue();
+                users[i] = entry.getValue();
+                emails[i] = entry.getKey();
+                i++;
             }
         }
+
         userList = users;
 
         expenseName = (EditText) findViewById(R.id.expenseName);
@@ -71,6 +77,27 @@ public class AddExpenseActivity extends AppCompatActivity {
             public void onClick(View view) {
 //                Log.d("Expense name ", expenseName.getText().toString());
 //                Log.d("Expense Amount ", expenseAmount.getText().toString());
+
+                if (expenseName.getText().toString().length() == 0) {
+                    Snackbar.make(findViewById(R.id.addExpenseActivity), "Please name what did you spend on!", Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+                if (expenseAmount.getText().toString().length() == 0) {
+                    Snackbar.make(findViewById(R.id.addExpenseActivity), "Expense amount is Empty! Please enter.", Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+                try {
+                    double test = Double.parseDouble(expenseAmount.getText().toString());
+                } catch (NumberFormatException | NullPointerException e) {
+                    Snackbar.make(findViewById(R.id.addExpenseActivity), "Expense amount is Incorrect! Please correct it.", Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
+                if (finalUsers.size() == 0) {
+                    Snackbar.make(findViewById(R.id.addExpenseActivity), "Please select at least one user to split with!", Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
                 // Logged In user involved in transaction by default
                 finalUsers.add(loggedInUser);
 //                Log.d("expense selected ", finalUsers.toString());
@@ -101,11 +128,11 @@ public class AddExpenseActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i, boolean b) {
                         if (b) {
-                            finalUsers.add(userList[i]);
-                            Log.d("multiple user ", finalUsers.toString());
+                            finalUsers.add(emails[i]);
+//                            Log.d("multiple user ", finalUsers.toString());
                         } else {
-                            finalUsers.remove(new String(userList[i]));
-                            Log.d("multiple user ", finalUsers.toString());
+                            finalUsers.remove(new String(emails[i]));
+//                            Log.d("multiple user ", finalUsers.toString());
                         }
                     }
                 });
@@ -114,7 +141,7 @@ public class AddExpenseActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (finalUsers.size() > 0) {
-                            selectedUsers.setText("Users Selected");
+                            selectedUsers.setText(finalUsers.size() + " User(s) Selected");
                         } else {
                             selectedUsers.setText("No User is Selected");
                         }
