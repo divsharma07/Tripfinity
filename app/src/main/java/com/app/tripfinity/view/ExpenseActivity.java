@@ -70,7 +70,7 @@ public class ExpenseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        Log.d("lifecycle ", "here on resume");
+
         userList = new ArrayList<>();
         expenseList = new ArrayList<>();
         userAmountMap = new HashMap<>();
@@ -146,6 +146,7 @@ public class ExpenseActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent myIntent = new Intent(ExpenseActivity.this, AddExpenseActivity.class);
+                        myIntent.putExtra("tripId", tripId);
                         myIntent.putExtra("userEmailToName", userEmailToName);
                         myIntent.putExtra("loggedInUser", loggedInUser);
                         startActivity(myIntent);

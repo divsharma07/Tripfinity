@@ -33,7 +33,7 @@ public class AddExpenseActivity extends AppCompatActivity {
     private Button expenseButton;
     boolean[] userBoolean;
     ArrayList<Integer> langList = new ArrayList<>();
-    private String tripId = "77nrAgVzOA8xdm2wxPGa";
+    private String tripId;
     private String loggedInUser;
     // All users of a trip except logged in user
     String[] userList;
@@ -49,6 +49,7 @@ public class AddExpenseActivity extends AppCompatActivity {
 
         userEmailToName = (HashMap<String, String>) getIntent().getSerializableExtra("userEmailToName");
         loggedInUser = getIntent().getStringExtra("loggedInUser");
+        tripId = getIntent().getExtras().getString("tripId");
 
         String[] users = new String[userEmailToName.size() - 1];
         emails = new String[userEmailToName.size() - 1];
