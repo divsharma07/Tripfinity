@@ -63,9 +63,9 @@ public class ItineraryViewActivity extends AppCompatActivity {
         Intent intent = getIntent();
         itineraryId = intent.getStringExtra("itineraryId");
         tripId = intent.getStringExtra("tripId");
-        days = new ArrayList<>();
+
         FloatingActionButton addDaysButton = findViewById(R.id.floatingActionButton);
-        createRecyclerView();
+
         addDaysButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,8 +119,16 @@ public class ItineraryViewActivity extends AppCompatActivity {
 //
 //    }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        createRecyclerView();
+    }
+
     private void createRecyclerView() {
         Log.d("ItineraryViewActivity","createRecyclerUserView called "+itineraryId);
+        days = new ArrayList<>();
         dataLayoutManager = new LinearLayoutManager(this);
         recyclerView = findViewById(R.id.days);
         recyclerView.setHasFixedSize(true);
