@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
             requestLocationPermission();
         }
 
-        Toast.makeText(this, "Logged in as user "+ user, Toast.LENGTH_LONG);
         Button testCreateTripButton = findViewById(R.id.createTripTest);
         testCreateTripButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,11 +82,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         });
     }
 
-    public void goToInviteActivity(View view) {
-        Intent intent = new Intent(this, InviteActivity.class);
-        startActivity(intent);
-        finish();
-    }
+
     private void initializeMainActivityViewModel() {
         mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
     }

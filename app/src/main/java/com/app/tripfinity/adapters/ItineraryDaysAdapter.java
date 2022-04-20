@@ -4,10 +4,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.app.tripfinity.R;
 import com.app.tripfinity.model.ItineraryDay;
 import com.app.tripfinity.viewholders.ItineraryDayViewHolder;

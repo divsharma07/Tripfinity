@@ -9,7 +9,6 @@ import androidx.lifecycle.LiveData;
 
 import com.app.tripfinity.model.Itinerary;
 import com.app.tripfinity.model.Trip;
-import com.app.tripfinity.model.User;
 import com.app.tripfinity.repository.ItineraryRepository;
 import com.app.tripfinity.repository.TripCreationRepository;
 import com.google.firebase.firestore.DocumentReference;

@@ -42,8 +42,15 @@ public class TripCreationActivity extends AppCompatActivity {
         // take start date from the user
 
         TextView startDate = findViewById(R.id.startDateButton);
-
+        Button inviteUsers = findViewById(R.id.inviteUsers);
         Button createTrip = findViewById(R.id.createTrip);
+
+        inviteUsers.setOnClickListener(view -> {
+            Intent intent = new Intent(view.getContext(), InviteActivity.class);
+            startActivity(intent);
+            finish();
+        });
+
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
