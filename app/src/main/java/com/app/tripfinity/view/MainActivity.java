@@ -17,6 +17,7 @@ import android.location.Location;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -75,6 +76,14 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         startActivity(intent);
         finish();
     }
+
+    public void goToMessagingActivity(View view) {
+        Intent intent = new Intent(this, MessagingActivityTemp.class);
+        // TODO: Remove this and let the actual trip list screen enlist this value
+        intent.putExtra("tripId", "0Tb1WicN4y52jh1aF2lW");
+        startActivity(intent);
+    }
+
     private void initializeMainActivityViewModel() {
         mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
     }
@@ -120,7 +129,6 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
     @Override
     protected void onStart() {
         super.onStart();
-        User user = getUserFromIntent();
         firebaseAuth.addAuthStateListener(this);
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {

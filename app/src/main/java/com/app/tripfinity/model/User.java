@@ -15,6 +15,7 @@ public class User implements Serializable {
     private String state;
     private String country;
     private String fcmToken;
+    private String userPhotoUrl;
     private boolean isRegistered;
     @Exclude
     public boolean isAuthenticated;
@@ -74,5 +75,9 @@ public class User implements Serializable {
 
     public String getFcmToken() {
         return fcmToken;
+    }
+
+    public String getUserPhotoUrl() {
+        return userPhotoUrl;
     }
 }
