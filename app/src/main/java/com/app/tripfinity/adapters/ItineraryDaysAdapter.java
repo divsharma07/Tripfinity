@@ -9,12 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.tripfinity.R;
 import com.app.tripfinity.model.ItineraryDay;
 import com.app.tripfinity.model.Place;
+import com.app.tripfinity.repository.ItineraryRepository;
 import com.app.tripfinity.view.AddPlaceActivity;
 import com.app.tripfinity.view.ItineraryViewActivity;
 import com.app.tripfinity.view.TripCreationActivity;
@@ -53,6 +55,24 @@ public class ItineraryDaysAdapter extends RecyclerView.Adapter<ItineraryDayViewH
 
         PlaceAdapter adapter = new PlaceAdapter(new ArrayList<>());
         holder.placesRecyclerView.setAdapter(adapter);
+
+        ItemTouchHelper itemTouchHelper =  new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int placePosition = viewHolder.getLayoutPosition();
+                ItineraryRepository itineraryRepository = ItineraryRepository.getInstance();
+                itineraryRepository.removePlace(itineraryId,days.get(holder.getLayoutPosition()).getId(),placePosition);
+            }
+
+        });
+        itemTouchHelper.attachToRecyclerView(holder.placesRecyclerView);
 
         holder.addPlaces.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("NotifyDataSetChanged")

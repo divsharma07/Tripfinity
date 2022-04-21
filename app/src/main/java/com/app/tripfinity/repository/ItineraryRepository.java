@@ -1,9 +1,11 @@
 package com.app.tripfinity.repository;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.app.tripfinity.model.Itinerary;
@@ -43,6 +45,7 @@ public class ItineraryRepository {
     private CollectionReference trips = rootRef.collection(TRIP_COLLECTION);
     private CollectionReference itineraryRef = rootRef.collection(ITINERARY_COLLECTION);
     MutableLiveData<Itinerary> newMutableLiveData;
+
     private static ItineraryRepository itineraryRepository;
     private ItineraryRepository() {
         newMutableLiveData = new MutableLiveData<>();
@@ -59,6 +62,7 @@ public class ItineraryRepository {
 
     public MutableLiveData<Itinerary> updateItinerary(String tripId) {
 
+        Log.d(TAG, "tripId ->" + tripId);
         DocumentReference tripRef = trips.document(tripId);
         Query query = itineraryRef.whereEqualTo("trip", tripRef);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -97,6 +101,9 @@ public class ItineraryRepository {
                     } else {
                         // update the document
                         String itineraryId = documents.get(0).getId();
+                        for (DocumentSnapshot i : documents){
+                            Log.d(TAG, "Doc Id -> " + i.getId());
+                        }
                         Log.d(TAG,"Updating itinerary Id "+itineraryId);
                         ItineraryDay newDay = new ItineraryDay();
                         itineraryRef.document(itineraryId).update("days", FieldValue.arrayUnion(newDay))
@@ -152,4 +159,50 @@ public class ItineraryRepository {
         });
         return placesMutableLiveData;
     }
+
+    public void removePlace(String itineraryId, String dayId,int position) {
+        itineraryRef.document(itineraryId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                Itinerary itinerary = task.getResult().toObject(Itinerary.class);
+                for(ItineraryDay day: itinerary.getDays()) {
+                    if (day.getId().equals(dayId)) {
+                        day.getPlaces().remove(position);
+                        break;
+                    }
+                }
+                itineraryRef.document(itineraryId).set(itinerary).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d(TAG,"Place at position "+position+" removed");
+
+                    }
+                });
+            }
+        });
+    }
+
+    public MutableLiveData<Trip> getTrip(String tripId) {
+        MutableLiveData<Trip> tripMutableLiveData = new MutableLiveData<>();
+        trips.document(tripId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                tripMutableLiveData.setValue(task.getResult().toObject(Trip.class));
+            }
+        });
+        return tripMutableLiveData;
+    }
+
+    public MutableLiveData<Trip> updateTrip(Trip trip) {
+        MutableLiveData<Trip> tripMutableLiveData = new MutableLiveData<>();
+        trips.document(trip.getTripId()).set(trip).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                tripMutableLiveData.setValue(trip);
+            }
+        });
+        return tripMutableLiveData;
+    }
+
+
 }

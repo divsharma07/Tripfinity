@@ -50,7 +50,7 @@ public class TripCreationRepository {
         users.add(usersRef.document(userId));
         DocumentReference itinerary = null;
         Log.d(TAG,"user retrieved "+users);
-        Trip trip = new Trip(startDateObj,endDateObj,tripName,false,expenses,users,itinerary,destination);
+        Trip trip = new Trip(startDateObj,endDateObj,tripName,false, expenses, users,itinerary,destination);
 
         return trip;
     }
@@ -80,18 +80,12 @@ public class TripCreationRepository {
 
     public MutableLiveData<Trip> addANewTrip(Trip trip, String userId) {
         MutableLiveData<Trip> newMutableTripLiveData = new MutableLiveData<>();
-        trips.add(trip).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        trips.document(trip.getTripId()).set(trip).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Log.d(TAG, "DocumentSnapshot Trip with ID: " + documentReference.getId());
-                trip.setTripId(documentReference.getId());
+            public void onSuccess(Void unused) {
+                Log.d(TAG, "DocumentSnapshot Trip with ID: " + trip.getTripId());
                 newMutableTripLiveData.setValue(trip);
-                addUsersToTrip(documentReference,userId);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "Error adding document", e);
+                addUsersToTrip(trips.document(trip.getTripId()),userId);
             }
         });
 

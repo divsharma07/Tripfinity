@@ -4,16 +4,13 @@ import com.google.firebase.firestore.DocumentReference;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 public class Trip {
     private String tripId;
     private Date startDate;
     private Date endDate;
     private String tripName;
-
-    public boolean isCanShare() {
-        return canShare;
-    }
 
     private boolean canShare;
 
@@ -26,20 +23,22 @@ public class Trip {
     // TODO: add model reference
     private DocumentReference itinerary;
 
-    private String destination;
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
 
-    public Trip(Date startDate, Date endDate, String tripName, boolean canShare, List<String> expenses,
-                List<DocumentReference> users, DocumentReference itinerary, String destination) {
+    private String destination;
 
     public boolean isCanShare() {
         return canShare;
     }
 
     public Trip() {
+        tripId = UUID.randomUUID().toString();
     }
 
     public Trip(Date startDate, Date endDate, String tripName, boolean canShare, List<DocumentReference> expenses,
-                List<DocumentReference> users, DocumentReference itinerary) {
+                List<DocumentReference> users, DocumentReference itinerary, String destination) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.tripName = tripName;
@@ -48,6 +47,7 @@ public class Trip {
         this.users = users;
         this.itinerary = itinerary;
         this.destination = destination;
+        this.tripId = UUID.randomUUID().toString();
     }
 
     public String getDestination() {
@@ -74,7 +74,7 @@ public class Trip {
         return tripName;
     }
 
-    public List<String> getExpenses() {
+    public List<DocumentReference> getExpenses() {
         return expenses;
     }
 

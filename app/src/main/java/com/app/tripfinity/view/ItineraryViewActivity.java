@@ -15,7 +15,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.tripfinity.R;
 import com.app.tripfinity.adapters.ItineraryDaysAdapter;
@@ -42,6 +45,7 @@ public class ItineraryViewActivity extends AppCompatActivity {
     private ItineraryDaysAdapter adapter;
     private String itineraryId;
     private List<ItineraryDay> days;
+    private ImageView editTrip;
 
 
     @Override
@@ -52,10 +56,12 @@ public class ItineraryViewActivity extends AppCompatActivity {
         initItineraryViewModel();
         Intent intent = getIntent();
         itineraryId = intent.getStringExtra("itineraryId");
+        Log.d(TAG, "Id ->" + itineraryId);
         tripId = intent.getStringExtra("tripId");
         TextView tripName = findViewById(R.id.tripNameTextView);
         tripName.setText(intent.getStringExtra("tripName"));
         FloatingActionButton addDaysButton = findViewById(R.id.floatingActionButton);
+        editTrip = findViewById(R.id.editTrip);
 
         addDaysButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,11 +70,22 @@ public class ItineraryViewActivity extends AppCompatActivity {
                 // the day should be added.
                 // else a new day should be added to the existing itinerary.
 
+                Log.d(TAG, "Inside on click Id ->" + itineraryId);
                 itineraryViewModel.updateItinerary(tripId);
                 // once the itinerary is created, get all the days from it and
                 // display in the recycler view.
 
 
+            }
+        });
+
+        editTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ItineraryViewActivity.this, TripCreationActivity.class);
+                intent.putExtra("displayButtonType", "editTrip");
+                intent.putExtra("tripId", tripId);
+                startActivity(intent);
             }
         });
 
@@ -123,18 +140,20 @@ public class ItineraryViewActivity extends AppCompatActivity {
         days = new ArrayList<>();
         dataLayoutManager = new LinearLayoutManager(this);
         recyclerView = findViewById(R.id.days);
-        recyclerView.setHasFixedSize(true);
+        //recyclerView.setHasFixedSize(true);
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         adapter = new ItineraryDaysAdapter(days,itineraryId,this);
         recyclerView.setLayoutManager(dataLayoutManager);
         recyclerView.setAdapter(adapter);
-        firestore.collection("Itinerary").document(itineraryId)
+        Log.d(TAG, "ItineraryId ->" + itineraryId);
+        firestore.collection( "Itinerary").document(itineraryId)
                 .addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 Itinerary itinerary = value.toObject(Itinerary.class);
-                Log.d("onEvent", "Itinerary id ->" + itinerary);
+                Log.d("onEvent", "Itinerary id ->" + itineraryId);
+                Log.d("onEvent", "Days ->" + itinerary.getDays());
                 adapter.setItems(itinerary.getDays());
                 adapter.notifyDataSetChanged();
 

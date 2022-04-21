@@ -121,6 +121,11 @@ public class TripFragment extends Fragment {
 
                 //TODO: call the Ankit's itinerary activity from here.
 
+                Log.d("TripFragment", "TripName -> " + trip.getTripName());
+                Log.d("TripFragment", "TripId -> " + id);
+                Log.d("TripFragment", "TripStartDate -> " + trip.getStartDate());
+                Log.d("TripFragment", "Trip Itinerary Id -> " + trip.getItinerary().getId());
+
                 Intent intent = new Intent(getActivity(), ItineraryViewActivity.class);
                 intent.putExtra("tripId", id);
                 intent.putExtra("tripName", trip.getTripName());
@@ -188,7 +193,9 @@ public class TripFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(),TripCreationActivity.class);
+                intent.putExtra("displayButtonType", "createTrip");
                 v.getContext().startActivity(intent);
+
             }
         });
     }

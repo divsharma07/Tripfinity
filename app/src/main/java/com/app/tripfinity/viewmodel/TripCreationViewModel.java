@@ -27,6 +27,18 @@ public class TripCreationViewModel extends AndroidViewModel {
     ItineraryRepository itineraryRepository;
     LiveData<Trip> createdTripLiveData;
     LiveData<Itinerary> createdItineraryLiveData;
+
+    public LiveData<Trip> getUpdatedTripLiveData() {
+        return updatedTripLiveData;
+    }
+
+    LiveData<Trip> updatedTripLiveData;
+
+    public LiveData<Trip> getTripLiveData() {
+        return tripLiveData;
+    }
+
+    LiveData<Trip> tripLiveData;
     public TripCreationViewModel(@NonNull Application application) {
         super(application);
         tripCreationRepository = new TripCreationRepository();
@@ -56,4 +68,11 @@ public class TripCreationViewModel extends AndroidViewModel {
     }
 
 
+    public void getTrip(String tripId) {
+        tripLiveData = itineraryRepository.getTrip(tripId);
+    }
+
+    public void updateTrip(Trip trip) {
+        updatedTripLiveData = itineraryRepository.updateTrip(trip);
+    }
 }
