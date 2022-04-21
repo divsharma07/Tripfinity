@@ -39,7 +39,7 @@ public class InviteFragment extends Fragment {
     private final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     EditText text;
     String tripId;
-    List<User> users;
+    ArrayList<User> users;
     private RecyclerView recyclerView;
     private InviteUsersAdapter adapter;
 
@@ -84,7 +84,7 @@ public class InviteFragment extends Fragment {
     }
 
     private void initInviteViewModel() {
-        inviteViewModel = new ViewModelProvider(this).get(InviteViewModel.class);
+        inviteViewModel = new ViewModelProvider(requireActivity()).get(InviteViewModel.class);
     }
 
     private void createRecyclerView() {
@@ -124,6 +124,7 @@ public class InviteFragment extends Fragment {
         else {
             users.add(user);
             adapter.notifyItemInserted(users.size() - 1);
+            inviteViewModel.addUser(users);
         }
     }
 

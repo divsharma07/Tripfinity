@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData;
 
 import com.app.tripfinity.model.Itinerary;
 import com.app.tripfinity.model.Trip;
+import com.app.tripfinity.model.User;
 import com.app.tripfinity.repository.ItineraryRepository;
 import com.app.tripfinity.repository.TripCreationRepository;
 import com.google.firebase.firestore.DocumentReference;
@@ -42,9 +43,9 @@ public class TripCreationViewModel extends AndroidViewModel {
 
     // create new trip for a user
     // add the created trip id to the users trip list
-    public void createNewTrip(String tripName, String startDate, String userId) throws ParseException {
-        Trip trip = tripCreationRepository.createATrip(tripName,startDate,userId);
-        createdTripLiveData = tripCreationRepository.addANewTrip(trip,userId);
+    public void createNewTrip(String tripName, String startDate, List<String> users) throws ParseException {
+        Trip trip = tripCreationRepository.createATrip(tripName,startDate,users);
+        createdTripLiveData = tripCreationRepository.addANewTrip(trip,users);
 
     }
 

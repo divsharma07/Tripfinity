@@ -1,16 +1,17 @@
 package com.app.tripfinity.utils;
 
 import android.util.Log;
+
+import com.app.tripfinity.model.User;
 import com.app.tripfinity.utils.Constants.*;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Map;
 
 public class HelperClass {
-
-
 
     public static void logErrorMessage(String errorMessage) {
         Log.d(Constants.FIREBASE_AUTH_TAG, errorMessage);

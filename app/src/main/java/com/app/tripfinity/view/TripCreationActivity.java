@@ -1,9 +1,14 @@
 package com.app.tripfinity.view;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,18 +21,27 @@ import android.widget.TextView;
 
 import com.app.tripfinity.R;
 import com.app.tripfinity.model.Trip;
+import com.app.tripfinity.model.User;
+import com.app.tripfinity.utils.Constants;
 import com.app.tripfinity.viewmodel.AuthViewModel;
 import com.app.tripfinity.viewmodel.TripCreationViewModel;
 
+import org.w3c.dom.Text;
+
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class TripCreationActivity extends AppCompatActivity {
     private static final String TAG = "TripCreationActivity";
     private String userId = "abc@gmail.com";
     TripCreationViewModel tripCreationViewModel;
     LiveData<Trip> newTrip;
+    ArrayList<User> invitedUsers;
 
     private void initTripCreationViewModel() {
         tripCreationViewModel = new ViewModelProvider(this).get(TripCreationViewModel.class);
@@ -44,11 +58,25 @@ public class TripCreationActivity extends AppCompatActivity {
         TextView startDate = findViewById(R.id.startDateButton);
         Button inviteUsers = findViewById(R.id.inviteUsers);
         Button createTrip = findViewById(R.id.createTrip);
+        invitedUsers = new ArrayList<>();
+
+        ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent intent = result.getData();
+                        // Handle the Intent
+                        if(intent != null) {
+                            Bundle bundle = intent.getBundleExtra("users");
+                            if(bundle.getSerializable("users") != null){
+                            invitedUsers = (ArrayList<User>) bundle.getSerializable("users");
+                            }
+                        }
+                    }
+                });
 
         inviteUsers.setOnClickListener(view -> {
             Intent intent = new Intent(view.getContext(), InviteActivity.class);
-            startActivity(intent);
-            finish();
+            mStartForResult.launch(intent);
         });
 
         startDate.setOnClickListener(new View.OnClickListener() {
@@ -84,8 +112,12 @@ public class TripCreationActivity extends AppCompatActivity {
                     try {
                         // create a trip
                         // add this trip id to the users collection
+
+                        List<String> userEmails = invitedUsers.stream().map(User::getEmail).collect(Collectors.toList());
+                        userEmails.add(0, userId);
+
                         tripCreationViewModel.createNewTrip(tripNameInput.getText().toString(),
-                                startDate.getText().toString(),userId);
+                                startDate.getText().toString(),userEmails);
 
                         tripCreationViewModel.getCreatedTripLiveData().observe(TripCreationActivity.this,trip -> {
                             Log.d(TAG,"Created Trip Id: "+trip.getTripId());
@@ -106,7 +138,16 @@ public class TripCreationActivity extends AppCompatActivity {
 
     }
 
-    private void goToItineraryViewActivity(String tripId,Date startDate,String tripName,String itineraryId) {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(invitedUsers != null && invitedUsers.size() != 0){
+            TextView userCount = findViewById(R.id.users_count);
+            userCount.setText(String.format("%d user(s) invited", invitedUsers.size()));
+        }
+    }
+
+    private void goToItineraryViewActivity(String tripId, Date startDate, String tripName, String itineraryId) {
         Intent intent = new Intent(TripCreationActivity.this, ItineraryViewActivity.class);
         intent.putExtra("tripId", tripId);
         intent.putExtra("tripName", tripName);

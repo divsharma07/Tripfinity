@@ -7,15 +7,11 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.app.tripfinity.model.Trip;
 
-import com.app.tripfinity.model.User;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -39,14 +35,16 @@ public class TripCreationRepository {
 //    public interface UserCallback {
 //        void onCallback(DocumentReference user);
 //    }
-    public Trip createATrip(String tripName, String startDate, String userId) throws ParseException {
+    public Trip createATrip(String tripName, String startDate, List<String> userIds) throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-M-dd", Locale.ENGLISH);
         Date startDateObj = formatter.parse(startDate);
         Date endDateObj = startDateObj;
         List<String> expenses = new ArrayList<>();
         List<DocumentReference> users = new ArrayList<>();
 
-        users.add(usersRef.document(userId));
+        for(String userId : userIds) {
+            users.add(usersRef.document(userId));
+        }
         DocumentReference itinerary = null;
         Log.d(TAG,"user retrieved "+users);
         Trip trip = new Trip(startDateObj,endDateObj,tripName,false,expenses,users,itinerary);
@@ -77,7 +75,7 @@ public class TripCreationRepository {
 //        });
 //    }
 
-    public MutableLiveData<Trip> addANewTrip(Trip trip, String userId) {
+    public MutableLiveData<Trip> addANewTrip(Trip trip, List<String> userIds) {
         MutableLiveData<Trip> newMutableTripLiveData = new MutableLiveData<>();
         trips.add(trip).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
@@ -85,7 +83,10 @@ public class TripCreationRepository {
                 Log.d(TAG, "DocumentSnapshot Trip with ID: " + documentReference.getId());
                 trip.setTripId(documentReference.getId());
                 newMutableTripLiveData.setValue(trip);
-                addUsersToTrip(documentReference,userId);
+                for(String userId : userIds){
+                    addUsersToTrip(documentReference,userId);
+                }
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -97,7 +98,7 @@ public class TripCreationRepository {
         return newMutableTripLiveData;
     }
 
-    public MutableLiveData<Boolean> addUsersToTrip(DocumentReference trip,String userId) {
+    public void addUsersToTrip(DocumentReference trip, String userId) {
         MutableLiveData<Boolean> isUpdated = new MutableLiveData<>();
         DocumentReference user = usersRef.document(userId);
         user.update("trips", FieldValue.arrayUnion(trip)).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -114,7 +115,6 @@ public class TripCreationRepository {
                 isUpdated.setValue(false);
             }
         });
-        return isUpdated;
     }
 
 }
