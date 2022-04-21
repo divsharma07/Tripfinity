@@ -77,6 +77,9 @@ public class InviteFragment extends Fragment {
         Button inviteButton = view.findViewById(R.id.addUser);
         text = view.findViewById(R.id.editTextInviteEmail);
         users = new ArrayList<>();
+        if(getArguments() != null && getArguments().getSerializable("users") != null){
+            users = (ArrayList<User>) getArguments().getSerializable("users");
+        }
         recyclerView = view.findViewById(R.id.inviteRecyclerView);
         createRecyclerView();
         inviteButton.setOnClickListener(view1 -> onInviteClicked());

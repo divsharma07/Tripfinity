@@ -76,6 +76,9 @@ public class TripCreationActivity extends AppCompatActivity {
 
         inviteUsers.setOnClickListener(view -> {
             Intent intent = new Intent(view.getContext(), InviteActivity.class);
+            if(invitedUsers.size() != 0){
+                intent.putExtra("users", invitedUsers);
+            }
             mStartForResult.launch(intent);
         });
 
