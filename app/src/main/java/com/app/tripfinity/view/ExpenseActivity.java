@@ -3,6 +3,7 @@ package com.app.tripfinity.view;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,7 +12,9 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -27,7 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ExpenseActivity extends AppCompatActivity {
+public class ExpenseActivity extends Fragment {
     private MainExpenseViewModel mainExpenseViewModel;
     private List<User> userList = new ArrayList<>();
     private List<Expense> expenseList = new ArrayList<>();
@@ -48,11 +51,15 @@ public class ExpenseActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private FirebaseAuth firebaseAuth;
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.activity_expense, container, false);
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_expense);
+    public void onStart() {
+        super.onStart();
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
@@ -61,35 +68,38 @@ public class ExpenseActivity extends AppCompatActivity {
         loggedInUser = firebaseUser.getEmail();
         loggedInName = firebaseUser.getDisplayName();
 
-        expenseUserName = (TextView) findViewById(R.id.expenseUserName);
-        expenseYouOwe = (TextView) findViewById(R.id.expenseYouOwe);
-        expenseYouAreOwed = (TextView) findViewById(R.id.expenseYouAreOwed);
-        expenseHistory = (Button) findViewById(R.id.expenseHistory);
-        expenseAdd = (Button) findViewById(R.id.expenseAdd);
+        expenseUserName = (TextView) getView().findViewById(R.id.expenseUserName);
+        expenseYouOwe = (TextView) getView().findViewById(R.id.expenseYouOwe);
+        expenseYouAreOwed = (TextView) getView().findViewById(R.id.expenseYouAreOwed);
+        expenseHistory = (Button) getView().findViewById(R.id.expenseHistory);
+        expenseAdd = (Button) getView().findViewById(R.id.expenseAdd);
 
         initMainExpenseViewModel();
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
 
-        userList = new ArrayList<>();
-        expenseList = new ArrayList<>();
-        userAmountMap = new HashMap<>();
-        userEmailToName = new HashMap<>();
-        dataToPopulate = new ArrayList<>();
-        youOwe = 0;
-        youAreOwed = 0;
+
 
         expenseUserName.setText("Hello " + loggedInName + ",");
 
-        mainExpenseViewModel.getUserDataForTrip(tripId).observe(ExpenseActivity.this, list -> {
+        mainExpenseViewModel.getUserDataForTrip(tripId).observe(getActivity(), list -> {
             Log.d("user list size in view ", String.valueOf(list.size()));
+            userList = new ArrayList<>();
             userList = list;
 
-            mainExpenseViewModel.getExpensesForTrip(tripId).observe(ExpenseActivity.this, expList -> {
+            mainExpenseViewModel.getExpensesForTrip(tripId).observe(getActivity(), expList -> {
+                Log.d("user expense call ", String.valueOf(expList.size()));
+                expenseList = new ArrayList<>();
                 expenseList = expList;
+
+                userAmountMap = new HashMap<>();
+                userEmailToName = new HashMap<>();
+                dataToPopulate = new ArrayList<>();
+                youOwe = 0;
+                youAreOwed = 0;
 
                 for (User user : userList) {
                     userEmailToName.put(user.getEmail(), user.getName());
@@ -143,12 +153,13 @@ public class ExpenseActivity extends AppCompatActivity {
                     }
                 }
 
+                Log.d("user ", dataToPopulate.toString());
                 createExpenseRecyclerView(dataToPopulate);
 
                 expenseAdd.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent myIntent = new Intent(ExpenseActivity.this, AddExpenseActivity.class);
+                        Intent myIntent = new Intent(getActivity(), AddExpenseActivity.class);
                         myIntent.putExtra("tripId", tripId);
                         myIntent.putExtra("userEmailToName", userEmailToName);
                         myIntent.putExtra("loggedInUser", loggedInUser);
@@ -159,7 +170,7 @@ public class ExpenseActivity extends AppCompatActivity {
                 expenseHistory.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent myIntent = new Intent(ExpenseActivity.this, HistoryExpenseActivity.class);
+                        Intent myIntent = new Intent(getActivity(), HistoryExpenseActivity.class);
                         myIntent.putExtra("tripId", tripId);
                         myIntent.putExtra("userEmailToName", userEmailToName);
                         startActivity(myIntent);
@@ -172,8 +183,8 @@ public class ExpenseActivity extends AppCompatActivity {
     }
 
     private void createExpenseRecyclerView(ArrayList<String> dataToPopulate) {
-        layoutManager = new LinearLayoutManager(this);
-        RecyclerView expenseRecyclerView = findViewById(R.id.expenseRecyclerView);
+        layoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView expenseRecyclerView = getView().findViewById(R.id.expenseRecyclerView);
         expenseRecyclerView.setHasFixedSize(true);
 
         expenseAdapter = new ExpenseAdapter(dataToPopulate);
@@ -182,7 +193,7 @@ public class ExpenseActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
         userList = new ArrayList<>();
         expenseList = new ArrayList<>();
@@ -194,7 +205,7 @@ public class ExpenseActivity extends AppCompatActivity {
     }
 
     private void initMainExpenseViewModel() {
-        mainExpenseViewModel = new ViewModelProvider(this).get(MainExpenseViewModel.class);
+        mainExpenseViewModel = new ViewModelProvider(getActivity()).get(MainExpenseViewModel.class);
     }
 
 }

@@ -26,14 +26,20 @@ public class MainActivity extends AppCompatActivity {
         initGoogleSignInClient();
         Toast.makeText(this, "Logged in as user "+ user, Toast.LENGTH_LONG);
 
-        Button test = (Button) findViewById(R.id.test);
-        test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent myIntent = new Intent(MainActivity.this, ExpenseActivity.class);
-                startActivity(myIntent);
-            }
-        });
+//        Button test = (Button) findViewById(R.id.test);
+//        test.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent myIntent = new Intent(MainActivity.this, ExpenseActivity.class);
+//                startActivity(myIntent);
+//            }
+//        });
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.expenseFragment, ExpenseActivity.class, null)
+                    .commit();
+        }
     }
 
 
