@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.app.tripfinity.R;
 import com.app.tripfinity.repository.AuthRepository;
 import com.app.tripfinity.model.User;
+import com.app.tripfinity.utils.Constants;
 import com.app.tripfinity.viewmodel.AuthViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -28,11 +29,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class AuthActivity extends AppCompatActivity {
 
     private GoogleSignInClient googleSignInClient;
-    private final static int RC_SIGN_IN = 123;
-    private final static String USER = "USER";
     private AuthViewModel authViewModel;
-    private FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
-    private CollectionReference usersRef = rootRef.collection(AuthRepository.USER_COLLECTION);
 
 
     @Override
@@ -40,8 +37,6 @@ public class AuthActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.d("AuthActivity ","AuthActivity launched!!!");
         setContentView(R.layout.activity_login);
-
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         initSignInButton();
         initAuthViewModel();
         initGoogleSignInClient();
@@ -61,7 +56,7 @@ public class AuthActivity extends AppCompatActivity {
     private void initGoogleSignInClient() {
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions
                 .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestIdToken(getString(R.string.web_client_id))
+                .requestIdToken(getString(R.string.web_client_id))
                 .requestEmail()
                 .build();
 
@@ -70,13 +65,12 @@ public class AuthActivity extends AppCompatActivity {
 
     private void signIn() {
         Intent signInIntent = googleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-
+        startActivityForResult(signInIntent, Constants.RC_SIGN_IN);
     }
 
     private void goToMainActivity(User user) {
         Intent intent = new Intent(AuthActivity.this, MainActivity.class);
-        intent.putExtra(USER, user);
+        intent.putExtra(Constants.USER, user);
         startActivity(intent);
         finish();
     }
@@ -85,7 +79,7 @@ public class AuthActivity extends AppCompatActivity {
     private void signInWithGoogleAuthCredential(AuthCredential googleAuthCredential) {
         authViewModel.signInWithGoogle(googleAuthCredential);
         authViewModel.getAuthenticatedUserLiveData().observe(this, authenticatedUser -> {
-            if (authenticatedUser.isUserNew()) {
+            if (!authenticatedUser.isRegistered()) {
                 createNewUser(authenticatedUser);
             } else {
                 goToMainActivity(authenticatedUser);
@@ -95,12 +89,7 @@ public class AuthActivity extends AppCompatActivity {
 
     private void createNewUser(User authenticatedUser) {
         authViewModel.createUser(authenticatedUser);
-        authViewModel.getCreatedUserLiveData().observe(this, user -> {
-            if (user.isUserCreated()) {
-                //toastMessage(user.name);
-            }
-            goToMainActivity(user);
-        });
+        authViewModel.getCreatedUserLiveData().observe(this, this::goToMainActivity);
     }
 
     private void getGoogleAuthCredential(GoogleSignInAccount googleSignInAccount) {
@@ -112,7 +101,7 @@ public class AuthActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == Constants.RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount googleSignInAccount = task.getResult(ApiException.class);

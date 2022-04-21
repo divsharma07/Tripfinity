@@ -22,7 +22,7 @@ public class SplashViewModel extends AndroidViewModel {
         isUserAuthenticatedLiveData = splashRepository.checkIfUserIsAuthenticatedInFirebase();
     }
 
-    public void setUid(String userEmail) {
+    public void setUserEmail(String userEmail) {
         userLiveData = splashRepository.addUserToLiveData(userEmail);
     }
 

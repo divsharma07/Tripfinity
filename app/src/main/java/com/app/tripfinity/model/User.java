@@ -11,6 +11,15 @@ public class User implements Serializable {
     private String uid;
     private String name;
     private String email;
+    private GeoPoint geoPoint;
+    private String city;
+    private String topic;
+    private String state;
+    private String country;
+    private String fcmToken;
+    private boolean isRegistered;
+    @Exclude
+    public boolean isAuthenticated;
     private GeoPoint cityGeoPoint;
     private String city;
     private String topic;
@@ -19,8 +28,11 @@ public class User implements Serializable {
     public boolean isAuthenticated;
     private List<DocumentReference> trips;
 
-    public User() {}
+    public User() {
+    }
 
+    public boolean isRegistered() {
+        return isRegistered;
     public List<DocumentReference> getTrips() {
         return trips;
     }
@@ -63,8 +75,28 @@ public class User implements Serializable {
         this.uid = uid;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
     public void setIsUserNew(boolean isNewUser) {
-        
+
     }
 
     public void setIsCreated(boolean b) {

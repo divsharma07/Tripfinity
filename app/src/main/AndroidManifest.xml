@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.app.tripfinity">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -9,13 +12,48 @@
         android:roundIcon="@mipmap/tripfinity_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Tripfinity">
+        <meta-data
+            android:name="firebase_messaging_auto_init_enabled"
+            android:value="false" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/logo" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
         <activity
+            android:name=".view.InviteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.SplashScreenActivity"
+            android:exported="true"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <service
+            android:name=".service.NotificationService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
             android:name=".view.Tripfinity"
             android:exported="false" />
         <activity
+            android:name=".view.MainActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.Tripfinity" />
             android:name=".view.AddPlaceActivity"
             android:exported="false" />
         <activity
+            android:name=".view.AuthActivity"
+            android:exported="true"
+            android:theme="@style/SplashTheme"
             android:name=".view.TripCreationActivity"
             android:exported="false" /> <!-- <activity -->
         <!-- android:name=".view.SplashScreenActivity" -->
