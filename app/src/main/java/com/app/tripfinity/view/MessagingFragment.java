@@ -33,6 +33,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,9 +96,14 @@ public class MessagingFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         messageSendButton = (Button) getView().findViewById(R.id.button_gchat_send);
         initializeTripId();
+        subscribeForNotifications();
         addMessageListener();
         initializeSendButtonListener();
         initializeRecyclerView();
+    }
+
+    private void subscribeForNotifications() {
+        FirebaseMessaging.getInstance().subscribeToTopic(tripId);
     }
 
     private void initializeTripId() {
