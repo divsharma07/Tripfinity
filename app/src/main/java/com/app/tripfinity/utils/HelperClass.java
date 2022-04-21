@@ -64,7 +64,6 @@ public class HelperClass {
 
         Glide.with(context)
                 .asBitmap()
-                .override(120, 120)
                 .apply(myOptions)
                 .load(url)
                 .placeholder(placeholderResId)

@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
     private void getLocation() {
         // borrowed from https://stackoverflow.com/a/50448772/4399248
         LocationRequest mLocationRequest = LocationRequest.create();
-        mLocationRequest.setInterval(60000);
+        mLocationRequest.setInterval(86400000);
         mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         LocationCallback mLocationCallback = new LocationCallback() {
