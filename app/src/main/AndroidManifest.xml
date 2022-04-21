@@ -10,10 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Tripfinity">
         <activity
-            android:name=".view.AddPlaceActivity"
+            android:name=".view.Tripfinity"
             android:exported="false" />
         <activity
-            android:name=".view.ItineraryViewActivity"
+            android:name=".view.AddPlaceActivity"
             android:exported="false" />
         <activity
             android:name=".view.TripCreationActivity"

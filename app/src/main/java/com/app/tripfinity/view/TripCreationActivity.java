@@ -217,7 +217,9 @@ public class TripCreationActivity extends AppCompatActivity {
     }
 
     private void goToItineraryViewActivity(String tripId,Date startDate,String tripName,String itineraryId) {
-        Intent intent = new Intent(TripCreationActivity.this, ItineraryViewActivity.class);
+        Intent intent = new Intent(TripCreationActivity.this, Tripfinity.class);
+        // changed from ItineraryViewActivity to Tripfnity
+
         intent.putExtra("tripId", tripId);
         intent.putExtra("tripName", tripName);
         intent.putExtra("startDate", startDate);

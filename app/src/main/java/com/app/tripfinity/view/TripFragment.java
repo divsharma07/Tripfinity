@@ -126,7 +126,9 @@ public class TripFragment extends Fragment {
                 Log.d("TripFragment", "TripStartDate -> " + trip.getStartDate());
                 Log.d("TripFragment", "Trip Itinerary Id -> " + trip.getItinerary().getId());
 
-                Intent intent = new Intent(getActivity(), ItineraryViewActivity.class);
+                Intent intent = new Intent(getActivity(), Tripfinity.class);
+                //changed from ItineraryViewActivity to Tripfinity
+
                 intent.putExtra("tripId", id);
                 intent.putExtra("tripName", trip.getTripName());
                 intent.putExtra("startDate", trip.getStartDate());

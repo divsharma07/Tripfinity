@@ -3,6 +3,7 @@ package com.app.tripfinity.view;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,7 +37,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItineraryViewActivity extends AppCompatActivity {
+public class ItineraryViewActivity extends Fragment {
     private static final String TAG = "ItineraryViewActivity";
     private ItineraryViewModel itineraryViewModel;
     private String tripId;
@@ -47,21 +48,32 @@ public class ItineraryViewActivity extends AppCompatActivity {
     private List<ItineraryDay> days;
     private ImageView editTrip;
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.activity_itinerary_view, container, false);
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onStart() {
+        super.onStart();
         Log.d(TAG,"On create Called");
-        setContentView(R.layout.activity_itinerary_view);
         initItineraryViewModel();
-        Intent intent = getIntent();
-        itineraryId = intent.getStringExtra("itineraryId");
+        String tripNameString="";
+        if (getArguments() != null) {
+            tripId = getArguments().getString("tripId");
+            tripNameString = getArguments().getString("tripName");
+            itineraryId = getArguments().getString("itineraryId");
+
+        }
+
+
+
         Log.d(TAG, "Id ->" + itineraryId);
-        tripId = intent.getStringExtra("tripId");
-        TextView tripName = findViewById(R.id.tripNameTextView);
-        tripName.setText(intent.getStringExtra("tripName"));
-        FloatingActionButton addDaysButton = findViewById(R.id.floatingActionButton);
-        editTrip = findViewById(R.id.editTrip);
+        TextView tripName = getView().findViewById(R.id.tripNameTextView);
+        tripName.setText(tripNameString);
+        FloatingActionButton addDaysButton = getView().findViewById(R.id.floatingActionButton);
+        editTrip = getView().findViewById(R.id.editTrip);
 
         addDaysButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +94,7 @@ public class ItineraryViewActivity extends AppCompatActivity {
         editTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ItineraryViewActivity.this, TripCreationActivity.class);
+                Intent intent = new Intent(getActivity(), TripCreationActivity.class);
                 intent.putExtra("displayButtonType", "editTrip");
                 intent.putExtra("tripId", tripId);
                 startActivity(intent);
@@ -130,7 +142,7 @@ public class ItineraryViewActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         createRecyclerView();
     }
@@ -138,11 +150,11 @@ public class ItineraryViewActivity extends AppCompatActivity {
     private void createRecyclerView() {
         Log.d(TAG,"Creating recycler view for Itinerary: "+itineraryId);
         days = new ArrayList<>();
-        dataLayoutManager = new LinearLayoutManager(this);
-        recyclerView = findViewById(R.id.days);
+        dataLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView = getView().findViewById(R.id.days);
         //recyclerView.setHasFixedSize(true);
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        adapter = new ItineraryDaysAdapter(days,itineraryId,this);
+        adapter = new ItineraryDaysAdapter(days,itineraryId,getActivity());
         recyclerView.setLayoutManager(dataLayoutManager);
         recyclerView.setAdapter(adapter);
         Log.d(TAG, "ItineraryId ->" + itineraryId);
@@ -165,7 +177,7 @@ public class ItineraryViewActivity extends AppCompatActivity {
 
 
     private void initItineraryViewModel() {
-        itineraryViewModel = new ViewModelProvider(this).get(ItineraryViewModel.class);
+        itineraryViewModel = new ViewModelProvider(getActivity()).get(ItineraryViewModel.class);
     }
 
 
