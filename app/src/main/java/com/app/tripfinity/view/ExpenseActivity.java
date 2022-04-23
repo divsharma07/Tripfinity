@@ -38,7 +38,8 @@ public class ExpenseActivity extends Fragment {
     private ArrayList<String> dataToPopulate = new ArrayList<>();
     private double youOwe = 0;
     private double youAreOwed = 0;
-    private String tripId = "77nrAgVzOA8xdm2wxPGa";
+//    private String tripId = "77nrAgVzOA8xdm2wxPGa";
+    private String tripId;
     private String loggedInUser;
     private String loggedInName;
     private TextView expenseUserName;
@@ -72,6 +73,10 @@ public class ExpenseActivity extends Fragment {
         expenseYouAreOwed = (TextView) getView().findViewById(R.id.expenseYouAreOwed);
         expenseHistory = (Button) getView().findViewById(R.id.expenseHistory);
         expenseAdd = (Button) getView().findViewById(R.id.expenseAdd);
+
+        if (getArguments() != null) {
+            tripId = getArguments().getString("tripId");
+        }
 
         initMainExpenseViewModel();
     }
