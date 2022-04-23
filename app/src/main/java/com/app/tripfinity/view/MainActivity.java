@@ -15,9 +15,13 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -109,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         startActivity(intent);
         finish();
     }
+
     private void initializeMainActivityViewModel() {
         mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
     }
@@ -198,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
     private void getLocation() {
         // borrowed from https://stackoverflow.com/a/50448772/4399248
         LocationRequest mLocationRequest = LocationRequest.create();
-        mLocationRequest.setInterval(60000);
+        mLocationRequest.setInterval(86400000);
         mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         LocationCallback mLocationCallback = new LocationCallback() {
