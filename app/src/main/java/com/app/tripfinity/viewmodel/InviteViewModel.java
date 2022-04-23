@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.app.tripfinity.model.User;
+import com.app.tripfinity.model.UserBio;
 import com.app.tripfinity.repository.InviteRepository;
 
 import java.util.ArrayList;

@@ -19,6 +19,7 @@ import com.app.tripfinity.R;
 import com.app.tripfinity.adapters.InviteUsersAdapter;
 import com.app.tripfinity.listeners.RemoveInviteClickListener;
 import com.app.tripfinity.model.User;
+import com.app.tripfinity.model.UserBio;
 import com.app.tripfinity.viewmodel.AuthViewModel;
 import com.app.tripfinity.viewmodel.InviteViewModel;
 import com.google.firebase.auth.FirebaseAuth;
@@ -78,7 +79,9 @@ public class InviteFragment extends Fragment {
         text = view.findViewById(R.id.editTextInviteEmail);
         users = new ArrayList<>();
         if(getArguments() != null && getArguments().getSerializable("users") != null){
-            users = (ArrayList<User>) getArguments().getSerializable("users");
+            for(UserBio user : (ArrayList<User>) getArguments().getSerializable("users")){
+                users.add(new User(user.getUid(), user.getName(), user.getEmail()));
+            }
         }
         recyclerView = view.findViewById(R.id.inviteRecyclerView);
         createRecyclerView();

@@ -8,9 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import com.app.tripfinity.R;
 import com.app.tripfinity.model.User;
+import com.app.tripfinity.model.UserBio;
 import com.app.tripfinity.viewmodel.InviteViewModel;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class InviteActivity extends AppCompatActivity {
 
@@ -45,7 +47,12 @@ public class InviteActivity extends AppCompatActivity {
     private void onNextClicked(View view){
         Intent data = new Intent();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("users",  inviteViewModel.getUsers().getValue());
+        ArrayList<UserBio> users = new ArrayList<>();
+        for (User user: Objects.requireNonNull(inviteViewModel.getUsers().getValue())
+             ) {
+            users.add(new UserBio(user.getUid(), user.getName(), user.getEmail()));
+        }
+        bundle.putSerializable("users",  users);
         data.putExtra("users", bundle);
         setResult(RESULT_OK, data);
         finish();

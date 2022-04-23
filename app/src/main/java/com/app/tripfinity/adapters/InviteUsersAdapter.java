@@ -10,8 +10,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.app.tripfinity.R;
 import com.app.tripfinity.listeners.RemoveInviteClickListener;
 import com.app.tripfinity.model.User;
+import com.app.tripfinity.model.UserBio;
 import com.app.tripfinity.viewholders.InviteUserViewHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class InviteUsersAdapter extends RecyclerView.Adapter<InviteUserViewHolder> {
@@ -19,7 +21,7 @@ public class InviteUsersAdapter extends RecyclerView.Adapter<InviteUserViewHolde
     List<User> users;
     RemoveInviteClickListener listener;
 
-    public InviteUsersAdapter(List<User> users, RemoveInviteClickListener listener){
+    public InviteUsersAdapter(ArrayList<User> users, RemoveInviteClickListener listener){
         this.users = users;
         this.listener = listener;
     }

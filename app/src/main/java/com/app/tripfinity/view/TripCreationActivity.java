@@ -24,6 +24,7 @@ import com.app.tripfinity.R;
 import com.app.tripfinity.model.Trip;
 import com.app.tripfinity.model.User;
 import com.app.tripfinity.model.User;
+import com.app.tripfinity.model.UserBio;
 import com.app.tripfinity.utils.Constants;
 import com.app.tripfinity.viewmodel.AuthViewModel;
 import com.app.tripfinity.viewmodel.TripCreationViewModel;
@@ -61,7 +62,7 @@ public class TripCreationActivity extends AppCompatActivity {
     private String tripId;
     private TextView destination;
     private static final int AUTOCOMPLETE_REQUEST_CODE = 1;
-    ArrayList<User> invitedUsers;
+    ArrayList<UserBio> invitedUsers;
 
     private void initTripCreationViewModel() {
         tripCreationViewModel = new ViewModelProvider(this).get(TripCreationViewModel.class);
@@ -105,7 +106,7 @@ public class TripCreationActivity extends AppCompatActivity {
                         if(resultIntent != null) {
                             Bundle bundle = resultIntent.getBundleExtra("users");
                             if(bundle.getSerializable("users") != null){
-                            invitedUsers = (ArrayList<User>) bundle.getSerializable("users");
+                            invitedUsers = (ArrayList<UserBio>) bundle.getSerializable("users");
                             }
                         }
                     }
@@ -175,7 +176,7 @@ public class TripCreationActivity extends AppCompatActivity {
                         // create a trip
                         // add this trip id to the users collection
 
-                        List<String> userEmails = invitedUsers.stream().map(User::getEmail).collect(Collectors.toList());
+                        List<String> userEmails = invitedUsers.stream().map(UserBio::getEmail).collect(Collectors.toList());
                         userEmails.add(0, userId);
 
                         tripCreationViewModel.createNewTrip(tripNameInput.getText().toString(),
