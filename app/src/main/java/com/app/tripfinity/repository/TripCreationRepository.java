@@ -35,11 +35,11 @@ public class TripCreationRepository {
 //    public interface UserCallback {
 //        void onCallback(DocumentReference user);
 //    }
-    public Trip createATrip(String tripName, String startDate, List<String> userIds) throws ParseException {
+    public Trip createATrip(String tripName, String startDate, List<String> userIds, String destination) throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-M-dd", Locale.ENGLISH);
         Date startDateObj = formatter.parse(startDate);
         Date endDateObj = startDateObj;
-        List<String> expenses = new ArrayList<>();
+        List<DocumentReference> expenses = new ArrayList<>();
         List<DocumentReference> users = new ArrayList<>();
 
         for(String userId : userIds) {
@@ -47,7 +47,7 @@ public class TripCreationRepository {
         }
         DocumentReference itinerary = null;
         Log.d(TAG,"user retrieved "+users);
-        Trip trip = new Trip(startDateObj,endDateObj,tripName,false,expenses,users,itinerary);
+        Trip trip = new Trip(startDateObj,endDateObj,tripName,false, expenses, users,itinerary,destination);
 
         return trip;
     }
@@ -77,11 +77,10 @@ public class TripCreationRepository {
 
     public MutableLiveData<Trip> addANewTrip(Trip trip, List<String> userIds) {
         MutableLiveData<Trip> newMutableTripLiveData = new MutableLiveData<>();
-        trips.add(trip).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        trips.document(trip.getTripId()).set(trip).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Log.d(TAG, "DocumentSnapshot Trip with ID: " + documentReference.getId());
-                trip.setTripId(documentReference.getId());
+            public void onSuccess(Void unused) {
+                Log.d(TAG, "DocumentSnapshot Trip with ID: " + trip.getTripId());
                 newMutableTripLiveData.setValue(trip);
                 for(String userId : userIds){
                     addUsersToTrip(documentReference,userId);
@@ -92,6 +91,7 @@ public class TripCreationRepository {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.d(TAG, "Error adding document", e);
+                addUsersToTrip(trips.document(trip.getTripId()),userId);
             }
         });
 

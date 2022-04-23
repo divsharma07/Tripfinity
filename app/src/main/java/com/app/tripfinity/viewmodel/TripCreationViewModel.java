@@ -27,6 +27,18 @@ public class TripCreationViewModel extends AndroidViewModel {
     ItineraryRepository itineraryRepository;
     LiveData<Trip> createdTripLiveData;
     LiveData<Itinerary> createdItineraryLiveData;
+
+    public LiveData<Trip> getUpdatedTripLiveData() {
+        return updatedTripLiveData;
+    }
+
+    LiveData<Trip> updatedTripLiveData;
+
+    public LiveData<Trip> getTripLiveData() {
+        return tripLiveData;
+    }
+
+    LiveData<Trip> tripLiveData;
     public TripCreationViewModel(@NonNull Application application) {
         super(application);
         tripCreationRepository = new TripCreationRepository();
@@ -46,6 +58,10 @@ public class TripCreationViewModel extends AndroidViewModel {
     public void createNewTrip(String tripName, String startDate, List<String> users) throws ParseException {
         Trip trip = tripCreationRepository.createATrip(tripName,startDate,users);
         createdTripLiveData = tripCreationRepository.addANewTrip(trip,users);
+    public void createNewTrip(String tripName, String startDate, String userId, String destination)
+            throws ParseException {
+        Trip trip = tripCreationRepository.createATrip(tripName,startDate,userId,destination);
+        createdTripLiveData = tripCreationRepository.addANewTrip(trip,userId);
 
     }
 
@@ -55,4 +71,11 @@ public class TripCreationViewModel extends AndroidViewModel {
     }
 
 
+    public void getTrip(String tripId) {
+        tripLiveData = itineraryRepository.getTrip(tripId);
+    }
+
+    public void updateTrip(Trip trip) {
+        updatedTripLiveData = itineraryRepository.updateTrip(trip);
+    }
 }

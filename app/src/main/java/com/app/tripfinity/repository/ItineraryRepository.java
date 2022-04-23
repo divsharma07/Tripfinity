@@ -1,8 +1,11 @@
 package com.app.tripfinity.repository;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.app.tripfinity.model.Itinerary;
@@ -17,8 +20,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -39,11 +45,14 @@ public class ItineraryRepository {
     private CollectionReference trips = rootRef.collection(TRIP_COLLECTION);
     private CollectionReference itineraryRef = rootRef.collection(ITINERARY_COLLECTION);
     MutableLiveData<Itinerary> newMutableLiveData;
+
     private static ItineraryRepository itineraryRepository;
     private ItineraryRepository() {
         newMutableLiveData = new MutableLiveData<>();
+        placesMutableLiveData = new MutableLiveData<>();
     }
 
+    MutableLiveData<Itinerary> placesMutableLiveData;
     public static ItineraryRepository getInstance() {
         if(itineraryRepository == null) {
             itineraryRepository = new ItineraryRepository();
@@ -53,6 +62,7 @@ public class ItineraryRepository {
 
     public MutableLiveData<Itinerary> updateItinerary(String tripId) {
 
+        Log.d(TAG, "tripId ->" + tripId);
         DocumentReference tripRef = trips.document(tripId);
         Query query = itineraryRef.whereEqualTo("trip", tripRef);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -63,10 +73,7 @@ public class ItineraryRepository {
                     if (documents.isEmpty()) {
                         Log.d(TAG, "No Itinerary with the given trip found");
 
-                        List<ItineraryDay> itineraryDayList = new ArrayList<>();
-                        ItineraryDay day = new ItineraryDay();
-                        itineraryDayList.add(day);
-                        Itinerary itinerary = new Itinerary(itineraryDayList,tripRef);
+                        Itinerary itinerary = new Itinerary(new ArrayList<>(),tripRef);
 
                         // save the newly created itinerary.
                         itineraryRef.document(itinerary.getId()).set(itinerary)
@@ -75,6 +82,13 @@ public class ItineraryRepository {
                             public void onSuccess(Void unused) {
                                 Log.d(TAG, "DocumentSnapshot written with ID: " + itinerary.getId());
                                 newMutableLiveData.setValue(itinerary);
+
+                                DocumentReference newItineraryRef = itineraryRef.document(itinerary.getId());
+
+                                // update trip with the new itinerary Id
+                                tripRef.update("itinerary",newItineraryRef);
+
+
                             }
                         })
                        .addOnFailureListener(new OnFailureListener() {
@@ -83,9 +97,13 @@ public class ItineraryRepository {
                                 Log.d(TAG, "Error adding document", e);
                             }
                         });
+
                     } else {
                         // update the document
                         String itineraryId = documents.get(0).getId();
+                        for (DocumentSnapshot i : documents){
+                            Log.d(TAG, "Doc Id -> " + i.getId());
+                        }
                         Log.d(TAG,"Updating itinerary Id "+itineraryId);
                         ItineraryDay newDay = new ItineraryDay();
                         itineraryRef.document(itineraryId).update("days", FieldValue.arrayUnion(newDay))
@@ -111,4 +129,80 @@ public class ItineraryRepository {
         });
         return newMutableLiveData;
     }
+
+    public MutableLiveData<Itinerary> addPlace(String itineraryId, String dayId,
+                                               String placeName, String notes, String startTime) {
+        Log.d(TAG, "Updating Itinerary with id: "+itineraryId);
+        Log.d(TAG, "Updating Day with id: "+dayId);
+        itineraryRef.document(itineraryId).get().
+                addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                Itinerary itinerary = task.getResult().toObject(Itinerary.class);
+                Place newPlace = new Place(placeName,notes,startTime);
+                for (ItineraryDay day: itinerary.getDays()) {
+                    if (day.getId().equals(dayId)) {
+                        day.getPlaces().add(newPlace);
+                    }
+                }
+
+                itineraryRef.document(itineraryId).set(itinerary)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d(TAG, "Places Updated !!!");
+                        placesMutableLiveData.setValue(itinerary);
+                    }
+                });
+
+            }
+        });
+        return placesMutableLiveData;
+    }
+
+    public void removePlace(String itineraryId, String dayId,int position) {
+        itineraryRef.document(itineraryId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                Itinerary itinerary = task.getResult().toObject(Itinerary.class);
+                for(ItineraryDay day: itinerary.getDays()) {
+                    if (day.getId().equals(dayId)) {
+                        day.getPlaces().remove(position);
+                        break;
+                    }
+                }
+                itineraryRef.document(itineraryId).set(itinerary).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d(TAG,"Place at position "+position+" removed");
+
+                    }
+                });
+            }
+        });
+    }
+
+    public MutableLiveData<Trip> getTrip(String tripId) {
+        MutableLiveData<Trip> tripMutableLiveData = new MutableLiveData<>();
+        trips.document(tripId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                tripMutableLiveData.setValue(task.getResult().toObject(Trip.class));
+            }
+        });
+        return tripMutableLiveData;
+    }
+
+    public MutableLiveData<Trip> updateTrip(Trip trip) {
+        MutableLiveData<Trip> tripMutableLiveData = new MutableLiveData<>();
+        trips.document(trip.getTripId()).set(trip).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                tripMutableLiveData.setValue(trip);
+            }
+        });
+        return tripMutableLiveData;
+    }
+
+
 }

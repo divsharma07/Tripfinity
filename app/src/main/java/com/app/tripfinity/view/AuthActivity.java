@@ -46,6 +46,7 @@ public class AuthActivity extends AppCompatActivity {
     private void initSignInButton() {
         SignInButton googleSignInButton = findViewById(R.id.google_sign_in_button);
         googleSignInButton.setOnClickListener(v -> signIn());
+
     }
 
     private void initAuthViewModel() {

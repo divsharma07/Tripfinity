@@ -15,14 +15,13 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.view.MenuItem;
 import android.widget.Button;
-import android.view.View;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
 import com.app.tripfinity.R;
 import com.app.tripfinity.model.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -46,6 +45,9 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.security.PrivilegedAction;
 
 import com.app.tripfinity.R;
 import com.app.tripfinity.model.User;
@@ -57,7 +59,8 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
     private GoogleSignInClient googleSignInClient;
     private MainActivityViewModel mainActivityViewModel;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    private final static String USER = "USER";
+    private final static String USER = "user";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,24 +68,47 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         setContentView(R.layout.activity_main);
         initializeMainActivityViewModel();
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
         initGoogleSignInClient();
 
         if (!(ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
             requestLocationPermission();
         }
+        Toast.makeText(this, "Logged in as user "+ firebaseAuth.getCurrentUser().getDisplayName() , Toast.LENGTH_LONG);
 
-        Button testCreateTripButton = findViewById(R.id.createTripTest);
-        testCreateTripButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(),TripCreationActivity.class);
-                v.getContext().startActivity(intent);
-            }
-        });
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setOnNavigationItemSelectedListener(navListener);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TripFragment()).commit();
+
     }
 
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(MenuItem menuItem) {
+                    Fragment fragment = null;
 
+                    switch (menuItem.getItemId()) {
+                        case R.id.nav_trips:
+                            fragment = new TripFragment();
+                            break;
+                        case R.id.nav_feeds:
+                            fragment = new FeedFragment();
+                            break;
+                    }
+
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+                    return true;
+                }
+            };
+
+    public void goToInviteActivity(View view) {
+        Intent intent = new Intent(this, InviteActivity.class);
+        startActivity(intent);
+        finish();
+    }
     private void initializeMainActivityViewModel() {
         mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
     }
@@ -128,7 +154,6 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
     @Override
     protected void onStart() {
         super.onStart();
-        User user = getUserFromIntent();
         firebaseAuth.addAuthStateListener(this);
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {

@@ -1,9 +1,11 @@
 package com.app.tripfinity.model;
 
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.GeoPoint;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class User implements Serializable {
     private String uid;
@@ -18,8 +20,21 @@ public class User implements Serializable {
     private boolean isRegistered;
     @Exclude
     public boolean isAuthenticated;
+    private GeoPoint cityGeoPoint;
+    @Exclude
+    private List<DocumentReference> trips;
 
     public User() {
+    }
+
+
+
+    public List<DocumentReference> getTrips() {
+        return trips;
+    }
+
+    public void setTrips(List<DocumentReference> trips) {
+        this.trips = trips;
     }
 
     public boolean isRegistered() {
@@ -78,5 +93,27 @@ public class User implements Serializable {
 
     public String getFcmToken() {
         return fcmToken;
+    }
+
+    public void setIsUserNew(boolean isNewUser) {
+
+    }
+
+    public void setIsCreated(boolean b) {
+    }
+
+    public void setUserAuthenticationStatus(boolean b) {
+    }
+
+    public boolean isUserCreated() {
+        return true;
+    }
+
+    public boolean isUserNew() {
+        return true;
+    }
+
+    public boolean isUserAuthenticated() {
+        return true;
     }
 }
