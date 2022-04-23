@@ -33,4 +33,5 @@ public class SplashViewModel extends AndroidViewModel {
     public LiveData<User> getUserLiveData() {
         return userLiveData;
     }
+
 }

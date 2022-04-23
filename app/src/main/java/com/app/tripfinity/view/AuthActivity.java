@@ -3,6 +3,7 @@ package com.app.tripfinity.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -34,6 +35,7 @@ public class AuthActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("AuthActivity ","AuthActivity launched!!!");
         setContentView(R.layout.activity_login);
         initSignInButton();
         initAuthViewModel();
@@ -44,6 +46,7 @@ public class AuthActivity extends AppCompatActivity {
     private void initSignInButton() {
         SignInButton googleSignInButton = findViewById(R.id.google_sign_in_button);
         googleSignInButton.setOnClickListener(v -> signIn());
+
     }
 
     private void initAuthViewModel() {
