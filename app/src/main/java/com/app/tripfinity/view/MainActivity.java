@@ -15,8 +15,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 
-import android.content.Intent;
-import android.hardware.camera2.TotalCaptureResult;
 import android.os.Bundle;
 import android.view.View;
 import android.view.MenuItem;
@@ -61,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
     private GoogleSignInClient googleSignInClient;
     private MainActivityViewModel mainActivityViewModel;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    private final static String USER = "USER";
+    private final static String USER = "user";
 
 
     @Override
@@ -71,22 +69,18 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         initializeMainActivityViewModel();
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
-        User user = getUserFromIntent();
-
         initGoogleSignInClient();
 
         if (!(ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
             requestLocationPermission();
         }
-        Toast.makeText(this, "Logged in as user "+ user, Toast.LENGTH_LONG);
+        Toast.makeText(this, "Logged in as user "+ firebaseAuth.getCurrentUser().getDisplayName() , Toast.LENGTH_LONG);
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TripFragment()).commit();
-
-        //Toast.makeText(this, user.getEmail(), Toast.LENGTH_SHORT).show();
 
     }
 
@@ -160,7 +154,6 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
     @Override
     protected void onStart() {
         super.onStart();
-        User user = getUserFromIntent();
         firebaseAuth.addAuthStateListener(this);
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {

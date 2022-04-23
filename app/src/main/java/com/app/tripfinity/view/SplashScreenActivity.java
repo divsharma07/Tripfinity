@@ -10,7 +10,9 @@ import com.app.tripfinity.model.User;
 import com.app.tripfinity.utils.Constants;
 import com.app.tripfinity.viewmodel.SplashViewModel;
 
-public class SplashScreenActivity extends AppCompatActivity {
+import java.io.Serializable;
+
+public class SplashScreenActivity extends AppCompatActivity implements Serializable {
     SplashViewModel splashViewModel;
 
     @Override
@@ -52,7 +54,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     private void goToMainActivity(User user) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra(Constants.USER, user);
+        //intent.putExtra(Constants.USER, user);
         startActivity(intent);
     }
 }

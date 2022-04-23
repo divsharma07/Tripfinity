@@ -21,18 +21,14 @@ public class User implements Serializable {
     @Exclude
     public boolean isAuthenticated;
     private GeoPoint cityGeoPoint;
-    private String city;
-    private String topic;
-    private boolean isRegistered;
     @Exclude
-    public boolean isAuthenticated;
     private List<DocumentReference> trips;
 
     public User() {
     }
 
-    public boolean isRegistered() {
-        return isRegistered;
+
+
     public List<DocumentReference> getTrips() {
         return trips;
     }

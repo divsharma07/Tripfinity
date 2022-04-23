@@ -42,37 +42,24 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+        <activity
             android:name=".view.Tripfinity"
             android:exported="false" />
         <activity
             android:name=".view.MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/Theme.Tripfinity" />
+        <activity
             android:name=".view.AddPlaceActivity"
             android:exported="false" />
         <activity
             android:name=".view.AuthActivity"
             android:exported="true"
             android:theme="@style/SplashTheme"
-            android:name=".view.TripCreationActivity"
-            android:exported="false" /> <!-- <activity -->
-        <!-- android:name=".view.SplashScreenActivity" -->
-        <!-- android:exported="true" -->
-        <!-- android:theme="@style/SplashTheme"> -->
-        <!-- &lt;!&ndash;            <intent-filter>&ndash;&gt; -->
-        <!-- &lt;!&ndash;                <action android:name="android.intent.action.MAIN" />&ndash;&gt; -->
-        <!-- &lt;!&ndash;                <category android:name="android.intent.category.LAUNCHER" />&ndash;&gt; -->
-        <!-- &lt;!&ndash;            </intent-filter>&ndash;&gt; -->
-        <!-- </activity> -->
+            />
         <activity
-            android:name=".view.MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:name=".view.TripCreationActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -103,44 +103,6 @@ public class ItineraryViewActivity extends Fragment {
 
     }
 
-
-//    private void createRecyclerView() {
-//        Log.d("ItineraryViewActivity","createRecyclerUserView called "+itineraryId);
-//        dataLayoutManager = new LinearLayoutManager(this);
-//        recyclerView = findViewById(R.id.days);
-//        recyclerView.setHasFixedSize(true);
-//        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-//        recyclerView.setLayoutManager(dataLayoutManager);
-//        Query query = firestore.collection("Itinerary").whereEqualTo(FieldPath.documentId(),itineraryId);
-//
-//
-//        options = new FirestoreRecyclerOptions.Builder<Itinerary>()
-//                .setQuery(query, Itinerary.class)
-//                .build();
-//
-//        adapter = new FirestoreRecyclerAdapter<Itinerary, ItineraryDaysViewHolder>(options) {
-//            @NonNull
-//            @Override
-//            public ItineraryDaysViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//                Log.d("ItineraryViewActivity","onCreateViewHolder!!!! ");
-//                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.day_layout,parent,false);
-//                return new ItineraryDaysViewHolder(view);
-//            }
-//
-//            @Override
-//            protected void onBindViewHolder(@NonNull ItineraryDaysViewHolder holder, int position, @NonNull Itinerary model) {
-//                holder.day.setText(model.getDays().get(position).getId());
-//                Log.d("ItineraryViewActivity","model ID "+model.getDays().get(position).getId());
-//            }
-//
-//        };
-//        recyclerView.setAdapter(adapter);
-//
-//
-//
-//    }
-
-
     @Override
     public void onResume() {
         super.onResume();

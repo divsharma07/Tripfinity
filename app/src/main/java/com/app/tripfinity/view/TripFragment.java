@@ -42,8 +42,6 @@ public class TripFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private FirebaseFirestore db;
-    private ArrayList<Trip> trips;
-    private TripAdapter tripAdapter;
     private ProgressBar progressBar;
     private FirestoreRecyclerAdapter adapter;
     private TextView emptyView;
@@ -112,32 +110,26 @@ public class TripFragment extends Fragment {
 
         recyclerView.setAdapter(adapter);
 
-        setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                Trip trip = documentSnapshot.toObject(Trip.class);
-                String id = documentSnapshot.getId();
-                Toast.makeText(getContext(), "Position = " + position + "   Id = " + id, Toast.LENGTH_SHORT).show();
+        setOnItemClickListener((documentSnapshot, position) -> {
+            Trip trip = documentSnapshot.toObject(Trip.class);
+            String id = documentSnapshot.getId();
 
-                //TODO: call the Ankit's itinerary activity from here.
+            Log.d("TripFragment", "TripName -> " + trip.getTripName());
+            Log.d("TripFragment", "TripId -> " + id);
+            Log.d("TripFragment", "TripStartDate -> " + trip.getStartDate());
+            Log.d("TripFragment", "Trip Itinerary Id -> " + trip.getItinerary().getId());
 
-                Log.d("TripFragment", "TripName -> " + trip.getTripName());
-                Log.d("TripFragment", "TripId -> " + id);
-                Log.d("TripFragment", "TripStartDate -> " + trip.getStartDate());
-                Log.d("TripFragment", "Trip Itinerary Id -> " + trip.getItinerary().getId());
+            Intent intent = new Intent(getActivity(), Tripfinity.class);
+            //changed from ItineraryViewActivity to Tripfinity
 
-                Intent intent = new Intent(getActivity(), Tripfinity.class);
-                //changed from ItineraryViewActivity to Tripfinity
+            intent.putExtra("tripId", id);
+            intent.putExtra("tripName", trip.getTripName());
+            intent.putExtra("startDate", trip.getStartDate());
+            intent.putExtra("itineraryId", trip.getItinerary().getId());
 
-                intent.putExtra("tripId", id);
-                intent.putExtra("tripName", trip.getTripName());
-                intent.putExtra("startDate", trip.getStartDate());
-                intent.putExtra("itineraryId", trip.getItinerary().getId());
+            Log.d("Inside Fragment",  "Itinerary -> " + trip.getItinerary().getId());
+            startActivity(intent);
 
-                Log.d("Inside Fragment",  "Itinerary -> " + trip.getItinerary().getId());
-                startActivity(intent);
-
-            }
         });
 
         addButtonClick();
@@ -156,14 +148,10 @@ public class TripFragment extends Fragment {
             start_date = itemView.findViewById(R.id.start_date);
 
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View view) {
-                    int position = getAbsoluteAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION && listener != null) {
-                        listener.onItemClick((DocumentSnapshot) adapter.getSnapshots().getSnapshot(position), position);
-                    }
+            itemView.setOnClickListener(view -> {
+                int position = getAbsoluteAdapterPosition();
+                if (position != RecyclerView.NO_POSITION && listener != null) {
+                    listener.onItemClick((DocumentSnapshot) adapter.getSnapshots().getSnapshot(position), position);
                 }
             });
 
@@ -191,14 +179,11 @@ public class TripFragment extends Fragment {
     }
 
     private void addButtonClick() {
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(),TripCreationActivity.class);
-                intent.putExtra("displayButtonType", "createTrip");
-                v.getContext().startActivity(intent);
+        addButton.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(),TripCreationActivity.class);
+            intent.putExtra("displayButtonType", "createTrip");
+            v.getContext().startActivity(intent);
 
-            }
         });
     }
 }
