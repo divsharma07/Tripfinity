@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.app.tripfinity.model.Trip;
 
-import com.app.tripfinity.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,9 +35,6 @@ public class TripCreationRepository {
     private CollectionReference trips = rootRef.collection(TRIP_COLLECTION);
     private CollectionReference usersRef = rootRef.collection(USER_COLLECTION);
 
-//    public interface UserCallback {
-//        void onCallback(DocumentReference user);
-//    }
     public Trip createATrip(String tripName, String startDate, String userId, String destination)
             throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-M-dd", Locale.ENGLISH);
@@ -55,60 +51,68 @@ public class TripCreationRepository {
         return trip;
     }
 
+    public MutableLiveData<Trip> addANewTrip(String tripName, String startDate, String userId, String destination) throws ParseException {
+        Trip trip = createATrip(tripName,startDate,userId,destination);
 
 
-//    private void getUserReference(UserCallback callback,String userId) {
-//        usersRef.document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-//                        Log.d(TAG, "Document exists!");
-//                        callback.onCallback(document.getReference());
-//                    } else {
-//                        Log.d(TAG, "Document does not exist!");
-//                    }
-//                } else {
-//                    Log.d(TAG, "Failed with: ", task.getException());
-//                }
-//
-//            }
-//        });
-//    }
-
-    public MutableLiveData<Trip> addANewTrip(Trip trip, String userId) {
         MutableLiveData<Trip> newMutableTripLiveData = new MutableLiveData<>();
         trips.document(trip.getTripId()).set(trip).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Log.d(TAG, "DocumentSnapshot Trip with ID: " + trip.getTripId());
                 newMutableTripLiveData.setValue(trip);
-                addUsersToTrip(trips.document(trip.getTripId()),userId);
+                DocumentReference user = usersRef.document(userId);
+                addTripToUser(trips.document(trip.getTripId()),user);
+                addTopicToTrip(trips.document(trip.getTripId()),user);
             }
         });
 
         return newMutableTripLiveData;
     }
 
-    public MutableLiveData<Boolean> addUsersToTrip(DocumentReference trip,String userId) {
+    public MutableLiveData<Boolean> addTripToUser(DocumentReference trip, DocumentReference user) {
         MutableLiveData<Boolean> isUpdated = new MutableLiveData<>();
-        DocumentReference user = usersRef.document(userId);
+
         user.update("trips", FieldValue.arrayUnion(trip)).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Log.d(TAG, "DocumentSnapshot successfully updated!");
+                Log.d(TAG, "User successfully updated! :"+user.getId());
                 isUpdated.setValue(true);
             }
         })
         .addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "Error updating document", e);
+                Log.w(TAG, "Error updating User document", e);
                 isUpdated.setValue(false);
             }
         });
+        return isUpdated;
+    }
+
+    public MutableLiveData<Boolean> addTopicToTrip(DocumentReference trip,DocumentReference user) {
+        MutableLiveData<Boolean> isUpdated = new MutableLiveData<>();
+
+      user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+           @Override
+           public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+               String topic = (String) task.getResult().get("topic");
+               trip.update("sourceLocation", topic).addOnSuccessListener(new OnSuccessListener<Void>() {
+                   @Override
+                   public void onSuccess(Void aVoid) {
+                       Log.d(TAG, "Trip successfully updated: "+trip.getId());
+                       isUpdated.setValue(true);
+                   }
+               })
+                       .addOnFailureListener(new OnFailureListener() {
+                           @Override
+                           public void onFailure(@NonNull Exception e) {
+                               Log.w(TAG, "Error updating Trip document", e);
+                               isUpdated.setValue(false);
+                           }
+                       });
+           }
+       });
         return isUpdated;
     }
 

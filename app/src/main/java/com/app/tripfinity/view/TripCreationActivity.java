@@ -90,16 +90,13 @@ public class TripCreationActivity extends AppCompatActivity {
         }
         PlacesClient placesClient = Places.createClient(this);
 
-        destination.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                List<Place.Field> fields = Arrays.asList(Place.Field.NAME);
+        destination.setOnClickListener(v -> {
+            List<Place.Field> fields = Arrays.asList(Place.Field.NAME);
 
-                // Start the autocomplete intent.
-                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
-                        .setTypeFilter(TypeFilter.CITIES).build(TripCreationActivity.this);
-                startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
-            }
+            // Start the autocomplete intent.
+            Intent intent1 = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
+                    .setTypeFilter(TypeFilter.CITIES).build(TripCreationActivity.this);
+            startActivityForResult(intent1, AUTOCOMPLETE_REQUEST_CODE);
         });
 
         startDate.setOnClickListener(new View.OnClickListener() {
@@ -134,6 +131,8 @@ public class TripCreationActivity extends AppCompatActivity {
                     // create a new trip and save in fireStore
                     // need to user view model methods for this
                     try {
+                        // fetch topic from user
+
                         // create a trip
                         // add this trip id to the users collection
                         tripCreationViewModel.createNewTrip(tripNameInput.getText().toString(),
