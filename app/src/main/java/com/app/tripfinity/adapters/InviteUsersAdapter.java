@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.app.tripfinity.R;
 import com.app.tripfinity.listeners.RemoveInviteClickListener;
 import com.app.tripfinity.model.User;
-import com.app.tripfinity.model.UserBio;
 import com.app.tripfinity.viewholders.InviteUserViewHolder;
 
 import java.util.ArrayList;
