@@ -11,4 +11,5 @@ public class Constants {
     public static int FINE_LOCATION_REQUEST_CODE = 555;
     public static final int MESSAGE_SENT_VIEW = 1;
     public static final int MESSAGE_RECEIVED_VIEW = 2;
+    public static int RC_INVITE_USERS = 12;
 }

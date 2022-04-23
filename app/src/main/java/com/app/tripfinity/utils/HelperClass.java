@@ -3,6 +3,9 @@ package com.app.tripfinity.utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
+
+import com.app.tripfinity.model.User;
+import com.app.tripfinity.utils.Constants.*;
 import android.widget.ImageView;
 
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
@@ -15,6 +18,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -23,6 +27,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class HelperClass {
+
     public static void logErrorMessage(String errorMessage) {
         Log.d(Constants.FIREBASE_AUTH_TAG, errorMessage);
     }
