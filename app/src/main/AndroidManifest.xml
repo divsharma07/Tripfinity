@@ -25,9 +25,6 @@
             android:name=".view.InviteActivity"
             android:exported="false" />
         <activity
-            android:name=".view.ItineraryViewActivity"
-            android:exported="false" />
-        <activity
             android:name=".view.SplashScreenActivity"
             android:exported="true"
             android:theme="@style/SplashTheme">
@@ -56,22 +53,8 @@
             android:name=".view.AddPlaceActivity"
             android:exported="false" />
         <activity
-            android:name=".view.AuthActivity"
-            android:exported="true"
-            android:theme="@style/SplashTheme"
-            />
-        <activity
             android:name=".view.TripCreationActivity"
             android:exported="false" />
-            android:exported="false" /> <!-- <activity -->
-        <!-- android:name=".view.SplashScreenActivity" -->
-        <!-- android:exported="true" -->
-        <!-- android:theme="@style/SplashTheme"> -->
-        <!-- &lt;!&ndash;            <intent-filter>&ndash;&gt; -->
-        <!-- &lt;!&ndash;                <action android:name="android.intent.action.MAIN" />&ndash;&gt; -->
-        <!-- &lt;!&ndash;                <category android:name="android.intent.category.LAUNCHER" />&ndash;&gt; -->
-        <!-- &lt;!&ndash;            </intent-filter>&ndash;&gt; -->
-        <!-- </activity> -->
         <activity
             android:name=".view.AuthActivity"
             android:exported="true"

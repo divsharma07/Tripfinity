@@ -5,6 +5,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -99,10 +100,10 @@ public class TripCreationActivity extends AppCompatActivity {
         ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent intent = result.getData();
+                        Intent resultIntent = result.getData();
                         // Handle the Intent
-                        if(intent != null) {
-                            Bundle bundle = intent.getBundleExtra("users");
+                        if(resultIntent != null) {
+                            Bundle bundle = resultIntent.getBundleExtra("users");
                             if(bundle.getSerializable("users") != null){
                             invitedUsers = (ArrayList<User>) bundle.getSerializable("users");
                             }
@@ -111,11 +112,11 @@ public class TripCreationActivity extends AppCompatActivity {
                 });
 
         inviteUsers.setOnClickListener(view -> {
-            Intent intent = new Intent(view.getContext(), InviteActivity.class);
+            Intent resultIntent = new Intent(view.getContext(), InviteActivity.class);
             if(invitedUsers.size() != 0){
-                intent.putExtra("users", invitedUsers);
+                resultIntent.putExtra("users", invitedUsers);
             }
-            mStartForResult.launch(intent);
+            mStartForResult.launch(resultIntent);
         });
 
 
@@ -260,6 +261,7 @@ public class TripCreationActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         if(invitedUsers != null && invitedUsers.size() != 0){
             TextView userCount = findViewById(R.id.users_count);
             userCount.setText(String.format("%d user(s) invited", invitedUsers.size()));

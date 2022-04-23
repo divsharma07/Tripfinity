@@ -22,18 +22,18 @@ public class User implements Serializable {
     public boolean isAuthenticated;
     private GeoPoint cityGeoPoint;
     @Exclude
-    private List<DocumentReference> trips;
+    private List<String> trips;
 
     public User() {
     }
 
 
 
-    public List<DocumentReference> getTrips() {
+    public List<String> getTrips() {
         return trips;
     }
 
-    public void setTrips(List<DocumentReference> trips) {
+    public void setTrips(List<String> trips) {
         this.trips = trips;
     }
 

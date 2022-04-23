@@ -83,7 +83,7 @@ public class TripCreationRepository {
                 Log.d(TAG, "DocumentSnapshot Trip with ID: " + trip.getTripId());
                 newMutableTripLiveData.setValue(trip);
                 for(String userId : userIds){
-                    addUsersToTrip(documentReference,userId);
+                    addUsersToTrip(trips.document(trip.getTripId()),userId);
                 }
 
             }
@@ -91,7 +91,6 @@ public class TripCreationRepository {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.d(TAG, "Error adding document", e);
-                addUsersToTrip(trips.document(trip.getTripId()),userId);
             }
         });
 
