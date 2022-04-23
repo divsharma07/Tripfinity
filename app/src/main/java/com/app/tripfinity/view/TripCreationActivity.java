@@ -13,7 +13,9 @@ import android.view.View;
 
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.app.tripfinity.R;
 import com.app.tripfinity.model.Trip;
@@ -118,7 +120,8 @@ public class TripCreationActivity extends AppCompatActivity {
             }
 
         });
-
+        // can share logic
+        Switch toggle = findViewById(R.id.isShareableSwitch);
         createTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,6 +131,7 @@ public class TripCreationActivity extends AppCompatActivity {
                     Log.d(TAG,"Trip Name given: "+tripNameInput.getText().toString());
                     Log.d(TAG,"Start Date given: "+startDate.getText().toString());
                     Log.d(TAG,"Destination given: "+destination.getText().toString());
+                    Log.d(TAG,"Is sharable: "+toggle.isChecked());
                     // create a new trip and save in fireStore
                     // need to user view model methods for this
                     try {
@@ -136,7 +140,7 @@ public class TripCreationActivity extends AppCompatActivity {
                         // create a trip
                         // add this trip id to the users collection
                         tripCreationViewModel.createNewTrip(tripNameInput.getText().toString(),
-                                startDate.getText().toString(),userId,destination.getText().toString());
+                                startDate.getText().toString(),userId,destination.getText().toString(),toggle.isChecked());
 
                         tripCreationViewModel.getCreatedTripLiveData().observe(TripCreationActivity.this,trip -> {
                             Log.d(TAG,"Created Trip Id: "+trip.getTripId());
@@ -170,6 +174,7 @@ public class TripCreationActivity extends AppCompatActivity {
                     Log.d(TAG,"Trip Name given: "+tripNameInput.getText().toString());
                     Log.d(TAG,"Start Date given: "+startDate.getText().toString());
                     Log.d(TAG,"Destination given: "+destination.getText().toString());
+                    Log.d(TAG,"Is sharable: "+toggle.isChecked());
                     // create a new trip and save in fireStore
                     // need to user view model methods for this
                     // create a trip
@@ -190,12 +195,12 @@ public class TripCreationActivity extends AppCompatActivity {
                         trip.setStartDate(startDateObj);
                         trip.setEndDate(endDateObj);
                         trip.setDestination(destination.getText().toString());
-
+                        trip.setCanShare(toggle.isChecked());
                         // setting trip data.
                         tripCreationViewModel.updateTrip(trip);
 
                         tripCreationViewModel.getUpdatedTripLiveData().observe(TripCreationActivity.this,trip1 -> {
-                            Intent returnIntent = new Intent(TripCreationActivity.this,ItineraryViewActivity.class);
+                            Intent returnIntent = new Intent(TripCreationActivity.this,Tripfinity.class);
                             returnIntent.putExtra("tripId", trip1.getTripId());
                             returnIntent.putExtra("tripName", trip1.getTripName());
                             returnIntent.putExtra("startDate", trip1.getStartDate());
@@ -212,6 +217,11 @@ public class TripCreationActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+
+
+
 
     }
 

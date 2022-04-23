@@ -64,6 +64,9 @@
         <activity
             android:name=".view.TripCreationActivity"
             android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".view.ItineraryViewActivity"-->
+<!--            android:exported="false" />-->
     </application>
 
 </manifest>
