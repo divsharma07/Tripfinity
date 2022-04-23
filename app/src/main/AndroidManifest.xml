@@ -13,9 +13,6 @@
             android:name=".view.HistoryExpenseActivity"
             android:exported="false" />
         <activity
-            android:name=".view.ExpenseActivity"
-            android:exported="false" />
-        <activity
             android:name=".view.AddExpenseActivity"
             android:windowSoftInputMode="adjustResize"
             android:exported="false" />

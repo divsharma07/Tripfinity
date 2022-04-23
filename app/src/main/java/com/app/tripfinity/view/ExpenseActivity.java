@@ -1,7 +1,6 @@
 package com.app.tripfinity.view;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -18,7 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.app.tripfinity.adapter.ExpenseAdapter;
+import com.app.tripfinity.adapters.ExpenseAdapter;
 import com.app.tripfinity.R;
 import com.app.tripfinity.model.Expense;
 import com.app.tripfinity.model.User;
@@ -80,8 +79,6 @@ public class ExpenseActivity extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-
 
         expenseUserName.setText("Hello " + loggedInName + ",");
 

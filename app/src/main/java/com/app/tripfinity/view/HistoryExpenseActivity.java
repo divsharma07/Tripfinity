@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.app.tripfinity.adapter.HistoryExpenseAdapter;
+import com.app.tripfinity.adapters.HistoryExpenseAdapter;
 import com.app.tripfinity.R;
 import com.app.tripfinity.model.Expense;
 import com.app.tripfinity.viewmodel.HistoryExpenseViewModel;
