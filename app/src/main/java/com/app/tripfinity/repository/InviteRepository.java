@@ -1,5 +1,7 @@
 package com.app.tripfinity.repository;
 
+import static com.app.tripfinity.utils.Constants.USER_COLLECTION;
+
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
@@ -34,7 +36,7 @@ public class InviteRepository {
 
     public MutableLiveData<User> checkUserExists(String email){
         Log.d("Email", email);
-        DocumentReference userRef = db.collection(Constants.USER_COLLECTION).document(email);
+        DocumentReference userRef = db.collection(USER_COLLECTION).document(email);
         MutableLiveData<User> result = new MutableLiveData<>();
         userRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {

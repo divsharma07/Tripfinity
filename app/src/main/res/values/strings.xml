@@ -23,7 +23,7 @@
     <string name="start_date">Start Date</string>
     <string name="no_data_available">No trips availble</string>
     <string name="itinerary">Itinerary</string>
-    <string name="expense">expenses</string>
-    <string name="message">message</string>
-    <string name="group">group</string>
+    <string name="expense">Expenses</string>
+    <string name="message">Messages</string>
+    <string name="group">Group</string>
 </resources>

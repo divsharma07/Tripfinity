@@ -49,7 +49,7 @@ public class Tripfinity extends AppCompatActivity {
                             //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container2, ItineraryViewActivity.class, bundle).commit();
                             break;
                         case R.id.nav_message:
-                            //
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container2, MessagingFragment.class, bundle).commit();
                             break;
                     }
 
