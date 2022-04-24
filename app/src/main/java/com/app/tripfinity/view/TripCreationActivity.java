@@ -186,11 +186,7 @@ public class TripCreationActivity extends AppCompatActivity {
                         userEmails.add(0, userId);
 
                         tripCreationViewModel.createNewTrip(tripNameInput.getText().toString(),
-
-                                startDate.getText().toString(),userId,destination.getText().toString(),toggle.isChecked());
-
-                                startDate.getText().toString(),userEmails, destination.getText().toString());
-
+                                startDate.getText().toString(),userEmails,destination.getText().toString(),toggle.isChecked());
 
                         tripCreationViewModel.getCreatedTripLiveData().observe(TripCreationActivity.this,trip -> {
                             Log.d(TAG,"Created Trip Id: "+trip.getTripId());
@@ -274,6 +270,7 @@ public class TripCreationActivity extends AppCompatActivity {
 
 
     }
+
 
     @Override
     protected void onResume() {

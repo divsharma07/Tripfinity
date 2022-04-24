@@ -7,15 +7,14 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.app.tripfinity.model.Trip;
 
-<<<<<<< HEAD
 import com.google.android.gms.tasks.OnCompleteListener;
-=======
->>>>>>> 7e66911c3e75c0d8ce908f18a4e20ecb4a23acc6
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -36,15 +35,9 @@ public class TripCreationRepository {
     private CollectionReference trips = rootRef.collection(TRIP_COLLECTION);
     private CollectionReference usersRef = rootRef.collection(USER_COLLECTION);
 
-<<<<<<< HEAD
-    public Trip createATrip(String tripName, String startDate, String userId, String destination, Boolean canShare)
-            throws ParseException {
-=======
-//    public interface UserCallback {
-//        void onCallback(DocumentReference user);
-//    }
-    public Trip createATrip(String tripName, String startDate, List<String> userIds, String destination) throws ParseException {
->>>>>>> 7e66911c3e75c0d8ce908f18a4e20ecb4a23acc6
+
+    public Trip createATrip(String tripName, String startDate, List<String> userIds, String destination,  Boolean canShare) throws ParseException {
+
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-M-dd", Locale.ENGLISH);
         Date startDateObj = formatter.parse(startDate);
         Date endDateObj = startDateObj;
@@ -61,49 +54,20 @@ public class TripCreationRepository {
         return trip;
     }
 
-    public MutableLiveData<Trip> addANewTrip(String tripName, String startDate, String userId, String destination,
-                                             Boolean canShare) throws ParseException {
-        Trip trip = createATrip(tripName,startDate,userId,destination,canShare);
-
-
-<<<<<<< HEAD
-=======
-//    private void getUserReference(UserCallback callback,String userId) {
-//        usersRef.document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-//                        Log.d(TAG, "Document exists!");
-//                        callback.onCallback(document.getReference());
-//                    } else {
-//                        Log.d(TAG, "Document does not exist!");
-//                    }
-//                } else {
-//                    Log.d(TAG, "Failed with: ", task.getException());
-//                }
-//
-//            }
-//        });
-//    }
-
-    public MutableLiveData<Trip> addANewTrip(Trip trip, List<String> userIds) {
->>>>>>> 7e66911c3e75c0d8ce908f18a4e20ecb4a23acc6
+    public MutableLiveData<Trip> addANewTrip(String tripName, String startDate, List<String> userIds, String destination,
+                Boolean canShare) throws ParseException {
+        Trip trip = createATrip(tripName,startDate,userIds,destination,canShare);
         MutableLiveData<Trip> newMutableTripLiveData = new MutableLiveData<>();
         trips.document(trip.getTripId()).set(trip).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Log.d(TAG, "DocumentSnapshot Trip with ID: " + trip.getTripId());
                 newMutableTripLiveData.setValue(trip);
-<<<<<<< HEAD
-                DocumentReference user = usersRef.document(userId);
-                addTripToUser(trips.document(trip.getTripId()),user);
+
+                DocumentReference user = usersRef.document(userIds.get(0));
                 addTopicToTrip(trips.document(trip.getTripId()),user);
-=======
                 for(String userId : userIds){
-                    addUsersToTrip(trips.document(trip.getTripId()),userId);
+                    addTripToUser(trips.document(trip.getTripId()), usersRef.document(userId));
                 }
 
             }
@@ -111,18 +75,13 @@ public class TripCreationRepository {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.d(TAG, "Error adding document", e);
->>>>>>> 7e66911c3e75c0d8ce908f18a4e20ecb4a23acc6
             }
         });
 
         return newMutableTripLiveData;
     }
 
-<<<<<<< HEAD
     public MutableLiveData<Boolean> addTripToUser(DocumentReference trip, DocumentReference user) {
-=======
-    public void addUsersToTrip(DocumentReference trip, String userId) {
->>>>>>> 7e66911c3e75c0d8ce908f18a4e20ecb4a23acc6
         MutableLiveData<Boolean> isUpdated = new MutableLiveData<>();
 
         user.update("trips", FieldValue.arrayUnion(trip)).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -139,6 +98,7 @@ public class TripCreationRepository {
                 isUpdated.setValue(false);
             }
         });
+        return isUpdated;
     }
 
     public MutableLiveData<Boolean> addTopicToTrip(DocumentReference trip,DocumentReference user) {
@@ -166,5 +126,4 @@ public class TripCreationRepository {
        });
         return isUpdated;
     }
-
 }

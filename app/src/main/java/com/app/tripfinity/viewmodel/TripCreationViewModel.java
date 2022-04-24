@@ -55,18 +55,14 @@ public class TripCreationViewModel extends AndroidViewModel {
     // create new trip for a user
     // add the created trip id to the users trip list
 
-    public void createNewTrip(String tripName, String startDate, String userId, String destination,
+    public void createNewTrip(String tripName, String startDate, List<String> userIds, String destination,
                               Boolean canShare)
             throws ParseException {
 
-        createdTripLiveData = tripCreationRepository.addANewTrip(tripName, startDate, userId, destination, canShare);
+        createdTripLiveData = tripCreationRepository.addANewTrip(tripName, startDate, userIds, destination, canShare);
     }
 
-    public void createNewTrip(String tripName, String startDate, List<String> users, String destination) throws ParseException {
-        Trip trip = tripCreationRepository.createATrip(tripName,startDate,users, destination);
-        createdTripLiveData = tripCreationRepository.addANewTrip(trip,users);
 
-    }
 
     public void createNewItinerary(String tripId) {
         Log.d(TAG,"Creating Itinerary with trip Id: "+tripId);
