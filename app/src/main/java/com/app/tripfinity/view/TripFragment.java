@@ -70,7 +70,8 @@ public class TripFragment extends Fragment {
 
         DocumentReference documentReference = db.collection("Users").document(user);
 
-        Query query = db.collection("Trips").whereArrayContains("users", documentReference);
+        Query query = db.collection("Trips").whereArrayContains("users", documentReference)
+                .orderBy("startDate");
 
         FirestoreRecyclerOptions<Trip> options = new FirestoreRecyclerOptions.Builder<Trip>().setQuery(query, Trip.class).build();
 
