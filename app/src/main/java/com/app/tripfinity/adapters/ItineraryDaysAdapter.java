@@ -75,6 +75,8 @@ public class ItineraryDaysAdapter extends RecyclerView.Adapter<ItineraryDayViewH
         return newDate;
     }
 
+
+
     @Override
     public void onBindViewHolder(@NonNull ItineraryDayViewHolder holder, int position) {
         Log.d(TAG,"position "+position);
