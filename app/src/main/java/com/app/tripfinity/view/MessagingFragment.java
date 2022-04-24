@@ -62,13 +62,12 @@ public class MessagingFragment extends Fragment {
         messageListener = tripRef.document(tripId).collection("messages")
                 .orderBy("timestamp").addSnapshotListener((snapshot, firebaseException) -> {
             assert snapshot != null;
-            int initialSize = messageList.size() - 1;
+            messageList.clear();
             for (DocumentSnapshot document : snapshot) {
                 Message message = document.toObject(Message.class);
                 messageList.add(message);
             }
             mMessageAdapter.notifyDataSetChanged();
-            //mMessageAdapter.notifyItemRangeChanged(initialSize, snapshot.size());
             mMessageRecycler.scrollToPosition(messageList.size()-1);
         });
     }

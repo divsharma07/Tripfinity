@@ -27,7 +27,9 @@ public class User extends UserBio implements Serializable {
         super();
     }
 
-
+    public void setUserPhotoUrl(String userPhotoUrl) {
+        this.userPhotoUrl = userPhotoUrl;
+    }
 
     public List<DocumentReference> getTrips() {
         return trips;
