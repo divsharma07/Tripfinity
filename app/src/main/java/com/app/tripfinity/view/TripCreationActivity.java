@@ -87,6 +87,9 @@ public class TripCreationActivity extends AppCompatActivity {
         } else if (buttonType.equals("editTrip")){
             findViewById(R.id.saveEditTrip).setVisibility(View.VISIBLE);
             findViewById(R.id.createTrip).setVisibility(View.INVISIBLE);
+            TextView textView = findViewById(R.id.textView);
+            textView.setText("Edit Trip");
+
         }
 
 
