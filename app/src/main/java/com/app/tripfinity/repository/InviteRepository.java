@@ -52,7 +52,6 @@ public class InviteRepository {
     }
 
     public void addUserToTrip(String tripId, String email) {
-        //TODO: Fix the void to boolean
         DocumentReference tripRef = db.collection("Trips").document(tripId);
         DocumentReference userRef = db.collection(USER_COLLECTION).document(email);
         tripRef.update("users", FieldValue.arrayUnion(userRef));
@@ -63,7 +62,8 @@ public class InviteRepository {
     public MutableLiveData<Boolean> sendInvitationToUser(String sender, String receiver) {
         MutableLiveData<Boolean> result = new MutableLiveData<>();
         Map<String, Object> data = new HashMap<>();
-        data.put("text", receiver);
+        data.put("sender", sender);
+        data.put("receiver", receiver);
         data.put("push", true);
 
         HelperClass.callFunction("sendemail", data).addOnCompleteListener(task -> {
@@ -100,7 +100,6 @@ public class InviteRepository {
                     Log.d("Functions Exception", String.valueOf(details));
                 }
             }
-
         });
     }
 

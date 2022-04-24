@@ -2,11 +2,12 @@ package com.app.tripfinity.view;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,14 +19,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.app.tripfinity.R;
 import com.app.tripfinity.adapters.InviteUsersAdapter;
-import com.app.tripfinity.listeners.RemoveInviteClickListener;
 import com.app.tripfinity.model.User;
 import com.app.tripfinity.model.UserBio;
+import com.app.tripfinity.utils.HelperClass;
 import com.app.tripfinity.viewmodel.AuthViewModel;
 import com.app.tripfinity.viewmodel.InviteViewModel;
-import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,7 +35,6 @@ public class InviteFragment extends Fragment {
 
     private InviteViewModel inviteViewModel;
     private AuthViewModel authViewModel;
-    private final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     EditText text;
     String tripId;
     ArrayList<User> users;
@@ -86,6 +84,7 @@ public class InviteFragment extends Fragment {
                 for (UserBio user : (ArrayList<User>) getArguments().getSerializable("users")) {
                     users.add(new User(user.getUid(), user.getName(), user.getEmail(), user.getUserPhotoUrl()));
                 }
+                inviteViewModel.addUser(users);
             }
         }
         recyclerView = view.findViewById(R.id.inviteRecyclerView);
@@ -100,11 +99,21 @@ public class InviteFragment extends Fragment {
 
     private void createRecyclerView() {
         LinearLayoutManager rLayoutManager = new LinearLayoutManager(this.getContext());
-        RemoveInviteClickListener listener = position -> {
-            users.remove(position);
-            adapter.notifyItemRemoved(position);
-        };
-        adapter = new InviteUsersAdapter(users, listener, getContext());
+        adapter = new InviteUsersAdapter(users, getContext());
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder linkHolder, int direction) {
+                int position = linkHolder.getLayoutPosition();
+                users.remove(position);
+                adapter.notifyItemRemoved(position);
+                inviteViewModel.addUser(users);
+            }
+        });
         if(getArguments() != null && getArguments().getString("tripId") != null){
             progressBar.setVisibility(ProgressBar.VISIBLE);
             tripId = getArguments().getString("tripId");
@@ -116,6 +125,9 @@ public class InviteFragment extends Fragment {
                 });
             });
         }
+        if(tripId == null){
+            itemTouchHelper.attachToRecyclerView(recyclerView);
+        }
 
         recyclerView.setLayoutManager(rLayoutManager);
         recyclerView.setAdapter(adapter);
@@ -125,12 +137,13 @@ public class InviteFragment extends Fragment {
         String userEmail = text.getText().toString().trim();
         if(!userEmail.equals("")) {
             inviteViewModel.checkUserExists(userEmail).observe(getViewLifecycleOwner(), user -> {
-                if (user == null) {
+                if (user == null || !user.isRegistered()) {
                     inviteUserToApp(userEmail);
                 } else {
                     addToUserList(user);
                     if (tripId != null) {
-                        inviteViewModel.sendNotificationToUser(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getDisplayName(), user.getFcmToken(), tripId);
+                        String tripName = getArguments().getString("tripName");
+                        inviteViewModel.sendNotificationToUser(HelperClass.getCurrentUser().getDisplayName(), user.getFcmToken(), tripName);
                         inviteViewModel.addUserToTrip(tripId, userEmail);
                     }
                 }
@@ -164,7 +177,7 @@ public class InviteFragment extends Fragment {
                         User user = new User(email);
                         addToUserList(user);
                         authViewModel.createUser(user, false);
-                        inviteViewModel.sendInvitationToUser("", email).observe(getViewLifecycleOwner(), inviteSent -> {
+                        inviteViewModel.sendInvitationToUser(HelperClass.getCurrentUser().getDisplayName(), email).observe(getViewLifecycleOwner(), inviteSent -> {
                             if(inviteSent){
                                 Toast.makeText(this.getContext(), "Invitation sent", Toast.LENGTH_SHORT).show();
                             }
