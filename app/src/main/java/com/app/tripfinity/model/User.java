@@ -15,7 +15,6 @@ public class User extends UserBio implements Serializable {
     private String state;
     private String country;
     private String fcmToken;
-    private String userPhotoUrl;
     private boolean isRegistered;
     @Exclude
     public boolean isAuthenticated;
@@ -25,10 +24,6 @@ public class User extends UserBio implements Serializable {
 
     public User() {
         super();
-    }
-
-    public void setUserPhotoUrl(String userPhotoUrl) {
-        this.userPhotoUrl = userPhotoUrl;
     }
 
     public List<DocumentReference> getTrips() {
@@ -49,6 +44,10 @@ public class User extends UserBio implements Serializable {
 
     public User(String email){
         super(email);
+    }
+
+    public User(String uid, String name, String email, String userPhoto) {
+        super(uid, name, email, userPhoto);
     }
 
     public User(String uid, String name, String email) {
@@ -73,9 +72,5 @@ public class User extends UserBio implements Serializable {
 
     public String getFcmToken() {
         return fcmToken;
-    }
-
-    public String getUserPhotoUrl() {
-        return userPhotoUrl;
     }
 }

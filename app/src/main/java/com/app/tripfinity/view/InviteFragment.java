@@ -87,7 +87,7 @@ public class InviteFragment extends Fragment {
         if(getArguments() != null){
             if(getArguments().getSerializable("users") != null) {
                 for (UserBio user : (ArrayList<User>) getArguments().getSerializable("users")) {
-                    users.add(new User(user.getUid(), user.getName(), user.getEmail()));
+                    users.add(new User(user.getUid(), user.getName(), user.getEmail(), user.getUserPhotoUrl()));
                 }
             }
         }
@@ -107,7 +107,7 @@ public class InviteFragment extends Fragment {
             users.remove(position);
             adapter.notifyItemRemoved(position);
         };
-        adapter = new InviteUsersAdapter(users, listener);
+        adapter = new InviteUsersAdapter(users, listener, getContext());
         if(getArguments() != null && getArguments().getString("tripId") != null){
             progressBar.setVisibility(ProgressBar.VISIBLE);
             tripId = getArguments().getString("tripId");

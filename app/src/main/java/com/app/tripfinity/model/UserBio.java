@@ -7,6 +7,7 @@ public class UserBio implements Serializable {
     private String uid;
     private String name;
     private String email;
+    private String userPhotoUrl;
 
     public String getEmail() {
         return email;
@@ -28,12 +29,27 @@ public class UserBio implements Serializable {
         this.uid = uid;
     }
 
+    public void setUserPhotoUrl(String userPhotoUrl) {
+        this.userPhotoUrl = userPhotoUrl;
+    }
+
+    public String getUserPhotoUrl() {
+        return userPhotoUrl;
+    }
+
     public UserBio(){
 
     }
 
     public UserBio(String email){
         this.email = email;
+    }
+
+    public UserBio(String uid, String name, String email, String userPhotoUrl) {
+        this.uid = uid;
+        this.name = name;
+        this.email = email;
+        this.userPhotoUrl = userPhotoUrl;
     }
 
     public UserBio(String uid, String name, String email) {

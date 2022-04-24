@@ -1,5 +1,8 @@
 package com.app.tripfinity.adapters;
 
+import static com.app.tripfinity.utils.HelperClass.displayRoundImageFromUrl;
+
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +22,12 @@ public class InviteUsersAdapter extends RecyclerView.Adapter<InviteUserViewHolde
 
     List<User> users;
     RemoveInviteClickListener listener;
+    Context context;
 
-    public InviteUsersAdapter(ArrayList<User> users, RemoveInviteClickListener listener){
+    public InviteUsersAdapter(ArrayList<User> users, RemoveInviteClickListener listener, Context context){
         this.users = users;
         this.listener = listener;
+        this.context = context;
     }
 
     @NonNull
@@ -34,13 +39,15 @@ public class InviteUsersAdapter extends RecyclerView.Adapter<InviteUserViewHolde
 
     @Override
     public void onBindViewHolder(@NonNull InviteUserViewHolder holder, int position) {
-        if(users.get(position).getName() != null && !users.get(position).getName().equals("")){
-            holder.user.setText(users.get(position).getName());
-            holder.userEmail.setText(users.get(position).getEmail());
+        User user = users.get(position);
+        if(user.getName() != null && !user.getName().equals("")){
+            holder.user.setText(user.getName());
+            holder.userEmail.setText(user.getEmail());
         }
         else {
-            holder.user.setText(users.get(position).getEmail());
+            holder.user.setText(user.getEmail());
         }
+        displayRoundImageFromUrl(context, user.getUserPhotoUrl(), holder.imageView, R.drawable.placeholderprofileimage);
     }
 
     @Override
