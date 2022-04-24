@@ -21,10 +21,10 @@ public class PlaceDetailsActivity extends AppCompatActivity {
 
         placeName.setText(intent.getStringExtra("placeName"));
 
-        String placeNotesString = "Notes: "+intent.getStringExtra("notes");
+        String placeNotesString = "Notes: " + intent.getStringExtra("notes");
         placeNotes.setText(placeNotesString);
 
-        String placeNotesStartTime = "Start Time: "+intent.getStringExtra("notes");
+        String placeNotesStartTime = "Start Time: " + intent.getStringExtra("startTime");
         placeStartTime.setText(placeNotesStartTime);
 
     }
