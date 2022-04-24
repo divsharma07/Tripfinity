@@ -19,6 +19,8 @@ import com.app.tripfinity.model.Place;
 import com.app.tripfinity.repository.ItineraryRepository;
 import com.app.tripfinity.view.AddPlaceActivity;
 import com.app.tripfinity.view.ItineraryViewActivity;
+import com.app.tripfinity.view.PlaceClickListener;
+import com.app.tripfinity.view.PlaceDetailsActivity;
 import com.app.tripfinity.view.TripCreationActivity;
 import com.app.tripfinity.viewholders.ItineraryDayViewHolder;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
@@ -27,7 +29,7 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItineraryDaysAdapter extends RecyclerView.Adapter<ItineraryDayViewHolder> {
+public class ItineraryDaysAdapter extends RecyclerView.Adapter<ItineraryDayViewHolder> implements PlaceClickListener {
     private static final String TAG = "ItineraryDaysAdapter";
     private List<ItineraryDay> days;
     private List<Place> places;
@@ -48,12 +50,11 @@ public class ItineraryDaysAdapter extends RecyclerView.Adapter<ItineraryDayViewH
 
     @Override
     public void onBindViewHolder(@NonNull ItineraryDayViewHolder holder, int position) {
-        Log.d(TAG,"Binding days "+days.get(0));
         Log.d(TAG,"position "+position);
         holder.day.setText(days.get(position).getId());
         Log.d(TAG,"createRecyclerUserView called ");
 
-        PlaceAdapter adapter = new PlaceAdapter(new ArrayList<>());
+        PlaceAdapter adapter = new PlaceAdapter(new ArrayList<>(),this,holder.getLayoutPosition());
         holder.placesRecyclerView.setAdapter(adapter);
 
         ItemTouchHelper itemTouchHelper =  new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -104,5 +105,15 @@ public class ItineraryDaysAdapter extends RecyclerView.Adapter<ItineraryDayViewH
     }
 
 
+    @Override
+    public void OnClickLink(int position, int daysPosition) {
+
+        Intent intent = new Intent(context, PlaceDetailsActivity.class);
+        Place place = days.get(daysPosition).getPlaces().get(position);
+        intent.putExtra("placeName",place.getName());
+        intent.putExtra("notes",place.getNotes());
+        intent.putExtra("startTime",place.getStartTime());
+        context.startActivity(intent);
+    }
 }
 

@@ -13,6 +13,10 @@
         android:roundIcon="@mipmap/tripfinity_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Tripfinity">
+        <activity
+            android:name=".view.PlaceDetailsActivity"
+            android:exported="false" />
+
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
             android:value="false" />
@@ -59,14 +63,10 @@
         <activity
             android:name=".view.AuthActivity"
             android:exported="true"
-            android:theme="@style/SplashTheme"
-            />
+            android:theme="@style/SplashTheme" />
         <activity
             android:name=".view.TripCreationActivity"
             android:exported="false" />
-<!--        <activity-->
-<!--            android:name=".view.ItineraryViewActivity"-->
-<!--            android:exported="false" />-->
     </application>
 
 </manifest>
