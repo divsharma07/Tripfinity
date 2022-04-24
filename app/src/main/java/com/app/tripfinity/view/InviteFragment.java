@@ -7,11 +7,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +45,9 @@ public class InviteFragment extends Fragment {
     ArrayList<User> users;
     private RecyclerView recyclerView;
     private InviteUsersAdapter adapter;
+    private ProgressBar progressBar;
+    private final Handler progressHandler = new Handler();
+
 
     public InviteFragment() {
         // Required empty public constructor
@@ -66,7 +71,7 @@ public class InviteFragment extends Fragment {
         initInviteViewModel();
         initAuthViewModel();
         if (getArguments() != null) {
-            tripId = getArguments().getString("trip");
+            tripId = getArguments().getString("tripId");
         }
     }
 
@@ -77,10 +82,13 @@ public class InviteFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_invite, container, false);
         Button inviteButton = view.findViewById(R.id.addUser);
         text = view.findViewById(R.id.editTextInviteEmail);
+        progressBar = view.findViewById(R.id.progressBar);
         users = new ArrayList<>();
-        if(getArguments() != null && getArguments().getSerializable("users") != null){
-            for(UserBio user : (ArrayList<User>) getArguments().getSerializable("users")){
-                users.add(new User(user.getUid(), user.getName(), user.getEmail()));
+        if(getArguments() != null){
+            if(getArguments().getSerializable("users") != null) {
+                for (UserBio user : (ArrayList<User>) getArguments().getSerializable("users")) {
+                    users.add(new User(user.getUid(), user.getName(), user.getEmail()));
+                }
             }
         }
         recyclerView = view.findViewById(R.id.inviteRecyclerView);
@@ -100,14 +108,25 @@ public class InviteFragment extends Fragment {
             adapter.notifyItemRemoved(position);
         };
         adapter = new InviteUsersAdapter(users, listener);
+        if(getArguments() != null && getArguments().getString("tripId") != null){
+            progressBar.setVisibility(ProgressBar.VISIBLE);
+            tripId = getArguments().getString("tripId");
+            inviteViewModel.getUsersInTrip(tripId).observe(getViewLifecycleOwner(), userList -> {
+                users.addAll(userList);
+                adapter.notifyItemRangeInserted(0, users.size());
+                progressHandler.post(() -> {
+                    progressBar.setVisibility(ProgressBar.GONE);
+                });
+            });
+        }
 
         recyclerView.setLayoutManager(rLayoutManager);
         recyclerView.setAdapter(adapter);
     }
 
     public void onInviteClicked(){
-        String userEmail = text.getText().toString();
-        if(!userEmail.trim().equals("")) {
+        String userEmail = text.getText().toString().trim();
+        if(!userEmail.equals("")) {
             inviteViewModel.checkUserExists(userEmail).observe(getViewLifecycleOwner(), user -> {
                 if (user == null) {
                     inviteUserToApp(userEmail);
@@ -115,7 +134,7 @@ public class InviteFragment extends Fragment {
                     addToUserList(user);
                     if (tripId != null) {
                         inviteViewModel.sendNotificationToUser(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getDisplayName(), user.getFcmToken(), tripId);
-                        inviteViewModel.addUserToTrip(tripId);
+                        inviteViewModel.addUserToTrip(tripId, userEmail);
                     }
                 }
                 text.setText("");
@@ -163,6 +182,5 @@ public class InviteFragment extends Fragment {
                 })
                 .setNegativeButton("Cancel", (dialog, id) -> dialog.cancel());
         builder.create().show();
-
     }
 }

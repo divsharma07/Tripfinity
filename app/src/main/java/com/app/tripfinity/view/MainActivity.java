@@ -108,12 +108,6 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
                 }
             };
 
-    public void goToInviteActivity(View view) {
-        Intent intent = new Intent(this, InviteActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
     private void initializeMainActivityViewModel() {
         mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
     }

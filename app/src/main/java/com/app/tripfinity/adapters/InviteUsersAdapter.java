@@ -34,7 +34,13 @@ public class InviteUsersAdapter extends RecyclerView.Adapter<InviteUserViewHolde
 
     @Override
     public void onBindViewHolder(@NonNull InviteUserViewHolder holder, int position) {
-        holder.user.setText(users.get(position).getName());
+        if(users.get(position).getName() != null && !users.get(position).getName().equals("")){
+            holder.user.setText(users.get(position).getName());
+            holder.userEmail.setText(users.get(position).getEmail());
+        }
+        else {
+            holder.user.setText(users.get(position).getEmail());
+        }
     }
 
     @Override
