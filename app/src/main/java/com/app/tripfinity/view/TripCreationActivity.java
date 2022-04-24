@@ -203,7 +203,7 @@ public class TripCreationActivity extends AppCompatActivity {
                             Intent returnIntent = new Intent(TripCreationActivity.this,Tripfinity.class);
                             returnIntent.putExtra("tripId", trip1.getTripId());
                             returnIntent.putExtra("tripName", trip1.getTripName());
-                            returnIntent.putExtra("startDate", trip1.getStartDate());
+                            returnIntent.putExtra("startDate", trip1.getStartDate().toString());
                             returnIntent.putExtra("itineraryId", trip1.getItinerary().getId());
                             startActivity(returnIntent);
                         });
@@ -231,7 +231,7 @@ public class TripCreationActivity extends AppCompatActivity {
 
         intent.putExtra("tripId", tripId);
         intent.putExtra("tripName", tripName);
-        intent.putExtra("startDate", startDate);
+        intent.putExtra("startDate", startDate.toString());
         intent.putExtra("itineraryId", itineraryId);
         startActivity(intent);
 

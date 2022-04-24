@@ -16,11 +16,13 @@ import java.util.List;
 
 public class ItineraryDayViewHolder extends RecyclerView.ViewHolder {
     public TextView day;
+    public TextView date;
     public RecyclerView placesRecyclerView;
     public FloatingActionButton addPlaces;
     public ItineraryDayViewHolder(@NonNull View itemView) {
         super(itemView);
         day = itemView.findViewById(R.id.dayIndex);
+        date = itemView.findViewById(R.id.dayDate);
         placesRecyclerView = itemView.findViewById(R.id.places);
         addPlaces = itemView.findViewById(R.id.placesFloatingActionButton);
         placesRecyclerView.setLayoutManager(new LinearLayoutManager(itemView.getContext(),

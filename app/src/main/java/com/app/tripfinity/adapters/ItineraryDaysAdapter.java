@@ -26,8 +26,13 @@ import com.app.tripfinity.viewholders.ItineraryDayViewHolder;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ItineraryDaysAdapter extends RecyclerView.Adapter<ItineraryDayViewHolder> implements PlaceClickListener {
     private static final String TAG = "ItineraryDaysAdapter";
@@ -35,10 +40,13 @@ public class ItineraryDaysAdapter extends RecyclerView.Adapter<ItineraryDayViewH
     private List<Place> places;
     private String itineraryId;
     private Context context;
-    public ItineraryDaysAdapter(List<ItineraryDay> days, String itineraryId, Context context) {
+    private String startDate;
+    public ItineraryDaysAdapter(List<ItineraryDay> days, String itineraryId, Context context,
+                                String startDate) {
         this.days = days;
         this.itineraryId = itineraryId;
         this.context = context;
+        this.startDate = startDate;
     }
 
     @Override
@@ -48,11 +56,32 @@ public class ItineraryDaysAdapter extends RecyclerView.Adapter<ItineraryDayViewH
         return new ItineraryDayViewHolder(view);
     }
 
+    private String getDateForDay(String date,int addition) {
+        SimpleDateFormat sdf = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy",
+                Locale.ENGLISH);
+        Calendar c = Calendar.getInstance();
+        try{
+            //Setting the date to the given date
+            c.setTime(sdf.parse(date));
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+        //Number of Days to add
+        c.add(Calendar.DAY_OF_MONTH, addition);
+        //Date after adding the days to the given date
+        String newDate = sdf.format(c.getTime());
+        return newDate;
+    }
+
     @Override
     public void onBindViewHolder(@NonNull ItineraryDayViewHolder holder, int position) {
         Log.d(TAG,"position "+position);
-        holder.day.setText(days.get(position).getId());
-        Log.d(TAG,"createRecyclerUserView called ");
+        Log.d(TAG,"startDate "+startDate);
+        String dayText = "Day: "+position+1;
+        holder.day.setText(dayText);
+
+        holder.date.setText(getDateForDay(startDate,position+1));
+
 
         PlaceAdapter adapter = new PlaceAdapter(new ArrayList<>(),this,holder.getLayoutPosition());
         holder.placesRecyclerView.setAdapter(adapter);
