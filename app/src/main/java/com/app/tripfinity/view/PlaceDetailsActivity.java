@@ -24,7 +24,7 @@ public class PlaceDetailsActivity extends AppCompatActivity {
         String placeNotesString = "Notes: "+intent.getStringExtra("notes");
         placeNotes.setText(placeNotesString);
 
-        String placeNotesStartTime = "Start Time: "+intent.getStringExtra("notes");
+        String placeNotesStartTime = "Start Time: "+intent.getStringExtra("startTime");
         placeStartTime.setText(placeNotesStartTime);
 
     }
