@@ -88,7 +88,7 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     private void createNewUser(User authenticatedUser) {
-        authViewModel.createUser(authenticatedUser);
+        authViewModel.createUser(authenticatedUser, true);
         authViewModel.getCreatedUserLiveData().observe(this, this::goToMainActivity);
     }
 

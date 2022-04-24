@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.ExpenseActivity">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/expenseRecyclerView"
+        android:layout_width="385dp"
+        android:layout_height="379dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.615"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
+    <Button
+        android:id="@+id/expenseAdd"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="24dp"
+        android:text="Add New Expense"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/expenseHistory"
+        app:layout_constraintTop_toBottomOf="@+id/expenseRecyclerView" />
+
+    <Button
+        android:id="@+id/expenseHistory"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="24dp"
+        android:text="History"
+        app:layout_constraintEnd_toStartOf="@+id/expenseAdd"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/expenseRecyclerView" />
+
+    <ProgressBar
+        android:id="@+id/expensesProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="@+id/expenseRecyclerView"
+        app:layout_constraintStart_toStartOf="@+id/expenseRecyclerView"
+        app:layout_constraintTop_toTopOf="@+id/expenseRecyclerView" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="396dp"
+        android:layout_height="120dp"
+        android:layout_margin="10dp"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="12dp"
+        app:cardPreventCornerOverlap="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.271"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/expenseUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="6dp"
+            android:text="TextView"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/expenseYouOwe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="43dp"
+            android:text="You Owe $"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/expenseYouAreOwed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="80dp"
+            android:text="You are Owed $"
+            android:textSize="20sp" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/noExpensesPresent"
+        android:layout_width="137dp"
+        android:layout_height="132dp"
+        android:layout_marginTop="256dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!--        <TextView-->
+        <!--            android:layout_width="105dp"-->
+        <!--            android:layout_height="103dp"-->
+        <!--            android:layout_marginLeft="130dp"-->
+        <!--            android:layout_marginTop="15dp"-->
+        <!--            android:text="You're not Involved in any Expenses!"-->
+        <!--            android:textSize="20sp"-->
+        <!--            android:textStyle="italic" />-->
+
+        <ImageView
+            android:id="@+id/imageViewExpense"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/noexpense" />
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

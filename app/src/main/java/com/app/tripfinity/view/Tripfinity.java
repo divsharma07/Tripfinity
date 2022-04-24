@@ -38,15 +38,13 @@ public class Tripfinity extends AppCompatActivity {
 
                     switch (menuItem.getItemId()) {
                         case R.id.nav_expense:
-                            //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
-                            // TODO:add expense class fragment
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container2, ExpenseActivity.class, bundle).commit();
                             break;
                         case R.id.nav_itinerary:
                             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container2, ItineraryViewActivity.class, bundle).commit();
                             break;
                         case R.id.nav_group:
-                            //
-                            //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container2, ItineraryViewActivity.class, bundle).commit();
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container2, InviteFragment.class, bundle).commit();
                             break;
                         case R.id.nav_message:
                             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container2, MessagingFragment.class, bundle).commit();

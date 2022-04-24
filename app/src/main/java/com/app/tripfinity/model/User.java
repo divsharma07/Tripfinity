@@ -7,10 +7,8 @@ import com.google.firebase.firestore.GeoPoint;
 import java.io.Serializable;
 import java.util.List;
 
-public class User implements Serializable {
-    private String uid;
-    private String name;
-    private String email;
+public class User extends UserBio implements Serializable {
+
     private GeoPoint geoPoint;
     private String city;
     private String topic;
@@ -26,9 +24,12 @@ public class User implements Serializable {
     private List<DocumentReference> trips;
 
     public User() {
+        super();
     }
 
-
+    public void setUserPhotoUrl(String userPhotoUrl) {
+        this.userPhotoUrl = userPhotoUrl;
+    }
 
     public List<DocumentReference> getTrips() {
         return trips;
@@ -46,30 +47,12 @@ public class User implements Serializable {
         this.isRegistered = isNew;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setUserEmail(String email) {
-        this.email = email;
+    public User(String email){
+        super(email);
     }
 
     public User(String uid, String name, String email) {
-        this.uid = uid;
-        this.name = name;
-        this.email = email;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
+        super(uid, name, email);
     }
 
     public String getCity() {

@@ -36,6 +36,13 @@
             android:exported="false" />
 
         <activity
+            android:name=".view.HistoryExpenseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.AddExpenseActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="false" />
+        <activity
             android:name=".view.SplashScreenActivity"
             android:exported="true"
             android:theme="@style/SplashTheme">
@@ -66,12 +73,25 @@
             android:name=".view.AddPlaceActivity"
             android:exported="false" />
         <activity
+<<<<<<< HEAD
             android:name=".view.AuthActivity"
             android:exported="true"
             android:theme="@style/SplashTheme" />
         <activity
+=======
+>>>>>>> 7e66911c3e75c0d8ce908f18a4e20ecb4a23acc6
             android:name=".view.TripCreationActivity"
             android:exported="false" />
+        <activity
+            android:name=".view.AuthActivity"
+            android:exported="true"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

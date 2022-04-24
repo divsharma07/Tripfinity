@@ -25,6 +25,8 @@ public class TripCreationViewModel extends AndroidViewModel {
     private static final String TAG = "TripCreationViewModel";
     TripCreationRepository tripCreationRepository;
     ItineraryRepository itineraryRepository;
+    LiveData<Trip> updatedTripLiveData;
+    LiveData<Trip> tripLiveData;
     LiveData<Trip> createdTripLiveData;
     LiveData<Itinerary> createdItineraryLiveData;
 
@@ -32,13 +34,10 @@ public class TripCreationViewModel extends AndroidViewModel {
         return updatedTripLiveData;
     }
 
-    LiveData<Trip> updatedTripLiveData;
-
     public LiveData<Trip> getTripLiveData() {
         return tripLiveData;
     }
 
-    LiveData<Trip> tripLiveData;
     public TripCreationViewModel(@NonNull Application application) {
         super(application);
         tripCreationRepository = new TripCreationRepository();
@@ -55,11 +54,17 @@ public class TripCreationViewModel extends AndroidViewModel {
 
     // create new trip for a user
     // add the created trip id to the users trip list
+
     public void createNewTrip(String tripName, String startDate, String userId, String destination,
                               Boolean canShare)
             throws ParseException {
 
-        createdTripLiveData = tripCreationRepository.addANewTrip(tripName,startDate,userId,destination,canShare);
+        createdTripLiveData = tripCreationRepository.addANewTrip(tripName, startDate, userId, destination, canShare);
+    }
+
+    public void createNewTrip(String tripName, String startDate, List<String> users, String destination) throws ParseException {
+        Trip trip = tripCreationRepository.createATrip(tripName,startDate,users, destination);
+        createdTripLiveData = tripCreationRepository.addANewTrip(trip,users);
 
     }
 
