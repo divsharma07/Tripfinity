@@ -43,6 +43,7 @@ public class MainActivityRepository {
         final String topic = tempTopicName;
         if (currentUser != null) {
             DocumentReference userDocRef = userRef.document(Objects.requireNonNull(currentUser.getEmail()));
+            userDocRef.update("userPhotoUrl", currentUser.getPhotoUrl());
             userDocRef.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
@@ -57,7 +58,6 @@ public class MainActivityRepository {
             userDocRef.update("state", updatedState);
             userDocRef.update("city", updatedCity);
             userDocRef.update("geopoint", geoPoint);
-            userDocRef.update("userPhotoUrl", currentUser.getPhotoUrl());
         }
     }
 }
