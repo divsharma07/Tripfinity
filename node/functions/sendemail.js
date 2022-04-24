@@ -12,7 +12,7 @@ exports.sendemail = functions.https.onCall(async (data, context) => {
     const refreshToken = process.env.REFRESH_TOKEN;
     
     // Checking attribute.`
-    if (!(typeof data.text === "string") || data.text.length === 0) {
+    if (!(typeof data.receiver === "string") || data.receiver.length === 0) {
       // Throwing an HttpsError so that the client gets the error details.
       throw new functions.https.HttpsError(
         "invalid-argument",
@@ -51,10 +51,19 @@ exports.sendemail = functions.https.onCall(async (data, context) => {
       }
     });
     const mailOptions = {
-      from: `${APP_NAME} <tripfinity.developers@gmail.com>`,
+      from: `${sender} <tripfinity.developers@gmail.com>`,
       to: data.text, //sending to email IDs in app request, please check README.md
       subject: `Hello from ${APP_NAME}!`,
-      text: `Hi,\n Test email from ${APP_NAME}.`
+      text: `<html>
+    
+      Hi ${receiver},
+    <br/>
+    <br/>
+    Your friend ${sender} has invited you to join ${APP_NAME}
+    <br/>
+    <br/>
+    <img src="https://firebasestorage.googleapis.com/v0/b/tripfinity-3ccc3.appspot.com/o/tripfinity_icon.png?alt=media"/>
+    </html>`
     };
   
     smtpTransport.sendMail(mailOptions, (error, info) => {
