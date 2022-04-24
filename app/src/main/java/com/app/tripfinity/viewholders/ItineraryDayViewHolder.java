@@ -19,12 +19,17 @@ public class ItineraryDayViewHolder extends RecyclerView.ViewHolder {
     public TextView date;
     public RecyclerView placesRecyclerView;
     public FloatingActionButton addPlaces;
-    public ItineraryDayViewHolder(@NonNull View itemView) {
+    public ItineraryDayViewHolder(@NonNull View itemView, boolean fromFeed) {
         super(itemView);
         day = itemView.findViewById(R.id.dayIndex);
         date = itemView.findViewById(R.id.dayDate);
         placesRecyclerView = itemView.findViewById(R.id.places);
         addPlaces = itemView.findViewById(R.id.placesFloatingActionButton);
+        if (fromFeed) {
+            addPlaces.setVisibility(View.INVISIBLE);
+        } else {
+            addPlaces.setVisibility(View.VISIBLE);
+        }
         placesRecyclerView.setLayoutManager(new LinearLayoutManager(itemView.getContext(),
                 LinearLayoutManager.VERTICAL, false));
     }

@@ -63,6 +63,7 @@ public class MessagingFragment extends Fragment {
                 .orderBy("timestamp").addSnapshotListener((snapshot, firebaseException) -> {
             assert snapshot != null;
             int initialSize = messageList.size() - 1;
+            messageList.clear();
             for (DocumentSnapshot document : snapshot) {
                 Message message = document.toObject(Message.class);
                 messageList.add(message);

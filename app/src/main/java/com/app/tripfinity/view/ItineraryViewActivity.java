@@ -122,7 +122,7 @@ public class ItineraryViewActivity extends Fragment {
         recyclerView = getView().findViewById(R.id.days);
         //recyclerView.setHasFixedSize(true);
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        adapter = new ItineraryDaysAdapter(days,itineraryId,getActivity(),startDate);
+        adapter = new ItineraryDaysAdapter(days,itineraryId,getActivity(),startDate, false);
         recyclerView.setLayoutManager(dataLayoutManager);
         recyclerView.setAdapter(adapter);
         Log.d(TAG, "ItineraryId ->" + itineraryId);

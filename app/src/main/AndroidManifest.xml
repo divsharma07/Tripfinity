@@ -30,6 +30,11 @@
         <activity
             android:name=".view.InviteActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".view.FeedDetailActivity"
+            android:exported="false" />
+
         <activity
             android:name=".view.SplashScreenActivity"
             android:exported="true"

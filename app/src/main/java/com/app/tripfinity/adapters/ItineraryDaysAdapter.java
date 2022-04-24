@@ -41,19 +41,21 @@ public class ItineraryDaysAdapter extends RecyclerView.Adapter<ItineraryDayViewH
     private String itineraryId;
     private Context context;
     private String startDate;
+    private boolean fromFeed;
     public ItineraryDaysAdapter(List<ItineraryDay> days, String itineraryId, Context context,
-                                String startDate) {
+                                String startDate, boolean fromFeed) {
         this.days = days;
         this.itineraryId = itineraryId;
         this.context = context;
         this.startDate = startDate;
+        this.fromFeed = fromFeed;
     }
 
     @Override
     public ItineraryDayViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Log.d(TAG,"onCreateViewHolder called");
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.day_layout, parent, false);
-        return new ItineraryDayViewHolder(view);
+        return new ItineraryDayViewHolder(view, fromFeed);
     }
 
     public static String getDateForDay(String date,int addition) {
@@ -83,29 +85,31 @@ public class ItineraryDaysAdapter extends RecyclerView.Adapter<ItineraryDayViewH
         String dayText = "Day: "+(position+1);
         holder.day.setText(dayText);
 
-        holder.date.setText(getDateForDay(startDate,position+1));
+        holder.date.setText(getDateForDay(startDate,position));
 
 
         PlaceAdapter adapter = new PlaceAdapter(new ArrayList<>(),this,holder.getLayoutPosition());
         holder.placesRecyclerView.setAdapter(adapter);
 
-        ItemTouchHelper itemTouchHelper =  new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        if (!fromFeed) {
+            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
 
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
+                @Override
+                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                    return false;
+                }
 
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                int placePosition = viewHolder.getLayoutPosition();
-                ItineraryRepository itineraryRepository = ItineraryRepository.getInstance();
-                itineraryRepository.removePlace(itineraryId,days.get(holder.getLayoutPosition()).getId(),placePosition);
-            }
+                @Override
+                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                    int placePosition = viewHolder.getLayoutPosition();
+                    ItineraryRepository itineraryRepository = ItineraryRepository.getInstance();
+                    itineraryRepository.removePlace(itineraryId, days.get(holder.getLayoutPosition()).getId(), placePosition);
+                }
 
-        });
-        itemTouchHelper.attachToRecyclerView(holder.placesRecyclerView);
+            });
+            itemTouchHelper.attachToRecyclerView(holder.placesRecyclerView);
+        }
 
         holder.addPlaces.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("NotifyDataSetChanged")
@@ -116,12 +120,10 @@ public class ItineraryDaysAdapter extends RecyclerView.Adapter<ItineraryDayViewH
                 intent.putExtra("ItineraryId", itineraryId);
                 intent.putExtra("dayId", days.get(holder.getBindingAdapterPosition()).getId());
                 context.startActivity(intent);
-
             }
         });
         adapter.setItems(days.get(holder.getBindingAdapterPosition()).getPlaces());
         adapter.notifyDataSetChanged();
-
 
     }
 
