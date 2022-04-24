@@ -51,7 +51,6 @@ public class ItineraryDaysAdapter extends RecyclerView.Adapter<ItineraryDayViewH
 
     @Override
     public ItineraryDayViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d(TAG,"onCreateViewHolder called");
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.day_layout, parent, false);
         return new ItineraryDayViewHolder(view, fromFeed);
     }
