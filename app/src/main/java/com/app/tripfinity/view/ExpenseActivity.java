@@ -2,6 +2,7 @@ package com.app.tripfinity.view;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.app.tripfinity.adapters.ExpenseAdapter;
@@ -45,6 +47,8 @@ public class ExpenseActivity extends Fragment {
     private TextView expenseUserName;
     private TextView expenseYouOwe;
     private TextView expenseYouAreOwed;
+    private CardView noExpensesPresent;
+    private ProgressBar expenseProgressBar;
     private Button expenseHistory;
     private Button expenseAdd;
     private ExpenseAdapter expenseAdapter;
@@ -71,6 +75,9 @@ public class ExpenseActivity extends Fragment {
         expenseUserName = (TextView) getView().findViewById(R.id.expenseUserName);
         expenseYouOwe = (TextView) getView().findViewById(R.id.expenseYouOwe);
         expenseYouAreOwed = (TextView) getView().findViewById(R.id.expenseYouAreOwed);
+        noExpensesPresent = (CardView) getView().findViewById(R.id.noExpensesPresent);
+        expenseProgressBar = (ProgressBar) getView().findViewById(R.id.expensesProgressBar);
+        noExpensesPresent.setVisibility(View.GONE);
         expenseHistory = (Button) getView().findViewById(R.id.expenseHistory);
         expenseAdd = (Button) getView().findViewById(R.id.expenseAdd);
 
@@ -156,7 +163,14 @@ public class ExpenseActivity extends Fragment {
                 }
 
                 Log.d("user ", dataToPopulate.toString());
-                createExpenseRecyclerView(dataToPopulate);
+
+                expenseProgressBar.setVisibility(View.GONE);
+
+                if (dataToPopulate.size() > 0) {
+                    createExpenseRecyclerView(dataToPopulate);
+                } else {
+                    noExpensesPresent.setVisibility(View.VISIBLE);
+                }
 
                 expenseAdd.setOnClickListener(new View.OnClickListener() {
                     @Override
