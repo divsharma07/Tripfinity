@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.app.tripfinity.R;
 import com.app.tripfinity.model.Trip;
 import com.app.tripfinity.model.User;
+import com.app.tripfinity.repository.TripRepository;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -132,6 +134,28 @@ public class TripFragment extends Fragment {
 
         });
 
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                // remove trip at a given position
+                // remove trip document
+                // remove trip id from users collection
+                // remove expenses with the given trip id
+                int position = viewHolder.getLayoutPosition();
+                TripRepository tripRepository = TripRepository.getInstance();
+                Trip tripObj = (Trip) adapter.getItem(position);
+                tripRepository.deleteTrip(tripObj.getTripId());
+
+
+            }
+        });
+        itemTouchHelper.attachToRecyclerView(recyclerView);
         addButtonClick();
         
         return  view;
