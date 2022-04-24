@@ -68,6 +68,14 @@
             android:text="You are Owed $"
             android:textSize="20sp" />
 
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="59dp"
+            android:layout_height="53dp"
+            android:layout_marginLeft="260dp"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/wallet" />
+
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
