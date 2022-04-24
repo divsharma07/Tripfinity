@@ -28,8 +28,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="396dp"
-        android:layout_height="120dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:layout_marginTop="16dp"
         app:cardCornerRadius="20dp"
@@ -72,7 +72,7 @@
             android:id="@+id/imageView"
             android:layout_width="59dp"
             android:layout_height="53dp"
-            android:layout_marginLeft="260dp"
+            android:layout_marginLeft="290dp"
             android:layout_marginTop="30dp"
             android:src="@drawable/wallet" />
 
