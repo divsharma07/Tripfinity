@@ -23,8 +23,8 @@ public class InviteViewModel extends AndroidViewModel {
         users = new MutableLiveData<>();
     }
 
-    public void addUserToTrip(String tripId){
-        inviteRepo.addUsersToTrip(tripId);
+    public void addUserToTrip(String tripId, String email){
+        inviteRepo.addUserToTrip(tripId, email);
     }
 
     public LiveData<User> checkUserExists(String email){
@@ -45,5 +45,9 @@ public class InviteViewModel extends AndroidViewModel {
 
     public LiveData<ArrayList<User>> getUsers(){
         return users;
+    }
+
+    public LiveData<ArrayList<User>> getUsersInTrip(String tripId){
+        return inviteRepo.getUsersInTrip(tripId);
     }
 }

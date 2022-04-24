@@ -3,6 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/CS5520/Tripfinity/app/src/main/res/layout/activity_history_expense.xml" value="0.25416666666666665" />
+        <entry key="..\:/CS5520/Tripfinity/app/src/main/res/layout/activity_invite.xml" value="0.18432971014492755" />
+        <entry key="..\:/CS5520/Tripfinity/app/src/main/res/layout/chat_bubble_other_user.xml" value="0.25416666666666665" />
+        <entry key="..\:/CS5520/Tripfinity/app/src/main/res/layout/fragment_invite.xml" value="0.11302083333333333" />
+        <entry key="..\:/CS5520/Tripfinity/app/src/main/res/layout/fragment_messaging.xml" value="0.25416666666666665" />
+        <entry key="..\:/CS5520/Tripfinity/app/src/main/res/layout/history_expense_card.xml" value="0.25416666666666665" />
+        <entry key="..\:/CS5520/Tripfinity/app/src/main/res/layout/invite_user_list_view.xml" value="0.18432971014492755" />
         <entry key="..\:/NortheasternCoursework/Spring22/Tripfinity/Tripfinity/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.115" />
         <entry key="..\:/NortheasternCoursework/Spring22/Tripfinity/Tripfinity/app/src/main/res/drawable-xxxhdpi-300x300/logoprimary.xml" value="0.1" />
         <entry key="..\:/NortheasternCoursework/Spring22/Tripfinity/Tripfinity/app/src/main/res/drawable-xxxhdpi/logo.xml" value="0.166" />
