@@ -13,6 +13,10 @@
         android:roundIcon="@mipmap/tripfinity_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Tripfinity">
+        <activity
+            android:name=".view.PlaceDetailsActivity"
+            android:exported="false" />
+
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
             android:value="false" />
@@ -26,6 +30,11 @@
         <activity
             android:name=".view.InviteActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".view.FeedDetailActivity"
+            android:exported="false" />
+
         <activity
             android:name=".view.HistoryExpenseActivity"
             android:exported="false" />
@@ -33,6 +42,8 @@
             android:name=".view.AddExpenseActivity"
             android:windowSoftInputMode="adjustResize"
             android:exported="false" />
+
+
         <activity
             android:name=".view.SplashScreenActivity"
             android:exported="true"

@@ -62,6 +62,7 @@ public class MessagingFragment extends Fragment {
         messageListener = tripRef.document(tripId).collection("messages")
                 .orderBy("timestamp").addSnapshotListener((snapshot, firebaseException) -> {
             assert snapshot != null;
+
             messageList.clear();
             for (DocumentSnapshot document : snapshot) {
                 Message message = document.toObject(Message.class);

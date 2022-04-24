@@ -7,11 +7,14 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.app.tripfinity.model.Trip;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -32,10 +35,9 @@ public class TripCreationRepository {
     private CollectionReference trips = rootRef.collection(TRIP_COLLECTION);
     private CollectionReference usersRef = rootRef.collection(USER_COLLECTION);
 
-//    public interface UserCallback {
-//        void onCallback(DocumentReference user);
-//    }
-    public Trip createATrip(String tripName, String startDate, List<String> userIds, String destination) throws ParseException {
+
+    public Trip createATrip(String tripName, String startDate, List<String> userIds, String destination,  Boolean canShare) throws ParseException {
+
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-M-dd", Locale.ENGLISH);
         Date startDateObj = formatter.parse(startDate);
         Date endDateObj = startDateObj;
@@ -47,43 +49,25 @@ public class TripCreationRepository {
         }
         DocumentReference itinerary = null;
         Log.d(TAG,"user retrieved "+users);
-        Trip trip = new Trip(startDateObj,endDateObj,tripName,false, expenses, users,itinerary,destination);
+        Trip trip = new Trip(startDateObj,endDateObj,tripName,canShare, expenses, users,itinerary,destination);
 
         return trip;
     }
 
-
-
-//    private void getUserReference(UserCallback callback,String userId) {
-//        usersRef.document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-//                        Log.d(TAG, "Document exists!");
-//                        callback.onCallback(document.getReference());
-//                    } else {
-//                        Log.d(TAG, "Document does not exist!");
-//                    }
-//                } else {
-//                    Log.d(TAG, "Failed with: ", task.getException());
-//                }
-//
-//            }
-//        });
-//    }
-
-    public MutableLiveData<Trip> addANewTrip(Trip trip, List<String> userIds) {
+    public MutableLiveData<Trip> addANewTrip(String tripName, String startDate, List<String> userIds, String destination,
+                Boolean canShare) throws ParseException {
+        Trip trip = createATrip(tripName,startDate,userIds,destination,canShare);
         MutableLiveData<Trip> newMutableTripLiveData = new MutableLiveData<>();
         trips.document(trip.getTripId()).set(trip).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Log.d(TAG, "DocumentSnapshot Trip with ID: " + trip.getTripId());
                 newMutableTripLiveData.setValue(trip);
+
+                DocumentReference user = usersRef.document(userIds.get(0));
+                addTopicToTrip(trips.document(trip.getTripId()),user);
                 for(String userId : userIds){
-                    addUsersToTrip(trips.document(trip.getTripId()),userId);
+                    addTripToUser(trips.document(trip.getTripId()), usersRef.document(userId));
                 }
 
             }
@@ -97,23 +81,49 @@ public class TripCreationRepository {
         return newMutableTripLiveData;
     }
 
-    public void addUsersToTrip(DocumentReference trip, String userId) {
+    public MutableLiveData<Boolean> addTripToUser(DocumentReference trip, DocumentReference user) {
         MutableLiveData<Boolean> isUpdated = new MutableLiveData<>();
-        DocumentReference user = usersRef.document(userId);
+
         user.update("trips", FieldValue.arrayUnion(trip)).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Log.d(TAG, "DocumentSnapshot successfully updated!");
+                Log.d(TAG, "User successfully updated! :"+user.getId());
                 isUpdated.setValue(true);
             }
         })
         .addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "Error updating document", e);
+                Log.w(TAG, "Error updating User document", e);
                 isUpdated.setValue(false);
             }
         });
+        return isUpdated;
     }
 
+    public MutableLiveData<Boolean> addTopicToTrip(DocumentReference trip,DocumentReference user) {
+        MutableLiveData<Boolean> isUpdated = new MutableLiveData<>();
+
+      user.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+           @Override
+           public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+               String topic = (String) task.getResult().get("topic");
+               trip.update("sourceLocation", topic).addOnSuccessListener(new OnSuccessListener<Void>() {
+                   @Override
+                   public void onSuccess(Void aVoid) {
+                       Log.d(TAG, "Trip successfully updated: "+trip.getId());
+                       isUpdated.setValue(true);
+                   }
+               })
+                       .addOnFailureListener(new OnFailureListener() {
+                           @Override
+                           public void onFailure(@NonNull Exception e) {
+                               Log.w(TAG, "Error updating Trip document", e);
+                               isUpdated.setValue(false);
+                           }
+                       });
+           }
+       });
+        return isUpdated;
+    }
 }

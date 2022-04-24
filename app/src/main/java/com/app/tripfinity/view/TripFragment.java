@@ -124,7 +124,7 @@ public class TripFragment extends Fragment {
 
             intent.putExtra("tripId", id);
             intent.putExtra("tripName", trip.getTripName());
-            intent.putExtra("startDate", trip.getStartDate());
+            intent.putExtra("startDate", trip.getStartDate().toString());
             intent.putExtra("itineraryId", trip.getItinerary().getId());
 
             Log.d("Inside Fragment",  "Itinerary -> " + trip.getItinerary().getId());

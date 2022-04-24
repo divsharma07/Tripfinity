@@ -3,19 +3,15 @@ package com.app.tripfinity.repository;
 import static com.app.tripfinity.utils.Constants.USER_COLLECTION;
 
 import android.util.Log;
-
 import androidx.lifecycle.MutableLiveData;
-
 import com.app.tripfinity.model.User;
-import com.app.tripfinity.utils.Constants;
 import com.app.tripfinity.utils.HelperClass;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.functions.FirebaseFunctionsException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +23,6 @@ public class InviteRepository {
     List<User> users;
     List<DocumentReference> userReferences;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    FirebaseFunctions fn = FirebaseFunctions.getInstance();
 
     public InviteRepository(){
         userReferences = new ArrayList<>();
@@ -56,10 +51,12 @@ public class InviteRepository {
         return result;
     }
 
-    public void addUsersToTrip(String tripId) {
+    public void addUserToTrip(String tripId, String email) {
         //TODO: Fix the void to boolean
         DocumentReference tripRef = db.collection("Trips").document(tripId);
-        tripRef.update("users", FieldValue.arrayUnion(userReferences.get(0)));
+        DocumentReference userRef = db.collection(USER_COLLECTION).document(email);
+        tripRef.update("users", FieldValue.arrayUnion(userRef));
+        userRef.update("trips", FieldValue.arrayUnion(tripRef));
     }
 
 
@@ -105,5 +102,24 @@ public class InviteRepository {
             }
 
         });
+    }
+
+    public MutableLiveData<ArrayList<User>> getUsersInTrip(String tripId){
+        MutableLiveData<ArrayList<User>> list = new MutableLiveData<>();
+        DocumentReference tripRef = db.collection("Trips").document(tripId);
+        db.collection("Users").whereArrayContains("trips", tripRef).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                ArrayList<User> userList = new ArrayList<>();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    User user = document.toObject(User.class);
+                    if(!user.getEmail().equals(HelperClass.getCurrentUser().getEmail()))
+                        userList.add(user);
+                }
+                list.setValue(userList);
+            } else {
+                Log.d("Error", "Error getting documents: ", task.getException());
+            }
+        });
+        return list;
     }
 }

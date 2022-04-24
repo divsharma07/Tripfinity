@@ -12,10 +12,12 @@ import com.app.tripfinity.listeners.RemoveInviteClickListener;
 
 public class InviteUserViewHolder extends RecyclerView.ViewHolder {
     public TextView user;
+    public TextView userEmail;
     public ImageButton delete;
     public InviteUserViewHolder(@NonNull View itemView, RemoveInviteClickListener listener) {
         super(itemView);
         user = itemView.findViewById(R.id.user_list_item);
+        userEmail = itemView.findViewById(R.id.user_list_email);
         delete = itemView.findViewById(R.id.remove_user);
         delete.setOnClickListener(v-> {
             if(listener != null){
