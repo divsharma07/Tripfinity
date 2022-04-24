@@ -3,20 +3,14 @@ package com.app.tripfinity.repository;
 import static com.app.tripfinity.utils.Constants.USER_COLLECTION;
 
 import android.util.Log;
-
-import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
-import com.app.tripfinity.model.Trip;
 import com.app.tripfinity.model.User;
 import com.app.tripfinity.utils.HelperClass;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.functions.FirebaseFunctionsException;
 import java.util.ArrayList;
 import java.util.HashMap;
