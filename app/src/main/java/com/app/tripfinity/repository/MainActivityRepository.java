@@ -57,6 +57,7 @@ public class MainActivityRepository {
             userDocRef.update("state", updatedState);
             userDocRef.update("city", updatedCity);
             userDocRef.update("geopoint", geoPoint);
+            userDocRef.update("userPhotoUrl", currentUser.getPhotoUrl());
         }
     }
 }
