@@ -14,6 +14,8 @@ public class Trip {
 
     private boolean canShare;
 
+    private String sourceLocation;
+
     // TODO: add model reference
     private List<DocumentReference> expenses;
 
@@ -107,6 +109,14 @@ public class Trip {
 
     public void setUsers(List<DocumentReference> users) {
         this.users = users;
+    }
+
+    public String getSourceLocation() {
+        return sourceLocation;
+    }
+
+    public void setSourceLocation(String sourceLocation) {
+        this.sourceLocation = sourceLocation;
     }
 
 }

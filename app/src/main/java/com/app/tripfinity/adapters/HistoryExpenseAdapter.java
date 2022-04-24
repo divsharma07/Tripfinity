@@ -37,9 +37,9 @@ public class HistoryExpenseAdapter extends RecyclerView.Adapter<HistoryExpenseAd
         Expense expense = expenseList.get(position);
 
         holder.expenseName.setText(expense.getName());
-        holder.expenseAmount.setText(String.valueOf(expense.getAmount()));
-        holder.addedBy.setText(userEmailToName.get(expense.getAddedByUser()));
-        holder.memberCount.setText(String.valueOf(expense.getUserIds().size()));
+        holder.expenseAmount.setText("Amount : " + String.valueOf(expense.getAmount()));
+        holder.addedBy.setText("Added By : " + userEmailToName.get(expense.getAddedByUser()));
+        holder.memberCount.setText("Members Included : " + String.valueOf(expense.getUserIds().size()));
 
         Date date = expense.getTimestamp().toDate();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");

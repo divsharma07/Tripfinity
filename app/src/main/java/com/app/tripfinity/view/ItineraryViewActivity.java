@@ -35,6 +35,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ItineraryViewActivity extends Fragment {
@@ -47,6 +48,7 @@ public class ItineraryViewActivity extends Fragment {
     private String itineraryId;
     private List<ItineraryDay> days;
     private ImageView editTrip;
+    private String startDate;
 
     @Nullable
     @Override
@@ -64,17 +66,21 @@ public class ItineraryViewActivity extends Fragment {
             tripId = getArguments().getString("tripId");
             tripNameString = getArguments().getString("tripName");
             itineraryId = getArguments().getString("itineraryId");
+            startDate = getArguments().getString("startDate");
 
         }
 
 
 
         Log.d(TAG, "Id ->" + itineraryId);
+        Log.d(TAG, "Start Date in fragment ->" + startDate);
         TextView tripName = getView().findViewById(R.id.tripNameTextView);
         tripName.setText(tripNameString);
         FloatingActionButton addDaysButton = getView().findViewById(R.id.floatingActionButton);
         editTrip = getView().findViewById(R.id.editTrip);
 
+        TextView startDateView = getView().findViewById(R.id.startDate);
+        startDateView.setText(ItineraryDaysAdapter.getDateForDay(startDate,0));
         addDaysButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,7 +122,7 @@ public class ItineraryViewActivity extends Fragment {
         recyclerView = getView().findViewById(R.id.days);
         //recyclerView.setHasFixedSize(true);
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        adapter = new ItineraryDaysAdapter(days,itineraryId,getActivity());
+        adapter = new ItineraryDaysAdapter(days,itineraryId,getActivity(),startDate, false);
         recyclerView.setLayoutManager(dataLayoutManager);
         recyclerView.setAdapter(adapter);
         Log.d(TAG, "ItineraryId ->" + itineraryId);

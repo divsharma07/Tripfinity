@@ -4,6 +4,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.LiveData;
@@ -12,13 +13,16 @@ import androidx.lifecycle.ViewModelProvider;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.app.tripfinity.R;
 import com.app.tripfinity.model.Trip;
@@ -129,16 +133,13 @@ public class TripCreationActivity extends AppCompatActivity {
         }
         PlacesClient placesClient = Places.createClient(this);
 
-        destination.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                List<Place.Field> fields = Arrays.asList(Place.Field.NAME);
+        destination.setOnClickListener(v -> {
+            List<Place.Field> fields = Arrays.asList(Place.Field.NAME);
 
-                // Start the autocomplete intent.
-                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
-                        .setTypeFilter(TypeFilter.CITIES).build(TripCreationActivity.this);
-                startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
-            }
+            // Start the autocomplete intent.
+            Intent intent1 = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
+                    .setTypeFilter(TypeFilter.CITIES).build(TripCreationActivity.this);
+            startActivityForResult(intent1, AUTOCOMPLETE_REQUEST_CODE);
         });
 
         startDate.setOnClickListener(new View.OnClickListener() {
@@ -160,8 +161,10 @@ public class TripCreationActivity extends AppCompatActivity {
             }
 
         });
-
+        // can share logic
+        Switch toggle = findViewById(R.id.isShareableSwitch);
         createTrip.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
                 // all data from the user is there now
@@ -170,9 +173,12 @@ public class TripCreationActivity extends AppCompatActivity {
                     Log.d(TAG,"Trip Name given: "+tripNameInput.getText().toString());
                     Log.d(TAG,"Start Date given: "+startDate.getText().toString());
                     Log.d(TAG,"Destination given: "+destination.getText().toString());
+                    Log.d(TAG,"Is sharable: "+toggle.isChecked());
                     // create a new trip and save in fireStore
                     // need to user view model methods for this
                     try {
+                        // fetch topic from user
+
                         // create a trip
                         // add this trip id to the users collection
 
@@ -180,7 +186,7 @@ public class TripCreationActivity extends AppCompatActivity {
                         userEmails.add(0, userId);
 
                         tripCreationViewModel.createNewTrip(tripNameInput.getText().toString(),
-                                startDate.getText().toString(),userEmails, destination.getText().toString());
+                                startDate.getText().toString(),userEmails,destination.getText().toString(),toggle.isChecked());
 
                         tripCreationViewModel.getCreatedTripLiveData().observe(TripCreationActivity.this,trip -> {
                             Log.d(TAG,"Created Trip Id: "+trip.getTripId());
@@ -214,6 +220,7 @@ public class TripCreationActivity extends AppCompatActivity {
                     Log.d(TAG,"Trip Name given: "+tripNameInput.getText().toString());
                     Log.d(TAG,"Start Date given: "+startDate.getText().toString());
                     Log.d(TAG,"Destination given: "+destination.getText().toString());
+                    Log.d(TAG,"Is sharable: "+toggle.isChecked());
                     // create a new trip and save in fireStore
                     // need to user view model methods for this
                     // create a trip
@@ -234,15 +241,15 @@ public class TripCreationActivity extends AppCompatActivity {
                         trip.setStartDate(startDateObj);
                         trip.setEndDate(endDateObj);
                         trip.setDestination(destination.getText().toString());
-
+                        trip.setCanShare(toggle.isChecked());
                         // setting trip data.
                         tripCreationViewModel.updateTrip(trip);
 
                         tripCreationViewModel.getUpdatedTripLiveData().observe(TripCreationActivity.this,trip1 -> {
-                            Intent returnIntent = new Intent(TripCreationActivity.this,ItineraryViewActivity.class);
+                            Intent returnIntent = new Intent(TripCreationActivity.this,Tripfinity.class);
                             returnIntent.putExtra("tripId", trip1.getTripId());
                             returnIntent.putExtra("tripName", trip1.getTripName());
-                            returnIntent.putExtra("startDate", trip1.getStartDate());
+                            returnIntent.putExtra("startDate", trip1.getStartDate().toString());
                             returnIntent.putExtra("itineraryId", trip1.getItinerary().getId());
                             startActivity(returnIntent);
                         });
@@ -257,7 +264,13 @@ public class TripCreationActivity extends AppCompatActivity {
             }
         });
 
+
+
+
+
+
     }
+
 
     @Override
     protected void onResume() {
@@ -275,7 +288,7 @@ public class TripCreationActivity extends AppCompatActivity {
 
         intent.putExtra("tripId", tripId);
         intent.putExtra("tripName", tripName);
-        intent.putExtra("startDate", startDate);
+        intent.putExtra("startDate", startDate.toString());
         intent.putExtra("itineraryId", itineraryId);
         startActivity(intent);
 
