@@ -16,26 +16,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
-    <Button
-        android:id="@+id/expenseAdd"
-        android:layout_width="180dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="24dp"
-        android:text="Add New Expense"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/expenseHistory"
-        app:layout_constraintTop_toBottomOf="@+id/expenseRecyclerView" />
-
-    <Button
-        android:id="@+id/expenseHistory"
-        android:layout_width="180dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="24dp"
-        android:text="History"
-        app:layout_constraintEnd_toStartOf="@+id/expenseAdd"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/expenseRecyclerView" />
-
     <ProgressBar
         android:id="@+id/expensesProgressBar"
         style="?android:attr/progressBarStyle"
@@ -99,15 +79,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!--        <TextView-->
-        <!--            android:layout_width="105dp"-->
-        <!--            android:layout_height="103dp"-->
-        <!--            android:layout_marginLeft="130dp"-->
-        <!--            android:layout_marginTop="15dp"-->
-        <!--            android:text="You're not Involved in any Expenses!"-->
-        <!--            android:textSize="20sp"-->
-        <!--            android:textStyle="italic" />-->
-
         <ImageView
             android:id="@+id/imageViewExpense"
             android:layout_width="100dp"
@@ -116,5 +87,26 @@
             android:layout_marginTop="15dp"
             android:src="@drawable/noexpense" />
     </androidx.cardview.widget.CardView>
+
+
+    <Button
+        android:id="@+id/expenseAdd"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="24dp"
+        android:text="Add New Expense"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/expenseHistory"
+        app:layout_constraintTop_toBottomOf="@+id/expenseRecyclerView" />
+
+    <Button
+        android:id="@+id/expenseHistory"
+        android:layout_width="150dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="24dp"
+        android:text="History"
+        app:layout_constraintEnd_toStartOf="@+id/expenseAdd"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/expenseRecyclerView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

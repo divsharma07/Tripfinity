@@ -63,7 +63,7 @@ public class AddPlaceActivity extends AppCompatActivity {
 
                 // Start the autocomplete intent.
                 Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
-                        .setTypeFilter(TypeFilter.CITIES).build(AddPlaceActivity.this);
+                        .build(AddPlaceActivity.this);
                 startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
             }
         });

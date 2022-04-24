@@ -16,7 +16,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.app.tripfinity.R;
 import com.app.tripfinity.adapters.InviteUsersAdapter;
 import com.app.tripfinity.listeners.RemoveInviteClickListener;
@@ -25,9 +24,7 @@ import com.app.tripfinity.model.UserBio;
 import com.app.tripfinity.viewmodel.AuthViewModel;
 import com.app.tripfinity.viewmodel.InviteViewModel;
 import com.google.firebase.auth.FirebaseAuth;
-
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 /**

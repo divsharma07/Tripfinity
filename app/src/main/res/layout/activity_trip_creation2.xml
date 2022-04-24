@@ -22,7 +22,7 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Create a New Trip"
+        android:text="New Trip"
         android:textAlignment="center"
         android:textSize="20dp"
         android:textStyle="bold"
@@ -54,6 +54,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
+    <Switch
+        android:id="@+id/isShareableSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="39dp"
+        android:text="Switch"
+        android:checked="true"
+        app:layout_constraintBottom_toTopOf="@+id/startDateButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tripDestination"
+        app:layout_constraintVertical_bias="0.0" />
+
     <TextView
         android:id="@+id/startDateButton"
         android:layout_width="wrap_content"
@@ -65,7 +77,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tripDestination"
-        app:layout_constraintVertical_bias="0.144" />
+        app:layout_constraintVertical_bias="0.201" />
 
     <TextView
         android:id="@+id/users_count"
@@ -90,6 +102,7 @@
         app:layout_constraintTop_toBottomOf="@id/startDateButton"
         app:layout_constraintVertical_bias="0.357" />
 
+
     <Button
         android:id="@+id/createTrip"
         android:layout_width="wrap_content"
@@ -100,6 +113,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inviteUsers"
         app:layout_constraintVertical_bias="0.13" />
+
+    <TextView
+        android:id="@+id/isShareableTextView"
+        android:layout_width="306dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginBottom="20dp"
+        android:text="Sharable with other Tripsters?"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/startDateButton"
+        app:layout_constraintEnd_toStartOf="@+id/isShareableSwitch"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tripDestination"
+        app:layout_constraintVertical_bias="1.0" />
+
 
 
 
