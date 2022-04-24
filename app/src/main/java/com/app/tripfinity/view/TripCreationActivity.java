@@ -214,7 +214,8 @@ public class TripCreationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // all data from the user is there now
                 if (tripNameInput.getText().toString().trim().length() > 0 &&
-                        startDate.getText().toString().trim().length() > 0) {
+                        startDate.getText().toString().trim().length() > 0 &&
+                        destination.getText().toString().trim().length() > 0) {
                     Log.d(TAG,"Trip Name given: "+tripNameInput.getText().toString());
                     Log.d(TAG,"Start Date given: "+startDate.getText().toString());
                     Log.d(TAG,"Destination given: "+destination.getText().toString());
@@ -248,8 +249,19 @@ public class TripCreationActivity extends AppCompatActivity {
 
                 }
                 else {
-                    Snackbar.make(v, "Please Enter valid Trip name and Start date."
-                            ,Snackbar.LENGTH_SHORT).show();
+                    if (tripNameInput.getText().toString().trim().length() == 0) {
+                        Snackbar.make(v, "Please Enter valid Trip name"
+                                ,Snackbar.LENGTH_SHORT).show();
+                    }
+                    else if (startDate.getText().toString().trim().length() == 0) {
+                        Snackbar.make(v, "Please Enter valid Start Date"
+                                ,Snackbar.LENGTH_SHORT).show();
+                    }
+                    else if (destination.getText().toString().trim().length() == 0) {
+                        Snackbar.make(v, "Please Enter valid Destination"
+                                ,Snackbar.LENGTH_SHORT).show();
+                    }
+
                 }
             }
         });
