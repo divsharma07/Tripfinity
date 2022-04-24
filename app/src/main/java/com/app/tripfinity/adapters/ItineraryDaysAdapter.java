@@ -56,7 +56,7 @@ public class ItineraryDaysAdapter extends RecyclerView.Adapter<ItineraryDayViewH
         return new ItineraryDayViewHolder(view);
     }
 
-    private String getDateForDay(String date,int addition) {
+    public static String getDateForDay(String date,int addition) {
         SimpleDateFormat sdf = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy",
                 Locale.ENGLISH);
         Calendar c = Calendar.getInstance();
@@ -66,10 +66,13 @@ public class ItineraryDaysAdapter extends RecyclerView.Adapter<ItineraryDayViewH
         }catch(ParseException e){
             e.printStackTrace();
         }
+
+        SimpleDateFormat sdf2 = new SimpleDateFormat("EE MMM dd yyyy",
+                Locale.ENGLISH);
         //Number of Days to add
         c.add(Calendar.DAY_OF_MONTH, addition);
         //Date after adding the days to the given date
-        String newDate = sdf.format(c.getTime());
+        String newDate = sdf2.format(c.getTime());
         return newDate;
     }
 
@@ -77,7 +80,7 @@ public class ItineraryDaysAdapter extends RecyclerView.Adapter<ItineraryDayViewH
     public void onBindViewHolder(@NonNull ItineraryDayViewHolder holder, int position) {
         Log.d(TAG,"position "+position);
         Log.d(TAG,"startDate "+startDate);
-        String dayText = "Day: "+position+1;
+        String dayText = "Day: "+(position+1);
         holder.day.setText(dayText);
 
         holder.date.setText(getDateForDay(startDate,position+1));

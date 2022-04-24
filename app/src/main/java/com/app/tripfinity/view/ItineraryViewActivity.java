@@ -79,6 +79,8 @@ public class ItineraryViewActivity extends Fragment {
         FloatingActionButton addDaysButton = getView().findViewById(R.id.floatingActionButton);
         editTrip = getView().findViewById(R.id.editTrip);
 
+        TextView startDateView = getView().findViewById(R.id.startDate);
+        startDateView.setText(ItineraryDaysAdapter.getDateForDay(startDate,0));
         addDaysButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
