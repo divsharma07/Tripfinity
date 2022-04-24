@@ -3,6 +3,8 @@ package com.app.tripfinity.repository;
 import static com.app.tripfinity.utils.HelperClass.enableFCM;
 import static com.app.tripfinity.utils.HelperClass.logErrorMessage;
 
+import android.net.Uri;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.app.tripfinity.model.User;
@@ -31,7 +33,11 @@ public class AuthRepository {
                     String uid = firebaseUser.getUid();
                     String name = firebaseUser.getDisplayName();
                     String email = firebaseUser.getEmail();
+                    Uri userPhotoUrl = firebaseUser.getPhotoUrl();
                     User user = new User(uid, name, email);
+                    if(userPhotoUrl != null) {
+                        user.setUserPhotoUrl(userPhotoUrl.toString());
+                    }
                     authenticatedUserMutableLiveData.setValue(user);
                     enableFCM();
                 }
