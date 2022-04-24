@@ -90,6 +90,10 @@ public class AddExpenseActivity extends AppCompatActivity {
                 }
                 try {
                     double test = Double.parseDouble(expenseAmount.getText().toString());
+                    if (test <= 0) {
+                        Snackbar.make(findViewById(R.id.addExpenseActivity), "Expense amount is Incorrect! Please correct it.", Snackbar.LENGTH_LONG).show();
+                        return;
+                    }
                 } catch (NumberFormatException | NullPointerException e) {
                     Snackbar.make(findViewById(R.id.addExpenseActivity), "Expense amount is Incorrect! Please correct it.", Snackbar.LENGTH_LONG).show();
                     return;
