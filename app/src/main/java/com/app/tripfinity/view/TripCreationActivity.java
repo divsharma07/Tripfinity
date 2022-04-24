@@ -285,12 +285,14 @@ public class TripCreationActivity extends AppCompatActivity {
     private void goToItineraryViewActivity(String tripId, Date startDate, String tripName, String itineraryId) {
         Intent intent = new Intent(TripCreationActivity.this, Tripfinity.class);
         // changed from ItineraryViewActivity to Tripfnity
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         intent.putExtra("tripId", tripId);
         intent.putExtra("tripName", tripName);
         intent.putExtra("startDate", startDate.toString());
         intent.putExtra("itineraryId", itineraryId);
         startActivity(intent);
+        finish();
 
     }
 
