@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.tripfinity.R;
 import com.app.tripfinity.adapters.ItineraryDaysAdapter;
@@ -21,6 +22,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -55,6 +58,23 @@ public class FeedDetailActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        expenseCountViewModel.getUserDataForTrip(tripId).observe(this, list -> {
+            if (list != null) {
+                TextView textView = ((TextView)findViewById(R.id.headcount_textview));
+                textView.setText(list.toString());
+
+                Log.d("FeedDetailActivity", "Total User -> " + list);
+
+            }
+        });
+
+        expenseCountViewModel.getExpensesForTrip(tripId).observe(this, list -> {
+            if (list != null) {
+                ((TextView)findViewById(R.id.expense)).setText(list + "");
+
+                Log.d("FeedDetailActivity", "Total Expense -> " + list);
+            }
+        });
     }
 
     private void createRecyclerView() {
