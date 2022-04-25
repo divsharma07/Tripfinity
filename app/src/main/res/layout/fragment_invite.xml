@@ -6,27 +6,97 @@
     android:layout_height="match_parent"
     tools:context=".view.InviteFragment">
 
-    <Button
+    <View
+        android:id="@+id/viewInviteBackground"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_100sdp"
+        android:background="@color/app_primary"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageView
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_50sdp"
+        app:layout_constraintBottom_toTopOf="@id/inviteCardHeader"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/group" />
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/inviteCardHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        app:cardBackgroundColor="@color/card_background"
+        app:cardCornerRadius="@dimen/_16sdp"
+        app:layout_constraintBottom_toBottomOf="@id/viewInviteBackground"
+        app:layout_constraintTop_toBottomOf="@id/viewInviteBackground"
+        app:strokeColor="@color/app_primary"
+        app:strokeWidth="@dimen/_2sdp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_14sdp">
+
+            <TextView
+                android:id="@+id/addUsersCardText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Fellow Tripsters"
+                android:textAlignment="center"
+                android:textSize="@dimen/_18sdp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <ImageButton
         android:id="@+id/addUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add"
-        android:layout_margin="20dp"
+        android:src="@drawable/ic_add_user"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/fui_transparent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextInviteEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/inviteCardHeader"
+        app:layout_constraintBottom_toTopOf="@id/inviteRecyclerView"/>
 
-    <EditText
-        android:id="@+id/editTextInviteEmail"
-        android:layout_width="match_parent"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/userEmailBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        android:layout_margin="20dp"
-        android:hint="@string/invite_email"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/addUser"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/inviteCardHeader"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:hint="Enter email">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextInviteEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:typeface="monospace"
+            android:ems="10"
+            android:textColorHighlight="@color/quantum_lightblue"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/inviteRecyclerView"
@@ -36,7 +106,7 @@
         android:paddingBottom="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/addUser"/>
+        app:layout_constraintTop_toBottomOf="@id/userEmailBox"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
