@@ -132,11 +132,14 @@ public class ItineraryViewFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        createRecyclerView();
+
         itineraryViewModel.getTrip(tripId);
         itineraryViewModel.getTripLiveData().observe(getActivity(),trip -> {
             tripName.setText(trip.getTripName());
-            startDateView.setText(TripFragment.getReadableDate(trip.getStartDate()));
+            startDate = TripCreationActivity.getDateForDay(trip.getStartDate().toString());
+            startDateView.setText(startDate);
+            Log.d(TAG,"Start Date after update "+startDate);
+            createRecyclerView();
         });
 
 

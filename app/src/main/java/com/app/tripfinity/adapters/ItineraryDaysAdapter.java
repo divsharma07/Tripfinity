@@ -17,6 +17,7 @@ import com.app.tripfinity.repository.ItineraryRepository;
 import com.app.tripfinity.view.AddPlaceActivity;
 import com.app.tripfinity.view.PlaceClickListener;
 import com.app.tripfinity.view.PlaceDetailsActivity;
+import com.app.tripfinity.view.TripCreationActivity;
 import com.app.tripfinity.viewholders.ItineraryDayViewHolder;
 
 
@@ -51,7 +52,10 @@ public class ItineraryDaysAdapter extends RecyclerView.Adapter<ItineraryDayViewH
     }
 
     public static String getDateForDay(String date,int addition) {
-        SimpleDateFormat sdf = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy",
+        Log.d(TAG, "date before conversion "+date);
+        date = TripCreationActivity.getDateForDay(date);
+        Log.d(TAG,"original Date "+date);
+        SimpleDateFormat sdf = new SimpleDateFormat("EE MMM dd yyyy",
                 Locale.ENGLISH);
         Calendar c = Calendar.getInstance();
         try{
@@ -60,13 +64,11 @@ public class ItineraryDaysAdapter extends RecyclerView.Adapter<ItineraryDayViewH
         }catch(ParseException e){
             e.printStackTrace();
         }
-
-        SimpleDateFormat sdf2 = new SimpleDateFormat("EE MMM dd yyyy",
-                Locale.ENGLISH);
         //Number of Days to add
         c.add(Calendar.DAY_OF_MONTH, addition);
         //Date after adding the days to the given date
-        String newDate = sdf2.format(c.getTime());
+        String newDate = sdf.format(c.getTime());
+        Log.d(TAG,"newDate!!!! "+newDate);
         return newDate;
     }
 

@@ -4,6 +4,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.app.tripfinity.model.Trip;
+import com.app.tripfinity.view.TripCreationActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,8 +35,9 @@ public class TripCreationRepository {
 
     public Trip createATrip(String tripName, String startDate, List<String> userIds, String destination,  Boolean canShare) throws ParseException {
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-M-dd", Locale.ENGLISH);
-        Date startDateObj = formatter.parse(startDate);
+        SimpleDateFormat formatter = new SimpleDateFormat("EE MMM dd yyyy",
+                Locale.ENGLISH);
+        Date startDateObj = formatter.parse(TripCreationActivity.getDateForDay(startDate));
         Date endDateObj = startDateObj;
         List<DocumentReference> expenses = new ArrayList<>();
         List<DocumentReference> users = new ArrayList<>();
