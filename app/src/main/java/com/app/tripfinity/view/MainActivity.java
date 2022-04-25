@@ -218,6 +218,11 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         this.startActivity(settings);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        firebaseAuth.removeAuthStateListener(this);
+    }
 
     private void initGoogleSignInClient() {
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions
