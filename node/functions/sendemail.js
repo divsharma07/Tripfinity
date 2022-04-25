@@ -54,7 +54,7 @@ exports.sendemail = functions.https.onCall(async (data, context) => {
       from: `${data.sender} <tripfinity.developers@gmail.com>`,
       to: data.receiver, //sending to email IDs in app request, please check README.md
       subject: `Hello from ${APP_NAME}!`,
-      text: `<html>
+      html: `<html>
     
       Hi ${data.receiver},
     <br/>
