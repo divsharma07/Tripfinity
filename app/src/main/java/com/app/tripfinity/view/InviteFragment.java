@@ -82,7 +82,7 @@ public class InviteFragment extends Fragment {
         if(getArguments() != null){
             if(getArguments().getSerializable("users") != null) {
                 for (UserBio user : (ArrayList<User>) getArguments().getSerializable("users")) {
-                    users.add(new User(user.getUid(), user.getName(), user.getEmail(), user.getUserPhotoUrl()));
+                    users.add(new User(user.getUid(), user.getName(), user.getEmail(), user.getUserPhotoUrl(), user.getFcmToken()));
                 }
                 inviteViewModel.addUser(users);
             }

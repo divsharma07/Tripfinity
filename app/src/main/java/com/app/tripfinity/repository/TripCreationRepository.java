@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.app.tripfinity.model.Trip;
 
+import com.app.tripfinity.utils.HelperClass;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -66,8 +67,10 @@ public class TripCreationRepository {
 
                 DocumentReference user = usersRef.document(userIds.get(0));
                 addTopicToTrip(trips.document(trip.getTripId()),user);
+
                 for(String userId : userIds){
                     addTripToUser(trips.document(trip.getTripId()), usersRef.document(userId));
+
                 }
 
             }
@@ -79,6 +82,11 @@ public class TripCreationRepository {
         });
 
         return newMutableTripLiveData;
+    }
+
+    public void sendNotification(String sender, String token, String tripName) {
+        InviteRepository inviteRepo = InviteRepository.getInstance();
+        inviteRepo.sendNotification(sender, token, tripName);
     }
 
     public MutableLiveData<Boolean> addTripToUser(DocumentReference trip, DocumentReference user) {

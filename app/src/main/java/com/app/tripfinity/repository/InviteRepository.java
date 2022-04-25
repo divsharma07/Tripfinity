@@ -24,9 +24,17 @@ public class InviteRepository {
     List<DocumentReference> userReferences;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public InviteRepository(){
+    private InviteRepository(){
         userReferences = new ArrayList<>();
         users = new ArrayList<>();
+    }
+
+    private static InviteRepository inviteRepository;
+    public static InviteRepository getInstance() {
+        if(inviteRepository == null) {
+            inviteRepository = new InviteRepository();
+        }
+        return inviteRepository;
     }
 
     public MutableLiveData<User> checkUserExists(String email){

@@ -14,7 +14,7 @@ public class User extends UserBio implements Serializable {
     private String topic;
     private String state;
     private String country;
-    private String fcmToken;
+
     private boolean registered;
     @Exclude
     public boolean isAuthenticated;
@@ -46,8 +46,8 @@ public class User extends UserBio implements Serializable {
         super(email);
     }
 
-    public User(String uid, String name, String email, String userPhoto) {
-        super(uid, name, email, userPhoto);
+    public User(String uid, String name, String email, String userPhoto, String fcmToken) {
+        super(uid, name, email, userPhoto, fcmToken);
     }
 
     public User(String uid, String name, String email) {
@@ -68,9 +68,5 @@ public class User extends UserBio implements Serializable {
 
     public String getCountry() {
         return country;
-    }
-
-    public String getFcmToken() {
-        return fcmToken;
     }
 }

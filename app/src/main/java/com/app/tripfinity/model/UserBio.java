@@ -8,6 +8,7 @@ public class UserBio implements Serializable {
     private String name;
     private String email;
     private String userPhotoUrl;
+    private String fcmToken;
 
     public String getEmail() {
         return email;
@@ -37,6 +38,10 @@ public class UserBio implements Serializable {
         return userPhotoUrl;
     }
 
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
     public UserBio(){
 
     }
@@ -45,11 +50,12 @@ public class UserBio implements Serializable {
         this.email = email;
     }
 
-    public UserBio(String uid, String name, String email, String userPhotoUrl) {
+    public UserBio(String uid, String name, String email, String userPhotoUrl, String fcmToken) {
         this.uid = uid;
         this.name = name;
         this.email = email;
         this.userPhotoUrl = userPhotoUrl;
+        this.fcmToken = fcmToken;
     }
 
     public UserBio(String uid, String name, String email) {

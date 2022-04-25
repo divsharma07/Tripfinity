@@ -31,6 +31,7 @@ import com.app.tripfinity.model.User;
 import com.app.tripfinity.model.User;
 import com.app.tripfinity.model.UserBio;
 import com.app.tripfinity.utils.Constants;
+import com.app.tripfinity.utils.HelperClass;
 import com.app.tripfinity.viewmodel.AuthViewModel;
 import com.app.tripfinity.viewmodel.TripCreationViewModel;
 import com.google.android.gms.common.api.Status;
@@ -236,6 +237,12 @@ public class TripCreationActivity extends AppCompatActivity {
 
                         tripCreationViewModel.createNewTrip(tripNameInput.getText().toString(),
                                 startDate.getText().toString(),userEmails,destination.getText().toString(),toggle.isChecked());
+
+                        for(UserBio user: invitedUsers){
+                            if(user.getFcmToken() != null){
+                                tripCreationViewModel.sendNotification(HelperClass.getCurrentUser().getDisplayName(), user.getFcmToken(), tripNameInput.getText().toString());
+                            }
+                        }
 
                         tripCreationViewModel.getCreatedTripLiveData().observe(TripCreationActivity.this,trip -> {
                             Log.d(TAG,"Created Trip Id: "+trip.getTripId());

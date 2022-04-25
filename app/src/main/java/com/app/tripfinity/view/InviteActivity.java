@@ -51,7 +51,7 @@ public class InviteActivity extends AppCompatActivity {
         ArrayList<UserBio> users = new ArrayList<>();
         if (inviteViewModel.getUsers().getValue() != null) {
             for (User user : inviteViewModel.getUsers().getValue()) {
-                users.add(new UserBio(user.getUid(), user.getName(), user.getEmail(), user.getUserPhotoUrl()));
+                users.add(new UserBio(user.getUid(), user.getName(), user.getEmail(), user.getUserPhotoUrl(), user.getFcmToken()));
             }
             bundle.putSerializable("users", users);
             data.putExtra("users", bundle);
