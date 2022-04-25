@@ -78,24 +78,18 @@
 
     </androidx.cardview.widget.CardView>
 
-    <androidx.cardview.widget.CardView
+
+    <ImageView
         android:id="@+id/noExpensesPresent"
-        android:layout_width="137dp"
-        android:layout_height="132dp"
+        android:layout_width="151dp"
+        android:layout_height="143dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="256dp"
+        android:src="@drawable/noexpense"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/imageViewExpense"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="15dp"
-            android:src="@drawable/noexpense" />
-    </androidx.cardview.widget.CardView>
-
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/expenseAdd"
