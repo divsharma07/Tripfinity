@@ -31,6 +31,7 @@ import com.app.tripfinity.model.User;
 import com.app.tripfinity.model.User;
 import com.app.tripfinity.model.UserBio;
 import com.app.tripfinity.utils.Constants;
+import com.app.tripfinity.utils.HelperClass;
 import com.app.tripfinity.viewmodel.AuthViewModel;
 import com.app.tripfinity.viewmodel.TripCreationViewModel;
 import com.google.android.gms.common.api.Status;
@@ -153,8 +154,11 @@ public class TripCreationActivity extends AppCompatActivity {
                         // Handle the Intent
                         if(resultIntent != null) {
                             Bundle bundle = resultIntent.getBundleExtra("users");
-                            if(bundle.getSerializable("users") != null){
+                            if(bundle != null && bundle.getSerializable("users") != null){
                             invitedUsers = (ArrayList<UserBio>) bundle.getSerializable("users");
+                            }
+                            else{
+                                invitedUsers = new ArrayList<>();
                             }
                         }
                     }
@@ -233,11 +237,18 @@ public class TripCreationActivity extends AppCompatActivity {
                         tripCreationViewModel.createNewTrip(tripNameInput.getText().toString(),
                                 startDate.getText().toString(),userEmails,destination.getText().toString(),toggle.isChecked());
 
+                        for(UserBio user: invitedUsers){
+                            if(user.getFcmToken() != null){
+                                tripCreationViewModel.sendNotification(HelperClass.getCurrentUser().getDisplayName(), user.getFcmToken(), tripNameInput.getText().toString());
+                            }
+                        }
+
                         tripCreationViewModel.getCreatedTripLiveData().observe(TripCreationActivity.this,trip -> {
                             Log.d(TAG,"Created Trip Id: "+trip.getTripId());
                             tripCreationViewModel.createNewItinerary(trip.getTripId());
                             tripCreationViewModel.getCreatedItineraryLiveData().observe(TripCreationActivity.this,itinerary -> {
-                                goToItineraryViewActivity(trip.getTripId(),trip.getStartDate(),trip.getTripName(),itinerary.getId());
+                                goToItineraryViewActivity(trip.getTripId(),trip.getStartDate(),
+                                        trip.getTripName(),itinerary.getId(),trip.isCanShare());
                             });
 
                         });
@@ -303,10 +314,12 @@ public class TripCreationActivity extends AppCompatActivity {
 
                         tripCreationViewModel.getUpdatedTripLiveData().observe(TripCreationActivity.this,trip1 -> {
                             Intent returnIntent = new Intent(TripCreationActivity.this,Tripfinity.class);
-                            returnIntent.putExtra("tripId", trip1.getTripId());
-                            returnIntent.putExtra("tripName", trip1.getTripName());
-                            returnIntent.putExtra("startDate", trip1.getStartDate().toString());
-                            returnIntent.putExtra("itineraryId", trip1.getItinerary().getId());
+                            returnIntent.putExtra(Constants.TRIP_ID, trip1.getTripId());
+                            returnIntent.putExtra(Constants.TRIP_NAME, trip1.getTripName());
+                            returnIntent.putExtra(Constants.TRIP_START_DATE, trip1.getStartDate().toString());
+                            returnIntent.putExtra(Constants.ITINERARY_ID, trip1.getItinerary().getId());
+                            returnIntent.putExtra(Constants.DESTINATION,trip1.getDestination());
+                            returnIntent.putExtra(Constants.CAN_SHARE,trip1.isCanShare());
                             startActivity(returnIntent);
                         });
 
@@ -332,22 +345,27 @@ public class TripCreationActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        TextView userCount = findViewById(R.id.users_count);
         if(invitedUsers != null && invitedUsers.size() != 0){
-            TextView userCount = findViewById(R.id.users_count);
             userCount.setText(String.format("%d user(s) invited", invitedUsers.size()));
+        }
+        else{
+            userCount.setText("");
         }
     }
 
-    private void goToItineraryViewActivity(String tripId, Date startDate, String tripName, String itineraryId) {
+    private void goToItineraryViewActivity(String tripId, Date startDate, String tripName,
+                                           String itineraryId, Boolean canShare) {
         Intent intent = new Intent(TripCreationActivity.this, Tripfinity.class);
         // changed from ItineraryViewActivity to Tripfnity
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        intent.putExtra("tripId", tripId);
-        intent.putExtra("tripName", tripName);
-        intent.putExtra("startDate", startDate.toString());
-        intent.putExtra("itineraryId", itineraryId);
-        intent.putExtra("destination",destination.getText().toString());
+        intent.putExtra(Constants.TRIP_ID, tripId);
+        intent.putExtra(Constants.TRIP_NAME, tripName);
+        intent.putExtra(Constants.TRIP_START_DATE, startDate.toString());
+        intent.putExtra(Constants.ITINERARY_ID, itineraryId);
+        intent.putExtra(Constants.DESTINATION,destination.getText().toString());
+        intent.putExtra(Constants.CAN_SHARE,canShare);
         startActivity(intent);
         finish();
 

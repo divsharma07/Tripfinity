@@ -54,7 +54,7 @@ public class AuthRepository {
         uidRef.get().addOnCompleteListener(uidTask -> {
             if (uidTask.isSuccessful()) {
                 DocumentSnapshot document = uidTask.getResult();
-                authenticatedUser.setIsRegistered(true);
+                authenticatedUser.setIsRegistered(isRegistered);
                 if (!document.exists()) {
                     uidRef.set(authenticatedUser).addOnCompleteListener(userCreationTask -> {
                         if (userCreationTask.isSuccessful()) {

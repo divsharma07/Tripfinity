@@ -2,10 +2,12 @@ package com.app.tripfinity.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
 import com.app.tripfinity.R;
 import com.app.tripfinity.model.User;
 import com.app.tripfinity.model.UserBio;
@@ -26,11 +28,10 @@ public class InviteActivity extends AppCompatActivity {
         Button nextButton = findViewById(R.id.invite_next_button);
         nextButton.setOnClickListener(this::onNextClicked);
         Bundle bundle;
-        if(getIntent().getSerializableExtra("users") != null){
+        if (getIntent().getSerializableExtra("users") != null) {
             bundle = new Bundle();
-            bundle.putSerializable("users",getIntent().getSerializableExtra("users"));
-        }
-        else {
+            bundle.putSerializable("users", getIntent().getSerializableExtra("users"));
+        } else {
             bundle = null;
         }
         if (savedInstanceState == null) {
@@ -44,16 +45,17 @@ public class InviteActivity extends AppCompatActivity {
 
     }
 
-    private void onNextClicked(View view){
+    private void onNextClicked(View view) {
         Intent data = new Intent();
         Bundle bundle = new Bundle();
         ArrayList<UserBio> users = new ArrayList<>();
-        for (User user: Objects.requireNonNull(inviteViewModel.getUsers().getValue())
-             ) {
-            users.add(new UserBio(user.getUid(), user.getName(), user.getEmail()));
+        if (inviteViewModel.getUsers().getValue() != null) {
+            for (User user : inviteViewModel.getUsers().getValue()) {
+                users.add(new UserBio(user.getUid(), user.getName(), user.getEmail(), user.getUserPhotoUrl(), user.getFcmToken()));
+            }
+            bundle.putSerializable("users", users);
+            data.putExtra("users", bundle);
         }
-        bundle.putSerializable("users",  users);
-        data.putExtra("users", bundle);
         setResult(RESULT_OK, data);
         finish();
     }
