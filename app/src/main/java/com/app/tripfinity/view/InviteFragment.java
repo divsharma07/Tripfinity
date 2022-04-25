@@ -43,7 +43,6 @@ public class InviteFragment extends Fragment {
     ArrayList<User> users;
     private RecyclerView recyclerView;
     private InviteUsersAdapter adapter;
-    private ImageView home;
     private ProgressBar progressBar;
     private final Handler progressHandler = new Handler();
 
@@ -165,21 +164,6 @@ public class InviteFragment extends Fragment {
             adapter.notifyItemInserted(users.size() - 1);
             inviteViewModel.addUser(users);
         }
-    }
-
-    private void initializeAndSetHomeListener() {
-        home = getView().findViewById(R.id.homeButton);
-        home.setOnClickListener(v -> {
-            if(getActivity()!=null) {
-                getActivity().finish();
-            }
-        });
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        initializeAndSetHomeListener();
     }
 
     private void inviteUserToApp(String email){

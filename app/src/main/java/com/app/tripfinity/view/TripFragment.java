@@ -51,7 +51,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.zip.Inflater;
 
-public class TripFragment extends Fragment implements FirebaseAuth.AuthStateListener {
+public class TripFragment extends Fragment  {
 
     private RecyclerView recyclerView;
     private FirebaseFirestore db;
@@ -59,10 +59,8 @@ public class TripFragment extends Fragment implements FirebaseAuth.AuthStateList
     private FirestoreRecyclerAdapter adapter;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private TextView emptyView;
-    private ImageView logout;
     private OnItemClickListener listener;
     private FloatingActionButton addButton;
-    private GoogleSignInClient googleSignInClient;
 
 
     public static String getReadableDate(Date date) {
@@ -222,30 +220,12 @@ public class TripFragment extends Fragment implements FirebaseAuth.AuthStateList
     public void onStart() {
         super.onStart();
         adapter.startListening();
-        firebaseAuth.addAuthStateListener(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
         adapter.stopListening();
-        firebaseAuth.removeAuthStateListener(this);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        initGoogleSignInClient();
-        initializeAndSetLogoutListener();
-    }
-
-    private void initializeAndSetLogoutListener() {
-        logout = getView().findViewById(R.id.logoutButton);
-        logout.setOnClickListener(v -> {
-            if(getActivity()!=null) {
-                signOut();
-            }
-        });
     }
 
     private void addButtonClick() {
@@ -255,39 +235,5 @@ public class TripFragment extends Fragment implements FirebaseAuth.AuthStateList
             v.getContext().startActivity(intent);
 
         });
-    }
-
-    private void initGoogleSignInClient() {
-        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions
-                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .build();
-        googleSignInClient = GoogleSignIn.getClient(getActivity(), googleSignInOptions);
-    }
-
-    @Override
-    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        if (firebaseUser == null) {
-            goToAuthInActivity();
-        }
-    }
-
-    private void signOut() {
-        singOutFirebase();
-        signOutGoogle();
-        disableFCM();
-    }
-
-    private void goToAuthInActivity() {
-        Intent intent = new Intent(getActivity(), AuthActivity.class);
-        startActivity(intent);
-    }
-
-    private void singOutFirebase() {
-        firebaseAuth.signOut();
-    }
-
-    private void signOutGoogle() {
-        googleSignInClient.signOut();
     }
 }

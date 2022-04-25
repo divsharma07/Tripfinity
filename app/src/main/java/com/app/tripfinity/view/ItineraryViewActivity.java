@@ -50,7 +50,6 @@ public class ItineraryViewActivity extends Fragment {
     private String itineraryId;
     private List<ItineraryDay> days;
     private ImageView editTrip;
-    private ImageView home;
     private String startDate;
     private String tripNameString;
     private String destination;
@@ -125,17 +124,8 @@ public class ItineraryViewActivity extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initializeAndSetHomeListener();
     }
 
-    private void initializeAndSetHomeListener() {
-        home = getView().findViewById(R.id.homeButton);
-        home.setOnClickListener(v -> {
-            if(getActivity()!=null) {
-                getActivity().finish();
-            }
-        });
-    }
 
     private void createRecyclerView() {
         Log.d(TAG,"Creating recycler view for Itinerary: "+itineraryId);

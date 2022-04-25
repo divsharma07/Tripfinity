@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import com.app.tripfinity.R;
 import com.app.tripfinity.utils.Constants;
@@ -14,17 +15,17 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Tripfinity extends AppCompatActivity {
     private Bundle bundle;
+    private ImageView home;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tripfinity);
-        if(getSupportActionBar() != null) {
-            getSupportActionBar().hide();
-        }
+        initializeAndSetHomeListener();
         Intent intent = getIntent();
         BottomNavigationView bottomNav = findViewById(R.id.bottom_menu);
         bundle = new Bundle();
-        Log.d("Tripfinity","Destination -> "+intent.getStringExtra(Constants.DESTINATION));
+        Log.d("Tripfinity", "Destination -> " + intent.getStringExtra(Constants.DESTINATION));
         bundle.putString("tripId", intent.getStringExtra("tripId"));
         bundle.putString("tripName", intent.getStringExtra("tripName"));
         bundle.putString("startDate", intent.getStringExtra("startDate"));
@@ -62,5 +63,9 @@ public class Tripfinity extends AppCompatActivity {
                 }
             };
 
+    private void initializeAndSetHomeListener() {
+        home = findViewById(R.id.homeButton);
+        home.setOnClickListener(v -> finish());
+    }
 
 }

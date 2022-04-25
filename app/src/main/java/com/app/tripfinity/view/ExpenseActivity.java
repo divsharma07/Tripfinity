@@ -205,21 +205,6 @@ public class ExpenseActivity extends Fragment {
         });
     }
 
-    private void initializeAndSetHomeListener() {
-        home = getView().findViewById(R.id.homeButton);
-        home.setOnClickListener(v -> {
-            if (getActivity() != null) {
-                getActivity().finish();
-            }
-        });
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        initializeAndSetHomeListener();
-    }
-
     private void createExpenseRecyclerView(ArrayList<String> dataToPopulate) {
         layoutManager = new LinearLayoutManager(getActivity());
         RecyclerView expenseRecyclerView = getView().findViewById(R.id.expenseRecyclerView);
