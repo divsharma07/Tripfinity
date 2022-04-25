@@ -39,9 +39,7 @@ public class FeedDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed_detail);
-
         Intent intent = getIntent();
-
         itineraryId = intent.getStringExtra("itineraryId");
         tripId = intent.getStringExtra("tripId");
         startDate = intent.getStringExtra("startDate");

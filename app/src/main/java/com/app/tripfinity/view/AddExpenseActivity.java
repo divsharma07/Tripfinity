@@ -46,7 +46,6 @@ public class AddExpenseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_expense);
         initExpenseViewModel();
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-
         userEmailToName = (HashMap<String, String>) getIntent().getSerializableExtra("userEmailToName");
         loggedInUser = getIntent().getStringExtra("loggedInUser");
         tripId = getIntent().getExtras().getString("tripId");
