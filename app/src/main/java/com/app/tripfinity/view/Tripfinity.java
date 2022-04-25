@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.app.tripfinity.R;
+import com.app.tripfinity.utils.Constants;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Tripfinity extends AppCompatActivity {
@@ -17,14 +18,17 @@ public class Tripfinity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tripfinity);
-
+        getSupportActionBar().hide();
         Intent intent = getIntent();
         BottomNavigationView bottomNav = findViewById(R.id.bottom_menu);
         bundle = new Bundle();
+        Log.d("Tripfinity","Destination -> "+intent.getStringExtra(Constants.DESTINATION));
         bundle.putString("tripId", intent.getStringExtra("tripId"));
         bundle.putString("tripName", intent.getStringExtra("tripName"));
         bundle.putString("startDate", intent.getStringExtra("startDate"));
         bundle.putString("itineraryId", intent.getStringExtra("itineraryId"));
+        bundle.putString(Constants.DESTINATION, intent.getStringExtra(Constants.DESTINATION));
+        bundle.putString(Constants.CAN_SHARE, intent.getStringExtra(Constants.CAN_SHARE));
 
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 

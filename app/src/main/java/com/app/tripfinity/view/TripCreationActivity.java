@@ -243,7 +243,8 @@ public class TripCreationActivity extends AppCompatActivity {
                             Log.d(TAG,"Created Trip Id: "+trip.getTripId());
                             tripCreationViewModel.createNewItinerary(trip.getTripId());
                             tripCreationViewModel.getCreatedItineraryLiveData().observe(TripCreationActivity.this,itinerary -> {
-                                goToItineraryViewActivity(trip.getTripId(),trip.getStartDate(),trip.getTripName(),itinerary.getId());
+                                goToItineraryViewActivity(trip.getTripId(),trip.getStartDate(),
+                                        trip.getTripName(),itinerary.getId(),trip.isCanShare());
                             });
 
                         });
@@ -309,10 +310,12 @@ public class TripCreationActivity extends AppCompatActivity {
 
                         tripCreationViewModel.getUpdatedTripLiveData().observe(TripCreationActivity.this,trip1 -> {
                             Intent returnIntent = new Intent(TripCreationActivity.this,Tripfinity.class);
-                            returnIntent.putExtra("tripId", trip1.getTripId());
-                            returnIntent.putExtra("tripName", trip1.getTripName());
-                            returnIntent.putExtra("startDate", trip1.getStartDate().toString());
-                            returnIntent.putExtra("itineraryId", trip1.getItinerary().getId());
+                            returnIntent.putExtra(Constants.TRIP_ID, trip1.getTripId());
+                            returnIntent.putExtra(Constants.TRIP_NAME, trip1.getTripName());
+                            returnIntent.putExtra(Constants.TRIP_START_DATE, trip1.getStartDate().toString());
+                            returnIntent.putExtra(Constants.ITINERARY_ID, trip1.getItinerary().getId());
+                            returnIntent.putExtra(Constants.DESTINATION,trip1.getDestination());
+                            returnIntent.putExtra(Constants.CAN_SHARE,trip1.isCanShare());
                             startActivity(returnIntent);
                         });
 
@@ -356,16 +359,18 @@ public class TripCreationActivity extends AppCompatActivity {
 
     }
 
-    private void goToItineraryViewActivity(String tripId, Date startDate, String tripName, String itineraryId) {
+    private void goToItineraryViewActivity(String tripId, Date startDate, String tripName,
+                                           String itineraryId, Boolean canShare) {
         Intent intent = new Intent(TripCreationActivity.this, Tripfinity.class);
         // changed from ItineraryViewActivity to Tripfnity
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        intent.putExtra("tripId", tripId);
-        intent.putExtra("tripName", tripName);
-        intent.putExtra("startDate", startDate.toString());
-        intent.putExtra("itineraryId", itineraryId);
-
+        intent.putExtra(Constants.TRIP_ID, tripId);
+        intent.putExtra(Constants.TRIP_NAME, tripName);
+        intent.putExtra(Constants.TRIP_START_DATE, startDate.toString());
+        intent.putExtra(Constants.ITINERARY_ID, itineraryId);
+        intent.putExtra(Constants.DESTINATION,destination.getText().toString());
+        intent.putExtra(Constants.CAN_SHARE,canShare);
         startActivity(intent);
         finish();
 

@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,7 +48,7 @@ public class ExpenseActivity extends Fragment {
     private TextView expenseUserName;
     private TextView expenseYouOwe;
     private TextView expenseYouAreOwed;
-    private CardView noExpensesPresent;
+    private ImageView noExpensesPresent;
     private ProgressBar expenseProgressBar;
     private Button expenseHistory;
     private Button expenseAdd;
@@ -75,7 +76,7 @@ public class ExpenseActivity extends Fragment {
         expenseUserName = (TextView) getView().findViewById(R.id.expenseUserName);
         expenseYouOwe = (TextView) getView().findViewById(R.id.expenseYouOwe);
         expenseYouAreOwed = (TextView) getView().findViewById(R.id.expenseYouAreOwed);
-        noExpensesPresent = (CardView) getView().findViewById(R.id.noExpensesPresent);
+        noExpensesPresent = (ImageView) getView().findViewById(R.id.noExpensesPresent);
         expenseProgressBar = (ProgressBar) getView().findViewById(R.id.expensesProgressBar);
         noExpensesPresent.setVisibility(View.GONE);
         expenseHistory = (Button) getView().findViewById(R.id.expenseHistory);

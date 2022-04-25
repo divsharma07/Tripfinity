@@ -24,6 +24,7 @@ import com.app.tripfinity.R;
 import com.app.tripfinity.model.Trip;
 import com.app.tripfinity.model.User;
 import com.app.tripfinity.repository.TripRepository;
+import com.app.tripfinity.utils.Constants;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -51,6 +52,15 @@ public class TripFragment extends Fragment {
     private TextView emptyView;
     private OnItemClickListener listener;
     private FloatingActionButton addButton;
+
+
+    public static String getReadableDate(Date date) {
+        SimpleDateFormat sdf2 = new SimpleDateFormat("EE MMM dd yyyy",
+                Locale.ENGLISH);
+
+        String readableDate = sdf2.format(date);
+        return readableDate;
+    }
 
     @androidx.annotation.Nullable
     @Override
@@ -94,11 +104,8 @@ public class TripFragment extends Fragment {
                     Log.d("onBindViewHolder ", "" + model.getTripName());
                     holder.trip_name.setText(model.getTripName());
 
-                    SimpleDateFormat sdf2 = new SimpleDateFormat("EE MMM dd yyyy",
-                            Locale.ENGLISH);
 
-                    String readableDate = sdf2.format(model.getStartDate());
-                    holder.start_date.setText(readableDate);
+                    holder.start_date.setText(getReadableDate(model.getStartDate()));
                     Log.d("Inside onBindViewHolder", "Trip Name -> " + model.getTripName());
                 }
             }
@@ -134,10 +141,12 @@ public class TripFragment extends Fragment {
             Intent intent = new Intent(getActivity(), Tripfinity.class);
             //changed from ItineraryViewActivity to Tripfinity
 
-            intent.putExtra("tripId", id);
-            intent.putExtra("tripName", trip.getTripName());
-            intent.putExtra("startDate", trip.getStartDate().toString());
-            intent.putExtra("itineraryId", trip.getItinerary().getId());
+            intent.putExtra(Constants.TRIP_ID, id);
+            intent.putExtra(Constants.TRIP_NAME, trip.getTripName());
+            intent.putExtra(Constants.TRIP_START_DATE, trip.getStartDate().toString());
+            intent.putExtra(Constants.ITINERARY_ID, trip.getItinerary().getId());
+            intent.putExtra(Constants.CAN_SHARE, trip.isCanShare());
+            intent.putExtra(Constants.DESTINATION, trip.getDestination());
 
             Log.d("Inside Fragment",  "Itinerary -> " + trip.getItinerary().getId());
             startActivity(intent);
