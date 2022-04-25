@@ -31,6 +31,7 @@ import com.app.tripfinity.model.User;
 import com.app.tripfinity.model.User;
 import com.app.tripfinity.model.UserBio;
 import com.app.tripfinity.utils.Constants;
+import com.app.tripfinity.utils.HelperClass;
 import com.app.tripfinity.viewmodel.AuthViewModel;
 import com.app.tripfinity.viewmodel.TripCreationViewModel;
 import com.google.android.gms.common.api.Status;
@@ -154,8 +155,11 @@ public class TripCreationActivity extends AppCompatActivity {
                         // Handle the Intent
                         if(resultIntent != null) {
                             Bundle bundle = resultIntent.getBundleExtra("users");
-                            if(bundle.getSerializable("users") != null){
+                            if(bundle != null && bundle.getSerializable("users") != null){
                             invitedUsers = (ArrayList<UserBio>) bundle.getSerializable("users");
+                            }
+                            else{
+                                invitedUsers = new ArrayList<>();
                             }
                         }
                     }
@@ -233,6 +237,12 @@ public class TripCreationActivity extends AppCompatActivity {
 
                         tripCreationViewModel.createNewTrip(tripNameInput.getText().toString(),
                                 startDate.getText().toString(),userEmails,destination.getText().toString(),toggle.isChecked());
+
+                        for(UserBio user: invitedUsers){
+                            if(user.getFcmToken() != null){
+                                tripCreationViewModel.sendNotification(HelperClass.getCurrentUser().getDisplayName(), user.getFcmToken(), tripNameInput.getText().toString());
+                            }
+                        }
 
                         tripCreationViewModel.getCreatedTripLiveData().observe(TripCreationActivity.this,trip -> {
                             Log.d(TAG,"Created Trip Id: "+trip.getTripId());
@@ -336,9 +346,12 @@ public class TripCreationActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        TextView userCount = findViewById(R.id.users_count);
         if(invitedUsers != null && invitedUsers.size() != 0){
-            TextView userCount = findViewById(R.id.users_count);
             userCount.setText(String.format("%d user(s) invited", invitedUsers.size()));
+        }
+        else{
+            userCount.setText("");
         }
     }
 

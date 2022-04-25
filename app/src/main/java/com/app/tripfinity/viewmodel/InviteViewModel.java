@@ -15,7 +15,7 @@ public class InviteViewModel extends AndroidViewModel {
 
     public InviteViewModel(Application application) {
         super(application);
-        inviteRepo = new InviteRepository();
+        inviteRepo = InviteRepository.getInstance();
         users = new MutableLiveData<>();
     }
 

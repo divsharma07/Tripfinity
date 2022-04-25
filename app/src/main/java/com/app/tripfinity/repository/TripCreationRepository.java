@@ -1,12 +1,9 @@
 package com.app.tripfinity.repository;
 
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
-
 import com.app.tripfinity.model.Trip;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -17,7 +14,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,10 +27,9 @@ public class TripCreationRepository {
     private static final String TAG = "TripCreationRepository";
     public static final String TRIP_COLLECTION = "Trips";
     public static final String USER_COLLECTION = "Users";
-    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-    private FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
-    private CollectionReference trips = rootRef.collection(TRIP_COLLECTION);
-    private CollectionReference usersRef = rootRef.collection(USER_COLLECTION);
+    private final FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+    private final CollectionReference trips = rootRef.collection(TRIP_COLLECTION);
+    private final CollectionReference usersRef = rootRef.collection(USER_COLLECTION);
 
 
     public Trip createATrip(String tripName, String startDate, List<String> userIds, String destination,  Boolean canShare) throws ParseException {
@@ -91,6 +86,11 @@ public class TripCreationRepository {
 
 
         return newMutableTripLiveData;
+    }
+
+    public void sendNotification(String sender, String token, String tripName) {
+        InviteRepository inviteRepo = InviteRepository.getInstance();
+        inviteRepo.sendNotification(sender, token, tripName);
     }
 
     public MutableLiveData<Boolean> addTripToUser(DocumentReference trip, DocumentReference user) {
