@@ -110,7 +110,6 @@ public class TripCreationActivity extends AppCompatActivity {
         // take trip name from the user
         EditText tripNameInput = findViewById(R.id.tripName);
         // take start date from the user
-
         TextView startDate = findViewById(R.id.startDateButton);
         Button inviteUsers = findViewById(R.id.inviteUsers);
         Button createTrip = findViewById(R.id.createTrip);

@@ -1,10 +1,13 @@
 package com.app.tripfinity.view;
 
+import static com.app.tripfinity.utils.HelperClass.disableFCM;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 //import android.support.v4.app.Fragment;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -16,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,10 +31,14 @@ import com.app.tripfinity.repository.TripRepository;
 import com.app.tripfinity.utils.Constants;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -43,15 +51,18 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.zip.Inflater;
 
-public class TripFragment extends Fragment {
+public class TripFragment extends Fragment implements FirebaseAuth.AuthStateListener {
 
     private RecyclerView recyclerView;
     private FirebaseFirestore db;
     private ProgressBar progressBar;
     private FirestoreRecyclerAdapter adapter;
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private TextView emptyView;
+    private ImageView logout;
     private OnItemClickListener listener;
     private FloatingActionButton addButton;
+    private GoogleSignInClient googleSignInClient;
 
 
     public static String getReadableDate(Date date) {
@@ -211,12 +222,30 @@ public class TripFragment extends Fragment {
     public void onStart() {
         super.onStart();
         adapter.startListening();
+        firebaseAuth.addAuthStateListener(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
         adapter.stopListening();
+        firebaseAuth.removeAuthStateListener(this);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initGoogleSignInClient();
+        initializeAndSetLogoutListener();
+    }
+
+    private void initializeAndSetLogoutListener() {
+        logout = getView().findViewById(R.id.logoutButton);
+        logout.setOnClickListener(v -> {
+            if(getActivity()!=null) {
+                signOut();
+            }
+        });
     }
 
     private void addButtonClick() {
@@ -226,5 +255,39 @@ public class TripFragment extends Fragment {
             v.getContext().startActivity(intent);
 
         });
+    }
+
+    private void initGoogleSignInClient() {
+        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions
+                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .build();
+        googleSignInClient = GoogleSignIn.getClient(getActivity(), googleSignInOptions);
+    }
+
+    @Override
+    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser == null) {
+            goToAuthInActivity();
+        }
+    }
+
+    private void signOut() {
+        singOutFirebase();
+        signOutGoogle();
+        disableFCM();
+    }
+
+    private void goToAuthInActivity() {
+        Intent intent = new Intent(getActivity(), AuthActivity.class);
+        startActivity(intent);
+    }
+
+    private void singOutFirebase() {
+        firebaseAuth.signOut();
+    }
+
+    private void signOutGoogle() {
+        googleSignInClient.signOut();
     }
 }
