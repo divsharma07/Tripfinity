@@ -74,6 +74,8 @@ public class TripCreationActivity extends AppCompatActivity {
     private String originalStartDate;
     private String originalTripName;
     private String originalDestination;
+    private boolean originalCanShare;
+
     private void initTripCreationViewModel() {
         tripCreationViewModel = new ViewModelProvider(this).get(TripCreationViewModel.class);
     }
@@ -103,6 +105,8 @@ public class TripCreationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_creation2);
 
+        initTripCreationViewModel();
+
         userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
         originalStartDate = "";
         originalTripName = "";
@@ -129,15 +133,20 @@ public class TripCreationActivity extends AppCompatActivity {
             ((Button)findViewById(R.id.createTrip)).setVisibility(View.INVISIBLE);
             TextView textView = findViewById(R.id.mode);
             textView.setText("Edit Trip");
-            originalStartDate = intent.getStringExtra("startDate");
-            originalDestination = intent.getStringExtra("destination");
-            originalTripName = intent.getStringExtra("tripName");
-            if (originalStartDate.length() > 0) {
-               originalStartDate = getDateForDay(originalStartDate);
-                startDate.setText(originalStartDate);
-            }
-            tripNameInput.setText(originalTripName);
-            destination.setText(originalDestination);
+
+
+            tripId = intent.getStringExtra(Constants.TRIP_ID);
+            tripCreationViewModel.getTrip(tripId);
+
+            tripCreationViewModel.getTripLiveData().observe(TripCreationActivity.this,trip -> {
+                ((Switch)findViewById(R.id.isShareableSwitch)).setChecked(trip.isCanShare());
+                tripNameInput.setText(trip.getTripName());
+                destination.setText(trip.getDestination());
+                startDate.setText(TripFragment.getReadableDate(trip.getStartDate()));
+            });
+
+
+
 
 
         }
@@ -296,10 +305,7 @@ public class TripCreationActivity extends AppCompatActivity {
                     Log.d(TAG,"Start Date given: "+startDate.getText().toString());
                     Log.d(TAG,"Destination given: "+destination.getText().toString());
                     Log.d(TAG,"Is sharable: "+toggle.isChecked());
-                    // create a new trip and save in fireStore
-                    // need to user view model methods for this
-                    // create a trip
-                    // add this trip id to the users collection
+
                     tripCreationViewModel.getTrip(tripId);
 
                     tripCreationViewModel.getTripLiveData().observe(TripCreationActivity.this,trip -> {

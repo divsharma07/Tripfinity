@@ -9,26 +9,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.app.tripfinity.R;
 import com.app.tripfinity.model.ItineraryDay;
 import com.app.tripfinity.model.Place;
 import com.app.tripfinity.repository.ItineraryRepository;
 import com.app.tripfinity.view.AddPlaceActivity;
-import com.app.tripfinity.view.ItineraryViewActivity;
 import com.app.tripfinity.view.PlaceClickListener;
 import com.app.tripfinity.view.PlaceDetailsActivity;
-import com.app.tripfinity.view.TripCreationActivity;
 import com.app.tripfinity.viewholders.ItineraryDayViewHolder;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 

@@ -157,6 +157,9 @@ public class TripFragment extends Fragment implements FirebaseAuth.AuthStateList
             intent.putExtra(Constants.TRIP_START_DATE, trip.getStartDate().toString());
             intent.putExtra(Constants.ITINERARY_ID, trip.getItinerary().getId());
             intent.putExtra(Constants.CAN_SHARE, trip.isCanShare());
+
+            Log.d("TripFragment", "can_share -> " + trip.isCanShare());
+
             intent.putExtra(Constants.DESTINATION, trip.getDestination());
 
             Log.d("Inside Fragment",  "Itinerary -> " + trip.getItinerary().getId());
