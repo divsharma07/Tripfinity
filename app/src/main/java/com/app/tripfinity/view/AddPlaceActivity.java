@@ -29,6 +29,8 @@ import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.snackbar.Snackbar;
 
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -68,7 +70,11 @@ public class AddPlaceActivity extends AppCompatActivity {
                 TimePickerDialog timePickerDialog = new TimePickerDialog(AddPlaceActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        startTime.setText(hourOfDay+":"+minute);
+                        c.set(Calendar.HOUR_OF_DAY,hourOfDay);
+                        c.set(Calendar.MINUTE,minute);
+                        Format formatter = new SimpleDateFormat("h:mm a");
+
+                        startTime.setText(formatter.format(c.getTime()));
                     }
                 }, mHour, mMinute, false);
                 timePickerDialog.show();
