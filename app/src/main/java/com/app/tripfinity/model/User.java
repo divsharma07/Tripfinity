@@ -15,7 +15,7 @@ public class User extends UserBio implements Serializable {
     private String state;
     private String country;
     private String fcmToken;
-    private boolean isRegistered;
+    private boolean registered;
     @Exclude
     public boolean isAuthenticated;
     private GeoPoint cityGeoPoint;
@@ -35,11 +35,11 @@ public class User extends UserBio implements Serializable {
     }
 
     public boolean isRegistered() {
-        return isRegistered;
+        return registered;
     }
 
     public void setIsRegistered(boolean isNew) {
-        this.isRegistered = isNew;
+        this.registered = isNew;
     }
 
     public User(String email){
