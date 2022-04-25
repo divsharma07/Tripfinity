@@ -7,6 +7,57 @@
     android:layout_height="match_parent"
     tools:context=".view.AddExpenseActivity">
 
+    <View
+        android:id="@+id/viewExpenseBackground"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_125sdp"
+        android:background="@color/app_primary"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageView
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_80sdp"
+        app:layout_constraintBottom_toTopOf="@id/addExpenseCardHeader"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/openwallet" />
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/addExpenseCardHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        app:cardBackgroundColor="@color/card_background"
+        app:cardCornerRadius="@dimen/_16sdp"
+        app:layout_constraintBottom_toBottomOf="@id/viewExpenseBackground"
+        app:layout_constraintTop_toBottomOf="@id/viewExpenseBackground"
+        app:strokeColor="@color/app_primary"
+        app:strokeWidth="@dimen/_2sdp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_14sdp">
+
+            <TextView
+                android:id="@+id/addExpenseCardText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Loosen Your Wallet Here"
+                android:textAlignment="center"
+                android:textSize="@dimen/_18sdp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
 
     <TextView
         android:id="@+id/textView"
@@ -14,10 +65,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:textStyle="bold"
         android:textSize="20sp"
         android:text="Expense Name"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/addExpenseCardHeader" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/expenseNameBox"
@@ -50,6 +102,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:textSize="20sp"
+        android:textStyle="bold"
         android:text="Amount"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/expenseNameBox" />
@@ -81,10 +134,10 @@
     <TextView
         android:id="@+id/availableUsers"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="50dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="32dp"
         android:typeface="monospace"
         android:background="@android:drawable/editbox_background"
         android:drawableRight="@android:drawable/arrow_down_float"
@@ -114,7 +167,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:textSize="20sp"
-        android:text="Select other users to Split"
+        android:textStyle="bold"
+        android:text="Select Other Users To Split"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/expenseAmountBox" />
 </androidx.constraintlayout.widget.ConstraintLayout>
