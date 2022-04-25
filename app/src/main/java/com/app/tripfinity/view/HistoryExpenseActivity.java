@@ -37,9 +37,7 @@ public class HistoryExpenseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history_expense);
-
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-
         progressBar = findViewById(R.id.historyProgressBar);
         noExpenseHistory = findViewById(R.id.noHistoryPresent);
         noExpenseHistory.setVisibility(View.GONE);

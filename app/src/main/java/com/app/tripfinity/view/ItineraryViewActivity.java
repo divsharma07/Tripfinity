@@ -28,6 +28,7 @@ import com.app.tripfinity.model.ItineraryDay;
 import com.app.tripfinity.viewmodel.ItineraryViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -48,6 +49,7 @@ public class ItineraryViewActivity extends Fragment {
     private String itineraryId;
     private List<ItineraryDay> days;
     private ImageView editTrip;
+    private ImageView home;
     private String startDate;
     private String tripNameString;
     private String destination;
@@ -118,6 +120,21 @@ public class ItineraryViewActivity extends Fragment {
         createRecyclerView();
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initializeAndSetHomeListener();
+    }
+
+    private void initializeAndSetHomeListener() {
+        home = getView().findViewById(R.id.homeButton);
+        home.setOnClickListener(v -> {
+            if(getActivity()!=null) {
+                getActivity().finish();
+            }
+        });
+    }
+
     private void createRecyclerView() {
         Log.d(TAG,"Creating recycler view for Itinerary: "+itineraryId);
         days = new ArrayList<>();
@@ -146,10 +163,7 @@ public class ItineraryViewActivity extends Fragment {
 
     }
 
-
     private void initItineraryViewModel() {
         itineraryViewModel = new ViewModelProvider(getActivity()).get(ItineraryViewModel.class);
     }
-
-
 }
