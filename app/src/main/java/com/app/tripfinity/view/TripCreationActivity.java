@@ -272,9 +272,10 @@ public class TripCreationActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
-                tripId = intent.getStringExtra("tripId");
+                tripId = intent.getStringExtra(Constants.TRIP_ID);
                 if (tripNameInput.getText().toString().trim().length() > 0 &&
-                        startDate.getText().toString().trim().length() > 0) {
+                        startDate.getText().toString().trim().length() > 0 &&
+                        destination.getText().toString().trim().length() > 0) {
                     Log.d(TAG,"Trip Name given: "+tripNameInput.getText().toString());
                     Log.d(TAG,"Start Date given: "+startDate.getText().toString());
                     Log.d(TAG,"Destination given: "+destination.getText().toString());
@@ -303,30 +304,27 @@ public class TripCreationActivity extends AppCompatActivity {
                         // setting trip data.
                         tripCreationViewModel.updateTrip(trip);
 
-                        tripCreationViewModel.getUpdatedTripLiveData().observe(TripCreationActivity.this,trip1 -> {
-                            Intent returnIntent = new Intent(TripCreationActivity.this,Tripfinity.class);
-                            returnIntent.putExtra(Constants.TRIP_ID, trip1.getTripId());
-                            returnIntent.putExtra(Constants.TRIP_NAME, trip1.getTripName());
-                            returnIntent.putExtra(Constants.TRIP_START_DATE, trip1.getStartDate().toString());
-                            returnIntent.putExtra(Constants.ITINERARY_ID, trip1.getItinerary().getId());
-                            returnIntent.putExtra(Constants.DESTINATION,trip1.getDestination());
-                            returnIntent.putExtra(Constants.CAN_SHARE,trip1.isCanShare());
-                            startActivity(returnIntent);
-                        });
+                        finish();
 
                     });
 
                 }
                 else {
-                    Snackbar.make(view, "Please Enter valid Trip name and Start date."
-                            ,Snackbar.LENGTH_SHORT).show();
+                    if (tripNameInput.getText().toString().trim().length() == 0) {
+                        Snackbar.make(view, "Please Enter valid Trip name"
+                                ,Snackbar.LENGTH_SHORT).show();
+                    }
+                    else if (startDate.getText().toString().trim().length() == 0) {
+                        Snackbar.make(view, "Please Enter valid Start Date"
+                                ,Snackbar.LENGTH_SHORT).show();
+                    }
+                    else if (destination.getText().toString().trim().length() == 0) {
+                        Snackbar.make(view, "Please Enter valid Destination"
+                                ,Snackbar.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
-
-
-
-
 
 
     }
