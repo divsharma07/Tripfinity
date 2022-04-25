@@ -178,6 +178,9 @@ public class InviteFragment extends Fragment {
                         User user = new User(email);
                         addToUserList(user);
                         authViewModel.createUser(user, false);
+                        if(tripId != null){
+                            inviteViewModel.addUserToTrip(tripId, email);
+                        }
                         inviteViewModel.sendInvitationToUser(HelperClass.getCurrentUser().getDisplayName(), email).observe(getViewLifecycleOwner(), inviteSent -> {
                             if(inviteSent){
                                 Toast.makeText(this.getContext(), "Invitation sent", Toast.LENGTH_SHORT).show();
