@@ -28,26 +28,6 @@ public class ExpenseRepository {
             public void onSuccess(DocumentReference documentReference) {
                 Log.d("expense ID ", documentReference.getId());
                 expenseReference[0] = documentReference;
-//                documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            DocumentSnapshot document = task.getResult();
-//                            if (document.exists()) {
-//                                Map<String, Object> hmap = new HashMap<>();
-//                                hmap = document.getData();
-//                                Log.d("expense DocumentSnapshot data: ", hmap.toString());
-//                                Log.d("expense DocumentSnapshot amount", hmap.get("amount").toString());
-//                                Log.d("expense DocumentSnapshot userIds", hmap.get("userIds").toString());
-//                            } else {
-//                                Log.d("expense No such document", "Here");
-//                            }
-//                        } else {
-//                            Log.d("expense get failed with ", task.getException().toString());
-//                        }
-//                    }
-//                });
-
                 expenseMutableLiveData.setValue(expense);
 
                 // Adding expense reference in Trip

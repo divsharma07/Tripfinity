@@ -17,7 +17,7 @@ public class Tripfinity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tripfinity);
-
+        getSupportActionBar().hide();
         Intent intent = getIntent();
         BottomNavigationView bottomNav = findViewById(R.id.bottom_menu);
         bundle = new Bundle();

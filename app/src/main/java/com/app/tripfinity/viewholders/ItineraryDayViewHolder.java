@@ -11,6 +11,8 @@ import com.app.tripfinity.R;
 import com.app.tripfinity.model.Place;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +20,7 @@ public class ItineraryDayViewHolder extends RecyclerView.ViewHolder {
     public TextView day;
     public TextView date;
     public RecyclerView placesRecyclerView;
-    public FloatingActionButton addPlaces;
+    public TextView addPlaces;
     public ItineraryDayViewHolder(@NonNull View itemView, boolean fromFeed) {
         super(itemView);
         day = itemView.findViewById(R.id.dayIndex);
