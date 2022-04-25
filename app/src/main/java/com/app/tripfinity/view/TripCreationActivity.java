@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.app.tripfinity.R;
@@ -111,28 +112,29 @@ public class TripCreationActivity extends AppCompatActivity {
         // take start date from the user
 
         TextView startDate = findViewById(R.id.startDateButton);
-        Button inviteUsers = findViewById(R.id.inviteUsers);
+        TextView inviteUsers = findViewById(R.id.inviteUsers);
         Button createTrip = findViewById(R.id.createTrip);
         destination = findViewById(R.id.tripDestination);
         String buttonType = intent.getStringExtra("displayButtonType");
 
         if (buttonType.equals("createTrip")) {
-            findViewById(R.id.saveEditTrip).setVisibility(View.INVISIBLE);
-            findViewById(R.id.createTrip).setVisibility(View.VISIBLE);
+            ((Button)findViewById(R.id.saveEditTrip)).setVisibility(View.INVISIBLE);
+            ((Button)findViewById(R.id.createTrip)).setVisibility(View.VISIBLE);
 
 
         } else if (buttonType.equals("editTrip")){
-            findViewById(R.id.saveEditTrip).setVisibility(View.VISIBLE);
-            findViewById(R.id.createTrip).setVisibility(View.INVISIBLE);
-            TextView textView = findViewById(R.id.textView);
+            Log.d("TripCreationAvtivity", "buttonType -> editTrip");
+            ((Button)findViewById(R.id.saveEditTrip)).setVisibility(View.VISIBLE);
+            ((Button)findViewById(R.id.saveEditTrip)).setText("Edit");
+            ((Button)findViewById(R.id.createTrip)).setVisibility(View.INVISIBLE);
+            TextView textView = findViewById(R.id.mode);
             textView.setText("Edit Trip");
             originalStartDate = intent.getStringExtra("startDate");
             originalDestination = intent.getStringExtra("destination");
             originalTripName = intent.getStringExtra("tripName");
-            if (originalStartDate.length()>0) {
+            if (originalStartDate.length() > 0) {
                originalStartDate = getDateForDay(originalStartDate);
                 startDate.setText(originalStartDate);
-
             }
             tripNameInput.setText(originalTripName);
             destination.setText(originalDestination);
@@ -213,6 +215,9 @@ public class TripCreationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // all data from the user is there now
+
+                Toast.makeText(TripCreationActivity.this, "On Create", Toast.LENGTH_SHORT).show();
+
                 if (tripNameInput.getText().toString().trim().length() > 0 &&
                         startDate.getText().toString().trim().length() > 0 &&
                         destination.getText().toString().trim().length() > 0) {
@@ -270,7 +275,7 @@ public class TripCreationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-
+                Toast.makeText(TripCreationActivity.this, "On Save", Toast.LENGTH_SHORT).show();
                 tripId = intent.getStringExtra("tripId");
                 if (tripNameInput.getText().toString().trim().length() > 0 &&
                         startDate.getText().toString().trim().length() > 0) {
@@ -328,10 +333,27 @@ public class TripCreationActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        TextView userCount = findViewById(R.id.users_count);
         if(invitedUsers != null && invitedUsers.size() != 0){
-            TextView userCount = findViewById(R.id.users_count);
-            userCount.setText(String.format("%d user(s) invited", invitedUsers.size()));
+            userCount.setText(String.format("%d invited", invitedUsers.size()));
+            userCount.setVisibility(View.VISIBLE);
+        } else {
+            userCount.setVisibility(View.INVISIBLE);
         }
+
+
+
+        Intent intent = getIntent();
+        // take trip name from the user
+        EditText tripNameInput = findViewById(R.id.tripName);
+        // take start date from the user
+
+        TextView startDate = findViewById(R.id.startDateButton);
+        TextView inviteUsers = findViewById(R.id.inviteUsers);
+        Button createTrip = findViewById(R.id.createTrip);
+        destination = findViewById(R.id.tripDestination);
+        String buttonType = intent.getStringExtra("displayButtonType");
+
     }
 
     private void goToItineraryViewActivity(String tripId, Date startDate, String tripName, String itineraryId) {
