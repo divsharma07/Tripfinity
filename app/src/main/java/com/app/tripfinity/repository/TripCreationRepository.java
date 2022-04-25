@@ -73,8 +73,6 @@ public class TripCreationRepository {
                         Log.d(TAG, "DocumentSnapshot Trip with ID: " + trip.getTripId());
                         newMutableTripLiveData.setValue(trip);
 
-                        DocumentReference user = usersRef.document(userIds.get(0));
-//                        addTopicToTrip(trips.document(trip.getTripId()),user);
                         for(String userId : userIds){
                             addTripToUser(trips.document(trip.getTripId()), usersRef.document(userId));
                         }

@@ -25,6 +25,7 @@ import com.app.tripfinity.R;
 import com.app.tripfinity.adapters.ItineraryDaysAdapter;
 import com.app.tripfinity.model.Itinerary;
 import com.app.tripfinity.model.ItineraryDay;
+import com.app.tripfinity.utils.Constants;
 import com.app.tripfinity.viewmodel.ItineraryViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -69,12 +70,13 @@ public class ItineraryViewActivity extends Fragment {
             tripNameString = getArguments().getString("tripName");
             itineraryId = getArguments().getString("itineraryId");
             startDate = getArguments().getString("startDate");
-            destination = getArguments().getString("destination");
+            destination = getArguments().getString(Constants.DESTINATION);
 
         }
 
         Log.d(TAG, "Id ->" + itineraryId);
         Log.d(TAG, "Start Date in fragment ->" + startDate);
+        Log.d(TAG, "Original destination ->" + destination);
         TextView tripName = getView().findViewById(R.id.tripNameTextView);
         tripName.setText(tripNameString);
         FloatingActionButton addDaysButton = getView().findViewById(R.id.floatingActionButton);
@@ -105,7 +107,7 @@ public class ItineraryViewActivity extends Fragment {
                 intent.putExtra("tripId", tripId);
                 intent.putExtra("tripName", tripNameString);
                 intent.putExtra("startDate",startDate);
-                intent.putExtra("destination",destination);
+                intent.putExtra(Constants.DESTINATION,destination);
                 startActivity(intent);
             }
         });

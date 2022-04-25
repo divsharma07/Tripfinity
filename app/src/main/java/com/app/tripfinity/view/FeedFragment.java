@@ -87,7 +87,6 @@ public class FeedFragment extends Fragment {
             e.printStackTrace();
         }
 
-        DocumentReference userRef = db.collection("Users").document(user);
 
         Query query = db.collection("Trips").whereEqualTo("canShare", true)
                 .whereLessThanOrEqualTo("endDate",prevMonthDate);
@@ -112,7 +111,8 @@ public class FeedFragment extends Fragment {
                     progressBar.setVisibility(View.GONE);
                     Log.d("onBindViewHolder ", "" + model.getTripName());
                     holder.trip_name.setText(model.getTripName());
-                    holder.start_date.setText(model.getStartDate() + "");
+
+                    holder.start_date.setText(TripFragment.getReadableDate(model.getStartDate()));
                     Log.d("Inside onBindViewHolder", "Trip Name -> " + model.getTripName());
                 }
             }
