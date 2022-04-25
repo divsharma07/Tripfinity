@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 
 public class TripCreationRepository {
@@ -58,25 +59,38 @@ public class TripCreationRepository {
                 Boolean canShare) throws ParseException {
         Trip trip = createATrip(tripName,startDate,userIds,destination,canShare);
         MutableLiveData<Trip> newMutableTripLiveData = new MutableLiveData<>();
-        trips.document(trip.getTripId()).set(trip).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Log.d(TAG, "DocumentSnapshot Trip with ID: " + trip.getTripId());
-                newMutableTripLiveData.setValue(trip);
 
-                DocumentReference user = usersRef.document(userIds.get(0));
-                addTopicToTrip(trips.document(trip.getTripId()),user);
-                for(String userId : userIds){
-                    addTripToUser(trips.document(trip.getTripId()), usersRef.document(userId));
-                }
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
+        String user = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
+        usersRef.document(user).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "Error adding document", e);
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                String topic = (String) task.getResult().get("topic");
+                trip.setSourceLocation(topic);
+
+                trips.document(trip.getTripId()).set(trip).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d(TAG, "DocumentSnapshot Trip with ID: " + trip.getTripId());
+                        newMutableTripLiveData.setValue(trip);
+
+                        DocumentReference user = usersRef.document(userIds.get(0));
+//                        addTopicToTrip(trips.document(trip.getTripId()),user);
+                        for(String userId : userIds){
+                            addTripToUser(trips.document(trip.getTripId()), usersRef.document(userId));
+                        }
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "Error adding document", e);
+                    }
+                });
+
             }
         });
+
+
 
         return newMutableTripLiveData;
     }
