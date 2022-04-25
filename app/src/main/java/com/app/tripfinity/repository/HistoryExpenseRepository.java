@@ -34,7 +34,6 @@ public class HistoryExpenseRepository {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Expense expense = document.toObject(Expense.class);
                         expenseList.add(expense);
-//                        Log.d(TAG, document.getId() + " => " + document.getData());
                     }
                     list.setValue(expenseList);
                 } else {

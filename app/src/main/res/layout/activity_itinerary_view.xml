@@ -6,45 +6,81 @@
     android:layout_height="match_parent"
     tools:context=".view.ItineraryViewActivity">
 
+    <View
+        android:id="@+id/viewHeaderBackground"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_125sdp"
+        android:background="@color/app_primary"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
     <ImageView
-        android:id="@+id/editTrip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="6dp"
-        android:text="Edit Trip"
-        app:layout_constraintBottom_toTopOf="@+id/startDate"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_80sdp"
+        app:layout_constraintBottom_toTopOf="@id/cardHeader"
         app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/edit_trip"/>
-
-    <TextView
-        android:id="@+id/tripNameTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Trip Name"
-        android:textAlignment="center"
-        android:textSize="25dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.022" />
+        app:srcCompat="@drawable/tripitineraryicon" />
 
-    <TextView
-        android:id="@+id/startDate"
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Start Date"
-        android:textAlignment="center"
-        android:textSize="25dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/days"
-        app:layout_constraintTop_toBottomOf="@+id/tripNameTextView"
-        app:layout_constraintVertical_bias="0.0" />
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        app:cardBackgroundColor="@color/card_background"
+        app:cardCornerRadius="@dimen/_16sdp"
+        app:layout_constraintBottom_toBottomOf="@id/viewHeaderBackground"
+        app:layout_constraintTop_toBottomOf="@id/viewHeaderBackground"
+        app:strokeColor="@color/app_primary"
+        app:strokeWidth="@dimen/_2sdp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_65sdp"
+            android:padding="@dimen/_14sdp">
+
+            <ImageView
+                android:id="@+id/editTrip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/edit_trip"
+                android:text="Edit Trip"
+                app:layout_constraintStart_toEndOf="@+id/tripNameTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.98"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tripNameTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Trip Name"
+                android:textAlignment="center"
+                android:textSize="@dimen/_18sdp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/startDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Start Date"
+                android:textAlignment="center"
+                android:textSize="@dimen/_10sdp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/tripNameTextView"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/days"
@@ -54,7 +90,7 @@
         android:layout_marginEnd="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/startDate"
+        app:layout_constraintTop_toBottomOf="@+id/cardHeader"
         app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -62,12 +98,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
+        android:src="@drawable/adddayicon"
+        app:backgroundTint="@color/app_primary"
+        app:borderWidth="0dp"
+        app:elevation="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.853"
+        app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.893"
-        app:srcCompat="@android:drawable/ic_menu_add" />
+        app:layout_constraintVertical_bias="0.95"
+        app:tint="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

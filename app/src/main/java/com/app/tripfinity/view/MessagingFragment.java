@@ -18,6 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.app.tripfinity.R;
 import com.app.tripfinity.adapters.MessageListAdapter;
@@ -44,6 +46,8 @@ public class MessagingFragment extends Fragment {
     private Button messageSendButton;
     private String tripId;
     private ListenerRegistration messageListener;
+    private ImageView noMessageImage;
+    private TextView noMessageText;
 
     public MessagingFragment() {
     }
@@ -52,6 +56,11 @@ public class MessagingFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initializeMessagingViewViewModel();
+    }
+
+    private void initializeNoMessageArtifacts() {
+        noMessageImage = getView().findViewById(R.id.noMessageImage);
+        noMessageText = getView().findViewById(R.id.noMessageText);
     }
 
     private void initializeMessagingViewViewModel() {
@@ -69,6 +78,13 @@ public class MessagingFragment extends Fragment {
                 messageList.add(message);
             }
             mMessageAdapter.notifyDataSetChanged();
+            if(messageList.size() == 0) {
+                noMessageText.setVisibility(View.VISIBLE);
+                noMessageImage.setVisibility(View.VISIBLE);
+            } else {
+                noMessageText.setVisibility(View.GONE);
+                noMessageImage.setVisibility(View.GONE);
+            }
             mMessageRecycler.scrollToPosition(messageList.size()-1);
         });
     }
@@ -93,6 +109,7 @@ public class MessagingFragment extends Fragment {
         messageSendButton = (Button) getView().findViewById(R.id.button_gchat_send);
         initializeTripId();
         subscribeForNotifications();
+        initializeNoMessageArtifacts();
         addMessageListener();
         initializeSendButtonListener();
         initializeRecyclerView();

@@ -21,10 +21,17 @@ import com.app.tripfinity.model.Trip;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 public class FeedFragment extends Fragment {
@@ -35,6 +42,27 @@ public class FeedFragment extends Fragment {
     private FirestoreRecyclerAdapter adapter;
     private TextView emptyView;
     private TripFragment.OnItemClickListener listener;
+
+
+
+    public static Date getDate(String date,int addition) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy",
+                Locale.ENGLISH);
+        Calendar c = Calendar.getInstance();
+        try{
+            //Setting the date to the given date
+            c.setTime(sdf.parse(date));
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+
+        //Number of Days to add
+        c.add(Calendar.MONTH, addition);
+        //Date after adding the days to the given date
+        String newDate = sdf.format(c.getTime());
+        Date dateobj = sdf.parse(newDate);
+        return dateobj;
+    }
 
     @androidx.annotation.Nullable
     @Override
@@ -51,7 +79,19 @@ public class FeedFragment extends Fragment {
 
         db = FirebaseFirestore.getInstance();
 
-        Query query = db.collection("Trips").whereEqualTo("canShare", true);
+        // 1 month back start date
+        Date prevMonthDate = new Date();
+        try {
+            prevMonthDate = getDate(new Date().toString(),-1);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        Query query = db.collection("Trips").whereEqualTo("canShare", true)
+                .whereLessThanOrEqualTo("endDate",prevMonthDate);
+
+
 
         FirestoreRecyclerOptions<Trip> options = new FirestoreRecyclerOptions.Builder<Trip>().setQuery(query, Trip.class).build();
 
@@ -71,7 +111,8 @@ public class FeedFragment extends Fragment {
                     progressBar.setVisibility(View.GONE);
                     Log.d("onBindViewHolder ", "" + model.getTripName());
                     holder.trip_name.setText(model.getTripName());
-                    holder.start_date.setText(model.getStartDate() + "");
+
+                    holder.start_date.setText(TripFragment.getReadableDate(model.getStartDate()));
                     Log.d("Inside onBindViewHolder", "Trip Name -> " + model.getTripName());
                 }
             }
