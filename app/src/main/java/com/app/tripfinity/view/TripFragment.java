@@ -149,7 +149,6 @@ public class TripFragment extends Fragment {
                 return false;
             }
 
-
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 // remove trip at a given position
@@ -165,7 +164,6 @@ public class TripFragment extends Fragment {
             }
         });
         itemTouchHelper.attachToRecyclerView(recyclerView);
-
         addButtonClick();
         
         return  view;
