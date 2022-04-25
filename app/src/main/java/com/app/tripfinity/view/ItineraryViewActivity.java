@@ -49,6 +49,8 @@ public class ItineraryViewActivity extends Fragment {
     private List<ItineraryDay> days;
     private ImageView editTrip;
     private String startDate;
+    private String tripNameString;
+    private String destination;
 
     @Nullable
     @Override
@@ -61,16 +63,15 @@ public class ItineraryViewActivity extends Fragment {
         super.onStart();
         Log.d(TAG,"On create Called");
         initItineraryViewModel();
-        String tripNameString="";
+        tripNameString = "";
         if (getArguments() != null) {
             tripId = getArguments().getString("tripId");
             tripNameString = getArguments().getString("tripName");
             itineraryId = getArguments().getString("itineraryId");
             startDate = getArguments().getString("startDate");
+            destination = getArguments().getString("destination");
 
         }
-
-
 
         Log.d(TAG, "Id ->" + itineraryId);
         Log.d(TAG, "Start Date in fragment ->" + startDate);
@@ -88,7 +89,6 @@ public class ItineraryViewActivity extends Fragment {
                 // the day should be added.
                 // else a new day should be added to the existing itinerary.
 
-                Log.d(TAG, "Inside on click Id ->" + itineraryId);
                 itineraryViewModel.updateItinerary(tripId);
                 // once the itinerary is created, get all the days from it and
                 // display in the recycler view.
@@ -103,6 +103,9 @@ public class ItineraryViewActivity extends Fragment {
                 Intent intent = new Intent(getActivity(), TripCreationActivity.class);
                 intent.putExtra("displayButtonType", "editTrip");
                 intent.putExtra("tripId", tripId);
+                intent.putExtra("tripName", tripNameString);
+                intent.putExtra("startDate",startDate);
+                intent.putExtra("destination",destination);
                 startActivity(intent);
             }
         });

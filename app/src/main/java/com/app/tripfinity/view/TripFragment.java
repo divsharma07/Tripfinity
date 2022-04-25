@@ -35,8 +35,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.zip.Inflater;
 
@@ -70,7 +72,8 @@ public class TripFragment extends Fragment {
 
         DocumentReference documentReference = db.collection("Users").document(user);
 
-        Query query = db.collection("Trips").whereArrayContains("users", documentReference);
+        Query query = db.collection("Trips").whereArrayContains("users", documentReference)
+                .orderBy("startDate");
 
         FirestoreRecyclerOptions<Trip> options = new FirestoreRecyclerOptions.Builder<Trip>().setQuery(query, Trip.class).build();
 
@@ -90,7 +93,12 @@ public class TripFragment extends Fragment {
                     progressBar.setVisibility(View.GONE);
                     Log.d("onBindViewHolder ", "" + model.getTripName());
                     holder.trip_name.setText(model.getTripName());
-                    holder.start_date.setText(model.getStartDate() + "");
+
+                    SimpleDateFormat sdf2 = new SimpleDateFormat("EE MMM dd yyyy",
+                            Locale.ENGLISH);
+
+                    String readableDate = sdf2.format(model.getStartDate());
+                    holder.start_date.setText(readableDate);
                     Log.d("Inside onBindViewHolder", "Trip Name -> " + model.getTripName());
                 }
             }

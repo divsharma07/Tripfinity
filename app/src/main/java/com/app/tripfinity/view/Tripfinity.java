@@ -28,8 +28,6 @@ public class Tripfinity extends AppCompatActivity {
 
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
-        Log.d("Tripfinity", "test-> test->");
-
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container2, ItineraryViewActivity.class, bundle).commit();
     }
 
@@ -43,6 +41,7 @@ public class Tripfinity extends AppCompatActivity {
                             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container2, ExpenseActivity.class, bundle).commit();
                             break;
                         case R.id.nav_itinerary:
+                            Log.d("Tripfinity", "Launching itinerary view from switch case");
                             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container2, ItineraryViewActivity.class, bundle).commit();
                             break;
                         case R.id.nav_group:
