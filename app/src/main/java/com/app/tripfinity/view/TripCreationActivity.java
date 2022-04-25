@@ -32,6 +32,7 @@ import com.app.tripfinity.model.User;
 import com.app.tripfinity.model.User;
 import com.app.tripfinity.model.UserBio;
 import com.app.tripfinity.utils.Constants;
+import com.app.tripfinity.utils.HelperClass;
 import com.app.tripfinity.viewmodel.AuthViewModel;
 import com.app.tripfinity.viewmodel.TripCreationViewModel;
 import com.google.android.gms.common.api.Status;
@@ -110,7 +111,6 @@ public class TripCreationActivity extends AppCompatActivity {
         // take trip name from the user
         EditText tripNameInput = findViewById(R.id.tripName);
         // take start date from the user
-
         TextView startDate = findViewById(R.id.startDateButton);
         TextView inviteUsers = findViewById(R.id.inviteUsers);
         Button createTrip = findViewById(R.id.createTrip);
@@ -156,8 +156,11 @@ public class TripCreationActivity extends AppCompatActivity {
                         // Handle the Intent
                         if(resultIntent != null) {
                             Bundle bundle = resultIntent.getBundleExtra("users");
-                            if(bundle.getSerializable("users") != null){
+                            if(bundle != null && bundle.getSerializable("users") != null){
                             invitedUsers = (ArrayList<UserBio>) bundle.getSerializable("users");
+                            }
+                            else{
+                                invitedUsers = new ArrayList<>();
                             }
                         }
                     }
@@ -239,6 +242,12 @@ public class TripCreationActivity extends AppCompatActivity {
                         tripCreationViewModel.createNewTrip(tripNameInput.getText().toString(),
                                 startDate.getText().toString(),userEmails,destination.getText().toString(),toggle.isChecked());
 
+                        for(UserBio user: invitedUsers){
+                            if(user.getFcmToken() != null){
+                                tripCreationViewModel.sendNotification(HelperClass.getCurrentUser().getDisplayName(), user.getFcmToken(), tripNameInput.getText().toString());
+                            }
+                        }
+
                         tripCreationViewModel.getCreatedTripLiveData().observe(TripCreationActivity.this,trip -> {
                             Log.d(TAG,"Created Trip Id: "+trip.getTripId());
                             tripCreationViewModel.createNewItinerary(trip.getTripId());
@@ -276,10 +285,13 @@ public class TripCreationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Toast.makeText(TripCreationActivity.this, "On Save", Toast.LENGTH_SHORT).show();
-                tripId = intent.getStringExtra("tripId");
+
+
+                tripId = intent.getStringExtra(Constants.TRIP_ID);
+
                 if (tripNameInput.getText().toString().trim().length() > 0 &&
-                        startDate.getText().toString().trim().length() > 0) {
+                        startDate.getText().toString().trim().length() > 0 &&
+                        destination.getText().toString().trim().length() > 0) {
                     Log.d(TAG,"Trip Name given: "+tripNameInput.getText().toString());
                     Log.d(TAG,"Start Date given: "+startDate.getText().toString());
                     Log.d(TAG,"Destination given: "+destination.getText().toString());
@@ -308,23 +320,24 @@ public class TripCreationActivity extends AppCompatActivity {
                         // setting trip data.
                         tripCreationViewModel.updateTrip(trip);
 
-                        tripCreationViewModel.getUpdatedTripLiveData().observe(TripCreationActivity.this,trip1 -> {
-                            Intent returnIntent = new Intent(TripCreationActivity.this,Tripfinity.class);
-                            returnIntent.putExtra(Constants.TRIP_ID, trip1.getTripId());
-                            returnIntent.putExtra(Constants.TRIP_NAME, trip1.getTripName());
-                            returnIntent.putExtra(Constants.TRIP_START_DATE, trip1.getStartDate().toString());
-                            returnIntent.putExtra(Constants.ITINERARY_ID, trip1.getItinerary().getId());
-                            returnIntent.putExtra(Constants.DESTINATION,trip1.getDestination());
-                            returnIntent.putExtra(Constants.CAN_SHARE,trip1.isCanShare());
-                            startActivity(returnIntent);
-                        });
+                        finish();
 
                     });
 
                 }
                 else {
-                    Snackbar.make(view, "Please Enter valid Trip name and Start date."
-                            ,Snackbar.LENGTH_SHORT).show();
+                    if (tripNameInput.getText().toString().trim().length() == 0) {
+                        Snackbar.make(view, "Please Enter valid Trip name"
+                                ,Snackbar.LENGTH_SHORT).show();
+                    }
+                    else if (startDate.getText().toString().trim().length() == 0) {
+                        Snackbar.make(view, "Please Enter valid Start Date"
+                                ,Snackbar.LENGTH_SHORT).show();
+                    }
+                    else if (destination.getText().toString().trim().length() == 0) {
+                        Snackbar.make(view, "Please Enter valid Destination"
+                                ,Snackbar.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -345,17 +358,7 @@ public class TripCreationActivity extends AppCompatActivity {
         }
 
 
-
-        Intent intent = getIntent();
-        // take trip name from the user
-        EditText tripNameInput = findViewById(R.id.tripName);
-        // take start date from the user
-
-        TextView startDate = findViewById(R.id.startDateButton);
-        TextView inviteUsers = findViewById(R.id.inviteUsers);
-        Button createTrip = findViewById(R.id.createTrip);
         destination = findViewById(R.id.tripDestination);
-        String buttonType = intent.getStringExtra("displayButtonType");
 
     }
 

@@ -203,6 +203,4 @@ public class ItineraryRepository {
         });
         return tripMutableLiveData;
     }
-
-
 }

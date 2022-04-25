@@ -52,6 +52,10 @@ public class TripCreationViewModel extends AndroidViewModel {
         return createdItineraryLiveData;
     }
 
+    public void sendNotification(String sender, String token, String tripName){
+        tripCreationRepository.sendNotification(sender, token, tripName);
+    }
+
     // create new trip for a user
     // add the created trip id to the users trip list
 

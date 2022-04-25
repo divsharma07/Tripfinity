@@ -29,6 +29,7 @@ import com.app.tripfinity.utils.Constants;
 import com.app.tripfinity.viewmodel.ItineraryViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -49,9 +50,12 @@ public class ItineraryViewActivity extends Fragment {
     private String itineraryId;
     private List<ItineraryDay> days;
     private ImageView editTrip;
+    private ImageView home;
     private String startDate;
     private String tripNameString;
     private String destination;
+    private TextView tripName;
+    private TextView startDateView;
 
     @Nullable
     @Override
@@ -66,10 +70,10 @@ public class ItineraryViewActivity extends Fragment {
         initItineraryViewModel();
         tripNameString = "";
         if (getArguments() != null) {
-            tripId = getArguments().getString("tripId");
-            tripNameString = getArguments().getString("tripName");
-            itineraryId = getArguments().getString("itineraryId");
-            startDate = getArguments().getString("startDate");
+            tripId = getArguments().getString(Constants.TRIP_ID);
+            tripNameString = getArguments().getString(Constants.TRIP_NAME);
+            itineraryId = getArguments().getString(Constants.ITINERARY_ID);
+            startDate = getArguments().getString(Constants.TRIP_START_DATE);
             destination = getArguments().getString(Constants.DESTINATION);
 
         }
@@ -77,12 +81,17 @@ public class ItineraryViewActivity extends Fragment {
         Log.d(TAG, "Id ->" + itineraryId);
         Log.d(TAG, "Start Date in fragment ->" + startDate);
         Log.d(TAG, "Original destination ->" + destination);
-        TextView tripName = getView().findViewById(R.id.tripNameTextView);
+        tripName = getView().findViewById(R.id.tripNameTextView);
+
+
+
         tripName.setText(tripNameString);
         FloatingActionButton addDaysButton = getView().findViewById(R.id.floatingActionButton);
         editTrip = getView().findViewById(R.id.editTrip);
 
-        TextView startDateView = getView().findViewById(R.id.startDate);
+        startDateView = getView().findViewById(R.id.startDate);
+
+
         startDateView.setText(ItineraryDaysAdapter.getDateForDay(startDate,0));
         addDaysButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,11 +113,12 @@ public class ItineraryViewActivity extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), TripCreationActivity.class);
                 intent.putExtra("displayButtonType", "editTrip");
-                intent.putExtra("tripId", tripId);
-                intent.putExtra("tripName", tripNameString);
-                intent.putExtra("startDate",startDate);
+                intent.putExtra(Constants.TRIP_ID, tripId);
+                intent.putExtra(Constants.TRIP_NAME, tripNameString);
+                intent.putExtra(Constants.TRIP_START_DATE,startDate);
                 intent.putExtra(Constants.DESTINATION,destination);
                 startActivity(intent);
+
             }
         });
 
@@ -118,6 +128,28 @@ public class ItineraryViewActivity extends Fragment {
     public void onResume() {
         super.onResume();
         createRecyclerView();
+        itineraryViewModel.getTrip(tripId);
+        itineraryViewModel.getTripLiveData().observe(getActivity(),trip -> {
+            tripName.setText(trip.getTripName());
+            startDateView.setText(TripFragment.getReadableDate(trip.getStartDate()));
+        });
+
+
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initializeAndSetHomeListener();
+    }
+
+    private void initializeAndSetHomeListener() {
+        home = getView().findViewById(R.id.homeButton);
+        home.setOnClickListener(v -> {
+            if(getActivity()!=null) {
+                getActivity().finish();
+            }
+        });
     }
 
     private void createRecyclerView() {
@@ -148,10 +180,7 @@ public class ItineraryViewActivity extends Fragment {
 
     }
 
-
     private void initItineraryViewModel() {
         itineraryViewModel = new ViewModelProvider(getActivity()).get(ItineraryViewModel.class);
     }
-
-
 }
