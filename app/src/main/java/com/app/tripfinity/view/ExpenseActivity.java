@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.tripfinity.adapters.ExpenseAdapter;
 import com.app.tripfinity.R;
@@ -40,7 +41,6 @@ public class ExpenseActivity extends Fragment {
     private ArrayList<String> dataToPopulate = new ArrayList<>();
     private double youOwe = 0;
     private double youAreOwed = 0;
-//    private String tripId = "77nrAgVzOA8xdm2wxPGa";
     private String tripId;
     private String loggedInUser;
     private String loggedInName;
@@ -158,7 +158,7 @@ public class ExpenseActivity extends Fragment {
                     if (userAmountMap.get(email) > 0) {
                         dataToPopulate.add(userEmailToName.get(email) + " owes you $" + Math.round(userAmountMap.get(email) * 100.0) / 100.0);
                     } else {
-                        dataToPopulate.add("You owe " + userEmailToName.get(email) + "$" + Math.round(Math.abs(userAmountMap.get(email)) * 100.0) / 100.0);
+                        dataToPopulate.add("You owe " + userEmailToName.get(email) + " $" + Math.round(Math.abs(userAmountMap.get(email)) * 100.0) / 100.0);
                     }
                 }
 
@@ -179,7 +179,11 @@ public class ExpenseActivity extends Fragment {
                         myIntent.putExtra("tripId", tripId);
                         myIntent.putExtra("userEmailToName", userEmailToName);
                         myIntent.putExtra("loggedInUser", loggedInUser);
-                        startActivity(myIntent);
+                        if (userEmailToName.size() > 1) {
+                            startActivity(myIntent);
+                        } else {
+                            Toast.makeText(getActivity(), "Please invite other users to add expense!", Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
 
