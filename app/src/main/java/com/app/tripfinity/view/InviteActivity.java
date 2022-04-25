@@ -12,6 +12,7 @@ import com.app.tripfinity.R;
 import com.app.tripfinity.model.User;
 import com.app.tripfinity.model.UserBio;
 import com.app.tripfinity.viewmodel.InviteViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -25,7 +26,7 @@ public class InviteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite);
         initInviteViewModel();
-        Button nextButton = findViewById(R.id.invite_next_button);
+        FloatingActionButton nextButton = findViewById(R.id.invite_next_button);
         nextButton.setOnClickListener(this::onNextClicked);
         Bundle bundle;
         if (getIntent().getSerializableExtra("users") != null) {
@@ -46,6 +47,10 @@ public class InviteActivity extends AppCompatActivity {
     }
 
     private void onNextClicked(View view) {
+        completeActivity();
+    }
+
+    private void completeActivity(){
         Intent data = new Intent();
         Bundle bundle = new Bundle();
         ArrayList<UserBio> users = new ArrayList<>();
@@ -58,6 +63,12 @@ public class InviteActivity extends AppCompatActivity {
         }
         setResult(RESULT_OK, data);
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        completeActivity();
     }
 
     private void initInviteViewModel() {
