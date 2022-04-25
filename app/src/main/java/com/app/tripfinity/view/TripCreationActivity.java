@@ -264,11 +264,6 @@ public class TripCreationActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
     }
 
 
@@ -290,7 +285,10 @@ public class TripCreationActivity extends AppCompatActivity {
         intent.putExtra("tripName", tripName);
         intent.putExtra("startDate", startDate.toString());
         intent.putExtra("itineraryId", itineraryId);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
         startActivity(intent);
+        finish();
 
     }
 

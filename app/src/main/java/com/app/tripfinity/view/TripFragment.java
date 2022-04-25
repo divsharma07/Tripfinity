@@ -60,6 +60,8 @@ public class TripFragment extends Fragment {
 
         addButton = (FloatingActionButton) view.findViewById(R.id.fab_add);
 
+
+
         String user = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
 
         emptyView = view.findViewById(R.id.empty_view);

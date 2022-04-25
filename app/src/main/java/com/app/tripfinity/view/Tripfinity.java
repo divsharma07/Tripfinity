@@ -28,6 +28,8 @@ public class Tripfinity extends AppCompatActivity {
 
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
+        Log.d("Tripfinity", "test-> test->");
+
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container2, ItineraryViewActivity.class, bundle).commit();
     }
 

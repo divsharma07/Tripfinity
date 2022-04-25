@@ -20,6 +20,8 @@
         app:layout_constraintVertical_bias="0.0"
 
         />
+=
+
 
     <ProgressBar
         android:id="@+id/idProgressBar"
@@ -63,5 +65,6 @@
         app:layout_constraintVertical_bias="0.425"
         android:textSize="30sp"
         />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

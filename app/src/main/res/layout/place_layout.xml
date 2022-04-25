@@ -8,6 +8,20 @@
     android:layout_marginEnd="10dp"
     android:layout_marginBottom="10dp"
     app:cardCornerRadius="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_baseline_place_24"
+            />
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,6 +48,9 @@
             android:textColor="@color/black"
             android:layout_marginBottom="2dp"
             android:text="No Time Added!" />
+    </LinearLayout>
+
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
