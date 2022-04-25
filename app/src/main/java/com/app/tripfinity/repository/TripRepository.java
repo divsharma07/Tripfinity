@@ -36,8 +36,9 @@ public class TripRepository {
     private CollectionReference expenseRef = rootRef.collection(EXPENSE_COLLECTION);
     private CollectionReference userRef = rootRef.collection(USER_COLLECTION);
     private static TripRepository tripRepository;
+
     public static TripRepository getInstance() {
-        if(tripRepository == null) {
+        if (tripRepository == null) {
             tripRepository = new TripRepository();
         }
         return tripRepository;
@@ -75,7 +76,7 @@ public class TripRepository {
                 itineraryRef.document(itineraryId).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Log.d(TAG, "Itinerary with the Id: "+itineraryId+" deleted");
+                        Log.d(TAG, "Itinerary with the Id: " + itineraryId + " deleted");
                     }
                 });
             }
@@ -86,8 +87,8 @@ public class TripRepository {
         queryExpenses.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                for (DocumentSnapshot snapshot: task.getResult().getDocuments()) {
-                    Log.d(TAG, "Deleting expense with Id: "+snapshot.getId());
+                for (DocumentSnapshot snapshot : task.getResult().getDocuments()) {
+                    Log.d(TAG, "Deleting expense with Id: " + snapshot.getId());
                     expenseRef.document(snapshot.getId()).delete();
                 }
             }
