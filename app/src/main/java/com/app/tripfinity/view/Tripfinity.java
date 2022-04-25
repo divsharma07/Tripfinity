@@ -25,15 +25,15 @@ public class Tripfinity extends AppCompatActivity {
         Intent intent = getIntent();
         BottomNavigationView bottomNav = findViewById(R.id.bottom_menu);
         bundle = new Bundle();
-        Log.d("Tripfinity", "Destination -> " + intent.getStringExtra(Constants.DESTINATION));
-        bundle.putString("tripId", intent.getStringExtra("tripId"));
-        bundle.putString("tripName", intent.getStringExtra("tripName"));
-        bundle.putString("startDate", intent.getStringExtra("startDate"));
-        bundle.putString("itineraryId", intent.getStringExtra("itineraryId"));
+        bundle.putString(Constants.TRIP_ID, intent.getStringExtra("tripId"));
+        bundle.putString(Constants.TRIP_NAME, intent.getStringExtra("tripName"));
+        bundle.putString(Constants.TRIP_START_DATE, intent.getStringExtra("startDate"));
+        bundle.putString(Constants.ITINERARY_ID, intent.getStringExtra("itineraryId"));
         bundle.putString(Constants.DESTINATION, intent.getStringExtra(Constants.DESTINATION));
         bundle.putString(Constants.CAN_SHARE, intent.getStringExtra(Constants.CAN_SHARE));
 
         bottomNav.setOnNavigationItemSelectedListener(navListener);
+
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container2, ItineraryViewActivity.class, bundle).commit();
     }
 

@@ -29,5 +29,8 @@
     <string name="expense">Expenses</string>
     <string name="message">Messages</string>
     <string name="group">Group</string>
+    <string name="add_place">Add place</string>
+    <string name="create_trip">Create Trip</string>
+    <string name="save">Save</string>
     <string name="planning_message">No message, yet. Let\'s start planning.</string>
 </resources>
