@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.app.tripfinity.R;
 import com.app.tripfinity.viewmodel.PlaceViewModel;
@@ -24,9 +26,13 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.android.material.snackbar.Snackbar;
 
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 public class AddPlaceActivity extends AppCompatActivity {
@@ -51,9 +57,31 @@ public class AddPlaceActivity extends AppCompatActivity {
 
         EditText notes = findViewById(R.id.addPlaceNotes);
 
-        EditText startTime = findViewById(R.id.addTime);
+        TextView startTime = findViewById(R.id.addTime);
         ItineraryId = getIntent().getStringExtra("ItineraryId");
         dayId = getIntent().getStringExtra("dayId");
+
+        startTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                int mHour = c.get(Calendar.HOUR_OF_DAY);
+                int mMinute = c.get(Calendar.MINUTE);
+                TimePickerDialog timePickerDialog = new TimePickerDialog(AddPlaceActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        c.set(Calendar.HOUR_OF_DAY,hourOfDay);
+                        c.set(Calendar.MINUTE,minute);
+                        Format formatter = new SimpleDateFormat("h:mm a");
+
+                        startTime.setText(formatter.format(c.getTime()));
+                    }
+                }, mHour, mMinute, false);
+                timePickerDialog.show();
+            }
+        });
+
+
         searchBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,14 +100,22 @@ public class AddPlaceActivity extends AppCompatActivity {
         savePlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // add the place to the database
-                placeViewModel.addPlace(ItineraryId,dayId,searchBar.getText().toString(),
-                        notes.getText().toString(),startTime.getText().toString());
 
-                placeViewModel.getPlacesLiveData().observe(AddPlaceActivity.this,itinerary -> {
-                    Log.d(TAG,"Finishing Activity");
-                    finish();
-                });
+                if (searchBar.getText().toString().trim().length()>0) {
+                    // add the place to the database
+                    placeViewModel.addPlace(ItineraryId,dayId,searchBar.getText().toString(),
+                            notes.getText().toString(),startTime.getText().toString());
+
+                    placeViewModel.getPlacesLiveData().observe(AddPlaceActivity.this,itinerary -> {
+                        Log.d(TAG,"Finishing Activity");
+                        finish();
+                    });
+                }
+                else {
+                    Snackbar.make(v, "Please Enter valid Place"
+                            ,Snackbar.LENGTH_SHORT).show();
+                }
+
             }
         });
 

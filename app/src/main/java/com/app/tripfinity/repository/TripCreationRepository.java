@@ -48,7 +48,7 @@ public class TripCreationRepository {
             users.add(usersRef.document(userId));
         }
         DocumentReference itinerary = null;
-        Log.d(TAG,"user retrieved "+users);
+        Log.d(TAG,"users retrieved "+users);
         Trip trip = new Trip(startDateObj,endDateObj,tripName,canShare, expenses, users,itinerary,destination);
 
         return trip;
@@ -115,13 +115,13 @@ public class TripCreationRepository {
                        isUpdated.setValue(true);
                    }
                })
-                       .addOnFailureListener(new OnFailureListener() {
-                           @Override
-                           public void onFailure(@NonNull Exception e) {
-                               Log.w(TAG, "Error updating Trip document", e);
-                               isUpdated.setValue(false);
-                           }
-                       });
+                   .addOnFailureListener(new OnFailureListener() {
+                       @Override
+                       public void onFailure(@NonNull Exception e) {
+                           Log.w(TAG, "Error updating Trip document", e);
+                           isUpdated.setValue(false);
+                       }
+                   });
            }
        });
         return isUpdated;

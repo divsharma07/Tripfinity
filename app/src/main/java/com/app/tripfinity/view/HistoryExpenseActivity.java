@@ -3,6 +3,7 @@ package com.app.tripfinity.view;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.cardview.widget.CardView;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.app.tripfinity.adapters.HistoryExpenseAdapter;
 import com.app.tripfinity.R;
@@ -27,6 +30,8 @@ public class HistoryExpenseActivity extends AppCompatActivity {
     private List<Expense> expenseList;
     private HashMap<String, String> userEmailToName = new HashMap<>();
     private HistoryExpenseViewModel historyExpenseViewModel;
+    private ProgressBar progressBar;
+    private CardView noExpenseHistory;
     private String tripId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +40,9 @@ public class HistoryExpenseActivity extends AppCompatActivity {
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
+        progressBar = findViewById(R.id.historyProgressBar);
+        noExpenseHistory = findViewById(R.id.noHistoryPresent);
+        noExpenseHistory.setVisibility(View.GONE);
         tripId = getIntent().getExtras().getString("tripId");
         userEmailToName = (HashMap<String, String>) getIntent().getSerializableExtra("userEmailToName");
         Log.d("history trip ", tripId);
@@ -44,7 +52,14 @@ public class HistoryExpenseActivity extends AppCompatActivity {
         historyExpenseViewModel.getExpensesForTrip(tripId).observe(HistoryExpenseActivity.this, list -> {
             expenseList = list;
 
-            createHistoryRecyclerView(expenseList);
+            progressBar.setVisibility(View.GONE);
+
+            if (expenseList.size() > 0) {
+                createHistoryRecyclerView(expenseList);
+            } else {
+                noExpenseHistory.setVisibility(View.VISIBLE);
+            }
+
         });
 
     }

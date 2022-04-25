@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="app_primary">#076ae0</color>
     <color name="app_accent">#119DA4</color>
+    <color name="card_background">#FFFFFF</color>
 </resources>

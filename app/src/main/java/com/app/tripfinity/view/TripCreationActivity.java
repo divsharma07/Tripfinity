@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.app.tripfinity.R;
+import com.app.tripfinity.adapters.ItineraryDaysAdapter;
 import com.app.tripfinity.model.Trip;
 import com.app.tripfinity.model.User;
 import com.app.tripfinity.model.User;
@@ -68,31 +69,43 @@ public class TripCreationActivity extends AppCompatActivity {
     private static final int AUTOCOMPLETE_REQUEST_CODE = 1;
     ArrayList<UserBio> invitedUsers;
 
+    private String originalStartDate;
+    private String originalTripName;
+    private String originalDestination;
     private void initTripCreationViewModel() {
         tripCreationViewModel = new ViewModelProvider(this).get(TripCreationViewModel.class);
     }
+
+
+    public static String getDateForDay(String date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy",
+                Locale.ENGLISH);
+        Calendar c = Calendar.getInstance();
+        try{
+            //Setting the date to the given date
+            c.setTime(sdf.parse(date));
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-M-dd",
+                Locale.ENGLISH);
+
+        //Date after adding the days to the given date
+        String newDate = sdf2.format(c.getTime());
+        return newDate;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_creation2);
 
         userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
-
+        originalStartDate = "";
+        originalTripName = "";
+        originalDestination = "";
         Intent intent = getIntent();
-        String buttonType = intent.getStringExtra("displayButtonType");
-
-        if (buttonType.equals("createTrip")) {
-            findViewById(R.id.saveEditTrip).setVisibility(View.INVISIBLE);
-            findViewById(R.id.createTrip).setVisibility(View.VISIBLE);
-        } else if (buttonType.equals("editTrip")){
-            findViewById(R.id.saveEditTrip).setVisibility(View.VISIBLE);
-            findViewById(R.id.createTrip).setVisibility(View.INVISIBLE);
-        }
-
-
-
-
-        initTripCreationViewModel();
         // take trip name from the user
         EditText tripNameInput = findViewById(R.id.tripName);
         // take start date from the user
@@ -100,6 +113,38 @@ public class TripCreationActivity extends AppCompatActivity {
         TextView startDate = findViewById(R.id.startDateButton);
         Button inviteUsers = findViewById(R.id.inviteUsers);
         Button createTrip = findViewById(R.id.createTrip);
+        destination = findViewById(R.id.tripDestination);
+        String buttonType = intent.getStringExtra("displayButtonType");
+
+        if (buttonType.equals("createTrip")) {
+            findViewById(R.id.saveEditTrip).setVisibility(View.INVISIBLE);
+            findViewById(R.id.createTrip).setVisibility(View.VISIBLE);
+
+
+        } else if (buttonType.equals("editTrip")){
+            findViewById(R.id.saveEditTrip).setVisibility(View.VISIBLE);
+            findViewById(R.id.createTrip).setVisibility(View.INVISIBLE);
+            TextView textView = findViewById(R.id.textView);
+            textView.setText("Edit Trip");
+            originalStartDate = intent.getStringExtra("startDate");
+            originalDestination = intent.getStringExtra("destination");
+            originalTripName = intent.getStringExtra("tripName");
+            if (originalStartDate.length()>0) {
+               originalStartDate = getDateForDay(originalStartDate);
+                startDate.setText(originalStartDate);
+
+            }
+            tripNameInput.setText(originalTripName);
+            destination.setText(originalDestination);
+
+
+        }
+
+
+
+
+        initTripCreationViewModel();
+
         invitedUsers = new ArrayList<>();
 
         ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -128,7 +173,7 @@ public class TripCreationActivity extends AppCompatActivity {
         });
 
 
-        destination = findViewById(R.id.tripDestination);
+
 
         String apiKey = getString(R.string.google_maps_api_key);
         if (!Places.isInitialized()) {
@@ -172,7 +217,8 @@ public class TripCreationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // all data from the user is there now
                 if (tripNameInput.getText().toString().trim().length() > 0 &&
-                        startDate.getText().toString().trim().length() > 0) {
+                        startDate.getText().toString().trim().length() > 0 &&
+                        destination.getText().toString().trim().length() > 0) {
                     Log.d(TAG,"Trip Name given: "+tripNameInput.getText().toString());
                     Log.d(TAG,"Start Date given: "+startDate.getText().toString());
                     Log.d(TAG,"Destination given: "+destination.getText().toString());
@@ -206,8 +252,19 @@ public class TripCreationActivity extends AppCompatActivity {
 
                 }
                 else {
-                    Snackbar.make(v, "Please Enter valid Trip name and Start date."
-                            ,Snackbar.LENGTH_SHORT).show();
+                    if (tripNameInput.getText().toString().trim().length() == 0) {
+                        Snackbar.make(v, "Please Enter valid Trip name"
+                                ,Snackbar.LENGTH_SHORT).show();
+                    }
+                    else if (startDate.getText().toString().trim().length() == 0) {
+                        Snackbar.make(v, "Please Enter valid Start Date"
+                                ,Snackbar.LENGTH_SHORT).show();
+                    }
+                    else if (destination.getText().toString().trim().length() == 0) {
+                        Snackbar.make(v, "Please Enter valid Destination"
+                                ,Snackbar.LENGTH_SHORT).show();
+                    }
+
                 }
             }
         });
@@ -291,12 +348,15 @@ public class TripCreationActivity extends AppCompatActivity {
     private void goToItineraryViewActivity(String tripId, Date startDate, String tripName, String itineraryId) {
         Intent intent = new Intent(TripCreationActivity.this, Tripfinity.class);
         // changed from ItineraryViewActivity to Tripfnity
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         intent.putExtra("tripId", tripId);
         intent.putExtra("tripName", tripName);
         intent.putExtra("startDate", startDate.toString());
         intent.putExtra("itineraryId", itineraryId);
+        intent.putExtra("destination",destination.getText().toString());
         startActivity(intent);
+        finish();
 
     }
 
