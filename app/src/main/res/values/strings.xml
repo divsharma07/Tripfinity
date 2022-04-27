@@ -24,7 +24,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="trip_name">Trip Name</string>
     <string name="start_date">Start Date</string>
-    <string name="no_data_available">No trips availble</string>
+    <string name="no_data_available">No trips available</string>
     <string name="itinerary">Itinerary</string>
     <string name="expense">Expenses</string>
     <string name="message">Messages</string>
