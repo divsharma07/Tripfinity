@@ -32,7 +32,7 @@
         app:layout_constraintVertical_bias="0.02"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/homeicon" />
+        app:srcCompat="@drawable/ic_baseline_home_24" />
 
     <TextView
         android:id="@+id/leaveTrip"
@@ -41,7 +41,7 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_10sdp"
         android:text="Leave"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="@dimen/_15sdp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
