@@ -193,8 +193,10 @@ public class ExpenseActivity extends Fragment {
                         myIntent.putExtra("tripId", tripId);
                         myIntent.putExtra("userEmailToName", userEmailToName);
                         startActivity(myIntent);
-                        dataToPopulate.clear();
-                        expenseAdapter.notifyDataSetChanged();
+                        if (expenseAdapter != null) {
+                            dataToPopulate.clear();
+                            expenseAdapter.notifyDataSetChanged();
+                        }
                     }
                 });
 
