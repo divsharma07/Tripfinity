@@ -9,26 +9,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.app.tripfinity.R;
 import com.app.tripfinity.model.ItineraryDay;
 import com.app.tripfinity.model.Place;
 import com.app.tripfinity.repository.ItineraryRepository;
 import com.app.tripfinity.view.AddPlaceActivity;
-import com.app.tripfinity.view.ItineraryViewActivity;
 import com.app.tripfinity.view.PlaceClickListener;
 import com.app.tripfinity.view.PlaceDetailsActivity;
 import com.app.tripfinity.view.TripCreationActivity;
 import com.app.tripfinity.viewholders.ItineraryDayViewHolder;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -56,7 +52,10 @@ public class ItineraryDaysAdapter extends RecyclerView.Adapter<ItineraryDayViewH
     }
 
     public static String getDateForDay(String date,int addition) {
-        SimpleDateFormat sdf = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy",
+        Log.d(TAG, "date before conversion "+date);
+        date = TripCreationActivity.getDateForDay(date);
+        Log.d(TAG,"original Date "+date);
+        SimpleDateFormat sdf = new SimpleDateFormat("EE MMM dd yyyy",
                 Locale.ENGLISH);
         Calendar c = Calendar.getInstance();
         try{
@@ -65,13 +64,11 @@ public class ItineraryDaysAdapter extends RecyclerView.Adapter<ItineraryDayViewH
         }catch(ParseException e){
             e.printStackTrace();
         }
-
-        SimpleDateFormat sdf2 = new SimpleDateFormat("EE MMM dd yyyy",
-                Locale.ENGLISH);
         //Number of Days to add
         c.add(Calendar.DAY_OF_MONTH, addition);
         //Date after adding the days to the given date
-        String newDate = sdf2.format(c.getTime());
+        String newDate = sdf.format(c.getTime());
+        Log.d(TAG,"newDate!!!! "+newDate);
         return newDate;
     }
 

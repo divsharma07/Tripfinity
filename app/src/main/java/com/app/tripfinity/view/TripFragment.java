@@ -152,9 +152,12 @@ public class TripFragment extends Fragment  {
 
             intent.putExtra(Constants.TRIP_ID, id);
             intent.putExtra(Constants.TRIP_NAME, trip.getTripName());
-            intent.putExtra(Constants.TRIP_START_DATE, trip.getStartDate().toString());
+            intent.putExtra(Constants.TRIP_START_DATE, TripCreationActivity.getDateForDay(trip.getStartDate().toString()));
             intent.putExtra(Constants.ITINERARY_ID, trip.getItinerary().getId());
             intent.putExtra(Constants.CAN_SHARE, trip.isCanShare());
+
+            Log.d("TripFragment", "can_share -> " + trip.isCanShare());
+
             intent.putExtra(Constants.DESTINATION, trip.getDestination());
 
             Log.d("Inside Fragment",  "Itinerary -> " + trip.getItinerary().getId());

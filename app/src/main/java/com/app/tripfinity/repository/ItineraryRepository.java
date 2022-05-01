@@ -150,7 +150,6 @@ public class ItineraryRepository {
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Log.d(TAG, "Places Updated !!!");
                         placesMutableLiveData.setValue(itinerary);
                     }
                 });
@@ -183,6 +182,7 @@ public class ItineraryRepository {
     }
 
     public MutableLiveData<Trip> getTrip(String tripId) {
+        Log.d(TAG,"Getting trip with id: "+tripId);
         MutableLiveData<Trip> tripMutableLiveData = new MutableLiveData<>();
         trips.document(tripId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override

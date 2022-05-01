@@ -40,7 +40,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ItineraryViewActivity extends Fragment {
+public class ItineraryViewFragment extends Fragment {
     private static final String TAG = "ItineraryViewActivity";
     private ItineraryViewModel itineraryViewModel;
     private String tripId;
@@ -55,6 +55,7 @@ public class ItineraryViewActivity extends Fragment {
     private String destination;
     private TextView tripName;
     private TextView startDateView;
+    private boolean canShare;
 
     @Nullable
     @Override
@@ -74,12 +75,14 @@ public class ItineraryViewActivity extends Fragment {
             itineraryId = getArguments().getString(Constants.ITINERARY_ID);
             startDate = getArguments().getString(Constants.TRIP_START_DATE);
             destination = getArguments().getString(Constants.DESTINATION);
+            canShare = getArguments().getBoolean(Constants.CAN_SHARE);
 
         }
 
         Log.d(TAG, "Id ->" + itineraryId);
         Log.d(TAG, "Start Date in fragment ->" + startDate);
         Log.d(TAG, "Original destination ->" + destination);
+        Log.d(TAG, "Original Can_share ->" + canShare);
         tripName = getView().findViewById(R.id.tripNameTextView);
 
 
@@ -116,6 +119,8 @@ public class ItineraryViewActivity extends Fragment {
                 intent.putExtra(Constants.TRIP_NAME, tripNameString);
                 intent.putExtra(Constants.TRIP_START_DATE,startDate);
                 intent.putExtra(Constants.DESTINATION,destination);
+                intent.putExtra(Constants.CAN_SHARE, canShare);
+                Log.d(TAG, "Can_Share in Itinerary fragment -> " + canShare);
                 startActivity(intent);
 
             }
@@ -126,11 +131,14 @@ public class ItineraryViewActivity extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        createRecyclerView();
+
         itineraryViewModel.getTrip(tripId);
         itineraryViewModel.getTripLiveData().observe(getActivity(),trip -> {
             tripName.setText(trip.getTripName());
-            startDateView.setText(TripFragment.getReadableDate(trip.getStartDate()));
+            startDate = TripCreationActivity.getDateForDay(trip.getStartDate().toString());
+            startDateView.setText(startDate);
+            Log.d(TAG,"Start Date after update "+startDate);
+            createRecyclerView();
         });
 
 

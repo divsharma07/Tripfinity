@@ -96,7 +96,7 @@ public class Tripfinity extends AppCompatActivity {
                 });
             }
         });
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container2, ItineraryViewActivity.class, bundle).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container2, ItineraryViewFragment.class, bundle).commit();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -110,7 +110,7 @@ public class Tripfinity extends AppCompatActivity {
                             break;
                         case R.id.nav_itinerary:
                             Log.d("Tripfinity", "Launching itinerary view from switch case");
-                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container2, ItineraryViewActivity.class, bundle).commit();
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container2, ItineraryViewFragment.class, bundle).commit();
                             break;
                         case R.id.nav_group:
                             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container2, InviteFragment.class, bundle).commit();
