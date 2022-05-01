@@ -176,17 +176,21 @@ public class InviteFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_invite_user, null);
         TextView textView = v.findViewById(R.id.inviteFragment);
-        textView.setText(String.format("The user %s is not registered on Tripfinity. \n Invite them to the app?", email));
+        textView.setText(String.format("The user %s is not registered on Tripfinity.\n Invite them to the app?", email));
         builder.setView(v)
                 // Add action buttons
                 .setPositiveButton("Invite", (dialog, id) -> {
                     try {
                         User user = new User(email);
                         addToUserList(user);
-                        authViewModel.createUser(user, false);
+
                         if(tripId != null){
                             Log.d("InviteFragment","Adding trip to user");
                             inviteViewModel.addUserToTrip(tripId, email);
+                            authViewModel.createUser(user, false, tripId);
+                        }
+                        else {
+                            authViewModel.createUser(user, false, null);
                         }
                         inviteViewModel.sendInvitationToUser(HelperClass.getCurrentUser().getDisplayName(), email).observe(getViewLifecycleOwner(), inviteSent -> {
                             if(inviteSent){

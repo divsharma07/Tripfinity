@@ -30,7 +30,7 @@
         app:layout_constraintVertical_bias="0.02"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logouticon" />
+        app:srcCompat="@drawable/ic_logout" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
