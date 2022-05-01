@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -184,6 +185,7 @@ public class InviteFragment extends Fragment {
                         addToUserList(user);
                         authViewModel.createUser(user, false);
                         if(tripId != null){
+                            Log.d("InviteFragment","Adding trip to user");
                             inviteViewModel.addUserToTrip(tripId, email);
                         }
                         inviteViewModel.sendInvitationToUser(HelperClass.getCurrentUser().getDisplayName(), email).observe(getViewLifecycleOwner(), inviteSent -> {

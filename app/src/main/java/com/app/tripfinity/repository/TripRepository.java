@@ -96,7 +96,13 @@ public class TripRepository {
 
         // remove trip id from users collection
         String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
-        userRef.document(userId).update("trips", FieldValue.arrayRemove(tripRef));
+        userRef.document(userId).update("trips", FieldValue.arrayRemove(tripRef)).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d(TAG,"Trip removed from user.");
+            }
+        });
+
 
 
         trips.document(tripId).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
