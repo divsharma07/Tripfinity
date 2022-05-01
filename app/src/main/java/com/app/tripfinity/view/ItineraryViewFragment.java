@@ -166,11 +166,14 @@ public class ItineraryViewFragment extends Fragment {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                Itinerary itinerary = value.toObject(Itinerary.class);
-                Log.d("onEvent", "Itinerary id ->" + itineraryId);
-                Log.d("onEvent", "Days ->" + itinerary.getDays());
-                adapter.setItems(itinerary.getDays());
-                adapter.notifyDataSetChanged();
+                if (value.exists()) {
+                    Itinerary itinerary = value.toObject(Itinerary.class);
+                    Log.d("onEvent", "Itinerary id ->" + itineraryId);
+                    Log.d("onEvent", "Days ->" + itinerary.getDays());
+                    adapter.setItems(itinerary.getDays());
+                    adapter.notifyDataSetChanged();
+                }
+
 
             }
         });

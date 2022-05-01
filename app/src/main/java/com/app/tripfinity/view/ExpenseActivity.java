@@ -99,12 +99,10 @@ public class ExpenseActivity extends Fragment {
         expenseUserName.setText("Hello " + loggedInName + ",");
 
         mainExpenseViewModel.getUserDataForTrip(tripId).observe(getActivity(), list -> {
-            Log.d("user list size in view ", String.valueOf(list.size()));
             userList = new ArrayList<>();
             userList = list;
 
             mainExpenseViewModel.getExpensesForTrip(tripId).observe(getActivity(), expList -> {
-                Log.d("user expense call ", String.valueOf(expList.size()));
                 expenseList = new ArrayList<>();
                 expenseList = expList;
 
@@ -120,7 +118,6 @@ public class ExpenseActivity extends Fragment {
 
                 // Explore all expenses
                 for (Expense expense : expenseList) {
-                    Log.d("each expense ", expense.getTimestamp().toString());
 
                     double eachSplit = expense.getAmount() / expense.getUserIds().size();
                     List<String> userIds = expense.getUserIds();
@@ -166,8 +163,6 @@ public class ExpenseActivity extends Fragment {
                     }
                 }
 
-                Log.d("user ", dataToPopulate.toString());
-
                 expenseProgressBar.setVisibility(View.GONE);
 
                 if (dataToPopulate.size() > 0) {
@@ -198,6 +193,10 @@ public class ExpenseActivity extends Fragment {
                         myIntent.putExtra("tripId", tripId);
                         myIntent.putExtra("userEmailToName", userEmailToName);
                         startActivity(myIntent);
+                        if (expenseAdapter != null) {
+                            dataToPopulate.clear();
+                            expenseAdapter.notifyDataSetChanged();
+                        }
                     }
                 });
 
