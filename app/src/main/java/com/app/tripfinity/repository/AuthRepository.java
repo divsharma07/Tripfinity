@@ -17,6 +17,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class AuthRepository {
@@ -48,8 +50,14 @@ public class AuthRepository {
         return authenticatedUserMutableLiveData;
     }
 
-    public MutableLiveData<User> createUserInFirestoreIfNotExists(User authenticatedUser, boolean isRegistered) {
+    public MutableLiveData<User> createUserInFirestoreIfNotExists(User authenticatedUser, boolean isRegistered, String tripId) {
         MutableLiveData<User> newUserMutableLiveData = new MutableLiveData<>();
+        if(tripId != null){
+            DocumentReference tripRef = rootRef.collection("Trips").document(tripId);
+            List<DocumentReference> tripList = new ArrayList<>();
+            tripList.add(tripRef);
+            authenticatedUser.setTrips(tripList);
+        }
         DocumentReference uidRef = usersRef.document(authenticatedUser.getEmail());
         uidRef.get().addOnCompleteListener(uidTask -> {
             if (uidTask.isSuccessful()) {

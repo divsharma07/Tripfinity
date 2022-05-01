@@ -182,9 +182,13 @@ public class InviteFragment extends Fragment {
                     try {
                         User user = new User(email);
                         addToUserList(user);
-                        authViewModel.createUser(user, false);
+
                         if(tripId != null){
                             inviteViewModel.addUserToTrip(tripId, email);
+                            authViewModel.createUser(user, false, tripId);
+                        }
+                        else {
+                            authViewModel.createUser(user, false, null);
                         }
                         inviteViewModel.sendInvitationToUser(HelperClass.getCurrentUser().getDisplayName(), email).observe(getViewLifecycleOwner(), inviteSent -> {
                             if(inviteSent){

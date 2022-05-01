@@ -9,6 +9,8 @@
         android:id="@+id/inviteFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:textSize="15sp"
+        android:layout_margin="15dp"
         android:text="@string/invitation_fragment_text" />
 
 </FrameLayout>
