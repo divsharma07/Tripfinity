@@ -54,6 +54,7 @@ public class MainActivityRepository {
                     FirebaseMessaging.getInstance().subscribeToTopic(topic);
                 }
             });
+            userDocRef.update("registered", true);
             userDocRef.update("topic", topic);
             userDocRef.update("state", updatedState);
             userDocRef.update("city", updatedCity);
