@@ -60,12 +60,11 @@ import static com.app.tripfinity.utils.Constants.FINE_LOCATION_REQUEST_CODE;
 import static com.app.tripfinity.utils.HelperClass.disableFCM;
 import static com.app.tripfinity.utils.HelperClass.logErrorMessage;
 
-public class MainActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener{
+public class MainActivity extends AppCompatActivity {
     private MainActivityViewModel mainActivityViewModel;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private final static String USER = "user";
     private GoogleSignInClient googleSignInClient;
-    private ImageView logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,13 +78,10 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
             requestLocationPermission();
         }
-        Toast.makeText(this, "Logged in as user "+ firebaseAuth.getCurrentUser().getDisplayName() , Toast.LENGTH_LONG);
-
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
-
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new TripFragment()).commit();
-
+        Toast.makeText(this, "Logged in as "+ firebaseAuth.getCurrentUser().getDisplayName() , Toast.LENGTH_LONG).show();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
@@ -222,7 +218,6 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
     @Override
     protected void onStop() {
         super.onStop();
-        firebaseAuth.removeAuthStateListener(this);
     }
 
     private void initGoogleSignInClient() {
@@ -232,18 +227,24 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
     }
 
-    @Override
-    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        if (firebaseUser == null) {
-            goToAuthInActivity();
-        }
-    }
+//    @Override
+//    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+////        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+////        if (firebaseUser == null) {
+////            goToAuthInActivity();
+////            finish();
+////        }
+//    }
 
     private void signOut() {
         singOutFirebase();
         signOutGoogle();
         disableFCM();
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser == null) {
+            goToAuthInActivity();
+            finish();
+        }
     }
 
     private void goToAuthInActivity() {
@@ -252,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
     }
 
     private void initializeAndSetLogoutListener() {
-        logout = findViewById(R.id.logoutButton);
+        ImageView logout = findViewById(R.id.logoutButton);
         logout.setOnClickListener(v -> {
             signOut();
         });
