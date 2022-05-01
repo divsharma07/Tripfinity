@@ -32,6 +32,8 @@
             android:name=".view.InviteActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
 
         <activity
             android:name=".view.FeedDetailActivity"
