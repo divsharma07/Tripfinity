@@ -175,7 +175,7 @@ public class InviteFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_invite_user, null);
         TextView textView = v.findViewById(R.id.inviteFragment);
-        textView.setText(String.format("The user %s is not registered on Tripfinity. \n Invite them to the app?", email));
+        textView.setText(String.format("The user %s is not registered on Tripfinity.\n Invite them to the app?", email));
         builder.setView(v)
                 // Add action buttons
                 .setPositiveButton("Invite", (dialog, id) -> {
