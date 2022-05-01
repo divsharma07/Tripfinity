@@ -15,14 +15,15 @@
         android:theme="@style/Theme.Tripfinity">
         <activity
             android:name=".view.PlaceDetailsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
             android:value="false" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/logo" />
+            android:resource="@drawable/tripfinity_logos_transparent" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
@@ -30,24 +31,30 @@
         <activity
             android:name=".view.InviteActivity"
             android:exported="false"
+            android:screenOrientation="portrait" />
+            android:exported="false"
             android:windowSoftInputMode="adjustResize"/>
 
         <activity
             android:name=".view.FeedDetailActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".view.HistoryExpenseActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.AddExpenseActivity"
             android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
 
 
         <activity
             android:name=".view.SplashScreenActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -67,26 +74,26 @@
 
         <activity
             android:name=".view.Tripfinity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.MainActivity"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.Tripfinity" />
+            android:theme="@style/Theme.Tripfinity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.AddPlaceActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.TripCreationActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.AuthActivity"
             android:exported="true"
-            android:theme="@style/SplashTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:theme="@style/SplashTheme"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

@@ -1,10 +1,13 @@
 package com.app.tripfinity.view;
 
+import static com.app.tripfinity.utils.HelperClass.disableFCM;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 //import android.support.v4.app.Fragment;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -16,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,10 +31,14 @@ import com.app.tripfinity.repository.TripRepository;
 import com.app.tripfinity.utils.Constants;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -43,12 +51,13 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.zip.Inflater;
 
-public class TripFragment extends Fragment {
+public class TripFragment extends Fragment  {
 
     private RecyclerView recyclerView;
     private FirebaseFirestore db;
     private ProgressBar progressBar;
     private FirestoreRecyclerAdapter adapter;
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private TextView emptyView;
     private OnItemClickListener listener;
     private FloatingActionButton addButton;
@@ -71,6 +80,8 @@ public class TripFragment extends Fragment {
         progressBar = view.findViewById(R.id.idProgressBar);
 
         addButton = (FloatingActionButton) view.findViewById(R.id.fab_add);
+
+
 
         String user = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
 
@@ -141,9 +152,12 @@ public class TripFragment extends Fragment {
 
             intent.putExtra(Constants.TRIP_ID, id);
             intent.putExtra(Constants.TRIP_NAME, trip.getTripName());
-            intent.putExtra(Constants.TRIP_START_DATE, trip.getStartDate().toString());
+            intent.putExtra(Constants.TRIP_START_DATE, TripCreationActivity.getDateForDay(trip.getStartDate().toString()));
             intent.putExtra(Constants.ITINERARY_ID, trip.getItinerary().getId());
             intent.putExtra(Constants.CAN_SHARE, trip.isCanShare());
+
+            Log.d("TripFragment", "can_share -> " + trip.isCanShare());
+
             intent.putExtra(Constants.DESTINATION, trip.getDestination());
 
             Log.d("Inside Fragment",  "Itinerary -> " + trip.getItinerary().getId());

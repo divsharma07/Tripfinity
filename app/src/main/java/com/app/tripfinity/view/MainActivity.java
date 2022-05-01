@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -59,22 +60,21 @@ import static com.app.tripfinity.utils.Constants.FINE_LOCATION_REQUEST_CODE;
 import static com.app.tripfinity.utils.HelperClass.disableFCM;
 import static com.app.tripfinity.utils.HelperClass.logErrorMessage;
 
-public class MainActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener {
-    private GoogleSignInClient googleSignInClient;
+public class MainActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener{
     private MainActivityViewModel mainActivityViewModel;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private final static String USER = "user";
-
+    private GoogleSignInClient googleSignInClient;
+    private ImageView logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initializeMainActivityViewModel();
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-
+        initializeAndSetLogoutListener();
         initGoogleSignInClient();
-
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         if (!(ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
             requestLocationPermission();
@@ -112,48 +112,9 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
     }
 
-    private User getUserFromIntent() {
-        return (User) getIntent().getSerializableExtra(USER);
-    }
-
-    private void initGoogleSignInClient() {
-        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions
-                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .build();
-        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
-    }
-
-    @Override
-    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        if (firebaseUser == null) {
-            goToAuthInActivity();
-        }
-    }
-
-    private void goToAuthInActivity() {
-        Intent intent = new Intent(MainActivity.this, AuthActivity.class);
-        startActivity(intent);
-    }
-
-    private void signOut() {
-        singOutFirebase();
-        signOutGoogle();
-        disableFCM();
-    }
-
-    private void singOutFirebase() {
-        firebaseAuth.signOut();
-    }
-
-    private void signOutGoogle() {
-        googleSignInClient.signOut();
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
-        firebaseAuth.addAuthStateListener(this);
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             showEnableGpsAlert();
@@ -264,18 +225,44 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         firebaseAuth.removeAuthStateListener(this);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
+    private void initGoogleSignInClient() {
+        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions
+                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .build();
+        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
-        if (menuItem.getItemId() == R.id.logout_button) {
-            signOut();
-            return true;
+    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser == null) {
+            goToAuthInActivity();
         }
-        return super.onOptionsItemSelected(menuItem);
+    }
+
+    private void signOut() {
+        singOutFirebase();
+        signOutGoogle();
+        disableFCM();
+    }
+
+    private void goToAuthInActivity() {
+        Intent intent = new Intent(this, AuthActivity.class);
+        startActivity(intent);
+    }
+
+    private void initializeAndSetLogoutListener() {
+        logout = findViewById(R.id.logoutButton);
+        logout.setOnClickListener(v -> {
+            signOut();
+        });
+    }
+
+    private void singOutFirebase() {
+        firebaseAuth.signOut();
+    }
+
+    private void signOutGoogle() {
+        googleSignInClient.signOut();
     }
 }

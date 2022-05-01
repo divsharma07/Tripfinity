@@ -1,5 +1,7 @@
 package com.app.tripfinity.view;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.cardview.widget.CardView;
@@ -47,6 +49,7 @@ public class ExpenseActivity extends Fragment {
     private String loggedInName;
     private TextView expenseUserName;
     private TextView expenseYouOwe;
+    private ImageView home;
     private TextView expenseYouAreOwed;
     private ImageView noExpensesPresent;
     private ProgressBar expenseProgressBar;
@@ -129,7 +132,7 @@ public class ExpenseActivity extends Fragment {
                             if (!userEmail.equals(loggedInUser)) {
 //                                userAmountMap.put(userEmail, userAmountMap.getOrDefault(userEmail, 0.0) + eachSplit);
                                 if (userAmountMap.containsKey(userEmail)) {
-                                    userAmountMap.put(userEmail, (double)userAmountMap.get(userEmail) + eachSplit);
+                                    userAmountMap.put(userEmail, (double) userAmountMap.get(userEmail) + eachSplit);
                                 } else {
                                     userAmountMap.put(userEmail, eachSplit);
                                 }
@@ -143,9 +146,9 @@ public class ExpenseActivity extends Fragment {
 
 //                            userAmountMap.put(currentPayer, userAmountMap.getOrDefault(currentPayer, 0.0) - eachSplit);
                             if (userAmountMap.containsKey(currentPayer)) {
-                                userAmountMap.put(currentPayer, (double)userAmountMap.get(currentPayer) - eachSplit);
+                                userAmountMap.put(currentPayer, (double) userAmountMap.get(currentPayer) - eachSplit);
                             } else {
-                                userAmountMap.put(currentPayer, (-1)*eachSplit);
+                                userAmountMap.put(currentPayer, (-1) * eachSplit);
                             }
                         }
                     }
@@ -200,7 +203,6 @@ public class ExpenseActivity extends Fragment {
 
             });
         });
-
     }
 
     private void createExpenseRecyclerView(ArrayList<String> dataToPopulate) {

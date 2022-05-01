@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.app.tripfinity.R;
@@ -73,23 +74,38 @@ public class TripCreationActivity extends AppCompatActivity {
     private String originalStartDate;
     private String originalTripName;
     private String originalDestination;
+    private boolean originalCanShare;
+
     private void initTripCreationViewModel() {
         tripCreationViewModel = new ViewModelProvider(this).get(TripCreationViewModel.class);
     }
 
 
     public static String getDateForDay(String date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy",
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-dd",
                 Locale.ENGLISH);
         Calendar c = Calendar.getInstance();
         try{
             //Setting the date to the given date
             c.setTime(sdf.parse(date));
         }catch(ParseException e){
-            e.printStackTrace();
+            try {
+                SimpleDateFormat sdf2 = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy",
+                        Locale.ENGLISH);
+                c.setTime(sdf2.parse(date));
+            }catch (ParseException ex) {
+                try {
+                    SimpleDateFormat sdf3 = new SimpleDateFormat("EE MMM dd yyyy",
+                            Locale.ENGLISH);
+                    c.setTime(sdf3.parse(date));
+                }catch (ParseException exception) {
+
+                }
+
+            }
         }
 
-        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-M-dd",
+        SimpleDateFormat sdf2 = new SimpleDateFormat("EE MMM dd yyyy",
                 Locale.ENGLISH);
 
         //Date after adding the days to the given date
@@ -102,6 +118,8 @@ public class TripCreationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_creation2);
 
+        initTripCreationViewModel();
+
         userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
         originalStartDate = "";
         originalTripName = "";
@@ -110,33 +128,38 @@ public class TripCreationActivity extends AppCompatActivity {
         // take trip name from the user
         EditText tripNameInput = findViewById(R.id.tripName);
         // take start date from the user
-
         TextView startDate = findViewById(R.id.startDateButton);
-        Button inviteUsers = findViewById(R.id.inviteUsers);
+        TextView inviteUsers = findViewById(R.id.inviteUsers);
         Button createTrip = findViewById(R.id.createTrip);
         destination = findViewById(R.id.tripDestination);
         String buttonType = intent.getStringExtra("displayButtonType");
 
         if (buttonType.equals("createTrip")) {
-            findViewById(R.id.saveEditTrip).setVisibility(View.INVISIBLE);
-            findViewById(R.id.createTrip).setVisibility(View.VISIBLE);
+            ((Button)findViewById(R.id.saveEditTrip)).setVisibility(View.INVISIBLE);
+            ((Button)findViewById(R.id.createTrip)).setVisibility(View.VISIBLE);
 
 
         } else if (buttonType.equals("editTrip")){
-            findViewById(R.id.saveEditTrip).setVisibility(View.VISIBLE);
-            findViewById(R.id.createTrip).setVisibility(View.INVISIBLE);
-            TextView textView = findViewById(R.id.textView);
+            Log.d("TripCreationAvtivity", "buttonType -> editTrip");
+            ((Button)findViewById(R.id.saveEditTrip)).setVisibility(View.VISIBLE);
+            ((Button)findViewById(R.id.saveEditTrip)).setText("Edit");
+            ((Button)findViewById(R.id.createTrip)).setVisibility(View.INVISIBLE);
+            TextView textView = findViewById(R.id.mode);
             textView.setText("Edit Trip");
-            originalStartDate = intent.getStringExtra("startDate");
-            originalDestination = intent.getStringExtra("destination");
-            originalTripName = intent.getStringExtra("tripName");
-            if (originalStartDate.length()>0) {
-               originalStartDate = getDateForDay(originalStartDate);
-                startDate.setText(originalStartDate);
 
-            }
-            tripNameInput.setText(originalTripName);
-            destination.setText(originalDestination);
+
+            tripId = intent.getStringExtra(Constants.TRIP_ID);
+            tripCreationViewModel.getTrip(tripId);
+
+            tripCreationViewModel.getTripLiveData().observe(TripCreationActivity.this,trip -> {
+                ((Switch)findViewById(R.id.isShareableSwitch)).setChecked(trip.isCanShare());
+                tripNameInput.setText(trip.getTripName());
+                destination.setText(trip.getDestination());
+                startDate.setText(TripFragment.getReadableDate(trip.getStartDate()));
+            });
+
+
+
 
 
         }
@@ -200,10 +223,11 @@ public class TripCreationActivity extends AppCompatActivity {
                 int year = calendar.get(Calendar.YEAR);
                 DatePickerDialog datePickerDialog = new DatePickerDialog(TripCreationActivity.this,
                         (view, year1, monthOfYear, dayOfMonth) -> {
-                            Date dateFromUser = new Date();
                             // set day of month , month and year value in the edit text
-                            startDate.setText(new StringBuilder().append(year1).append( "-" )
-                                    .append( monthOfYear+1 ).append( "-" ).append( dayOfMonth ));
+                              String date = getDateForDay(new StringBuilder().append(year1).append( "-" )
+                                        .append( monthOfYear+1 ).append( "-" ).append( dayOfMonth ).toString());
+
+                            startDate.setText(date);
 
                         }, year, month, day);
                 datePickerDialog.show();
@@ -217,6 +241,9 @@ public class TripCreationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // all data from the user is there now
+
+                Toast.makeText(TripCreationActivity.this, "On Create", Toast.LENGTH_SHORT).show();
+
                 if (tripNameInput.getText().toString().trim().length() > 0 &&
                         startDate.getText().toString().trim().length() > 0 &&
                         destination.getText().toString().trim().length() > 0) {
@@ -282,22 +309,23 @@ public class TripCreationActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
-                tripId = intent.getStringExtra("tripId");
+
+                tripId = intent.getStringExtra(Constants.TRIP_ID);
+
                 if (tripNameInput.getText().toString().trim().length() > 0 &&
-                        startDate.getText().toString().trim().length() > 0) {
+                        startDate.getText().toString().trim().length() > 0 &&
+                        destination.getText().toString().trim().length() > 0) {
                     Log.d(TAG,"Trip Name given: "+tripNameInput.getText().toString());
                     Log.d(TAG,"Start Date given: "+startDate.getText().toString());
                     Log.d(TAG,"Destination given: "+destination.getText().toString());
                     Log.d(TAG,"Is sharable: "+toggle.isChecked());
-                    // create a new trip and save in fireStore
-                    // need to user view model methods for this
-                    // create a trip
-                    // add this trip id to the users collection
+
                     tripCreationViewModel.getTrip(tripId);
 
                     tripCreationViewModel.getTripLiveData().observe(TripCreationActivity.this,trip -> {
                         Log.d(TAG,"Queried Trip Id: "+trip.getTripId());
-                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-M-dd", Locale.ENGLISH);
+                        SimpleDateFormat formatter = new SimpleDateFormat("EE MMM dd yyyy",
+                                Locale.ENGLISH);
                         Date startDateObj = null;
                         try {
                             startDateObj = formatter.parse(startDate.getText().toString());
@@ -313,31 +341,27 @@ public class TripCreationActivity extends AppCompatActivity {
                         // setting trip data.
                         tripCreationViewModel.updateTrip(trip);
 
-                        tripCreationViewModel.getUpdatedTripLiveData().observe(TripCreationActivity.this,trip1 -> {
-                            Intent returnIntent = new Intent(TripCreationActivity.this,Tripfinity.class);
-                            returnIntent.putExtra(Constants.TRIP_ID, trip1.getTripId());
-                            returnIntent.putExtra(Constants.TRIP_NAME, trip1.getTripName());
-                            returnIntent.putExtra(Constants.TRIP_START_DATE, trip1.getStartDate().toString());
-                            returnIntent.putExtra(Constants.ITINERARY_ID, trip1.getItinerary().getId());
-                            returnIntent.putExtra(Constants.DESTINATION,trip1.getDestination());
-                            returnIntent.putExtra(Constants.CAN_SHARE,trip1.isCanShare());
-                            startActivity(returnIntent);
-                        });
+                        finish();
 
                     });
 
                 }
                 else {
-                    Snackbar.make(view, "Please Enter valid Trip name and Start date."
-                            ,Snackbar.LENGTH_SHORT).show();
+                    if (tripNameInput.getText().toString().trim().length() == 0) {
+                        Snackbar.make(view, "Please Enter valid Trip name"
+                                ,Snackbar.LENGTH_SHORT).show();
+                    }
+                    else if (startDate.getText().toString().trim().length() == 0) {
+                        Snackbar.make(view, "Please Enter valid Start Date"
+                                ,Snackbar.LENGTH_SHORT).show();
+                    }
+                    else if (destination.getText().toString().trim().length() == 0) {
+                        Snackbar.make(view, "Please Enter valid Destination"
+                                ,Snackbar.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
-
-
-
-
-
 
     }
 
@@ -348,11 +372,15 @@ public class TripCreationActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         TextView userCount = findViewById(R.id.users_count);
         if(invitedUsers != null && invitedUsers.size() != 0){
-            userCount.setText(String.format("%d user(s) invited", invitedUsers.size()));
+            userCount.setText(String.format("%d invited", invitedUsers.size()));
+            userCount.setVisibility(View.VISIBLE);
+        } else {
+            userCount.setVisibility(View.INVISIBLE);
         }
-        else{
-            userCount.setText("");
-        }
+
+
+        destination = findViewById(R.id.tripDestination);
+
     }
 
     private void goToItineraryViewActivity(String tripId, Date startDate, String tripName,
@@ -363,7 +391,7 @@ public class TripCreationActivity extends AppCompatActivity {
 
         intent.putExtra(Constants.TRIP_ID, tripId);
         intent.putExtra(Constants.TRIP_NAME, tripName);
-        intent.putExtra(Constants.TRIP_START_DATE, startDate.toString());
+        intent.putExtra(Constants.TRIP_START_DATE, TripCreationActivity.getDateForDay(startDate.toString()));
         intent.putExtra(Constants.ITINERARY_ID, itineraryId);
         intent.putExtra(Constants.DESTINATION,destination.getText().toString());
         intent.putExtra(Constants.CAN_SHARE,canShare);

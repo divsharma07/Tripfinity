@@ -29,6 +29,7 @@ import com.app.tripfinity.utils.Constants;
 import com.app.tripfinity.viewmodel.ItineraryViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -39,7 +40,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ItineraryViewActivity extends Fragment {
+public class ItineraryViewFragment extends Fragment {
     private static final String TAG = "ItineraryViewActivity";
     private ItineraryViewModel itineraryViewModel;
     private String tripId;
@@ -52,6 +53,9 @@ public class ItineraryViewActivity extends Fragment {
     private String startDate;
     private String tripNameString;
     private String destination;
+    private TextView tripName;
+    private TextView startDateView;
+    private boolean canShare;
 
     @Nullable
     @Override
@@ -66,23 +70,30 @@ public class ItineraryViewActivity extends Fragment {
         initItineraryViewModel();
         tripNameString = "";
         if (getArguments() != null) {
-            tripId = getArguments().getString("tripId");
-            tripNameString = getArguments().getString("tripName");
-            itineraryId = getArguments().getString("itineraryId");
-            startDate = getArguments().getString("startDate");
+            tripId = getArguments().getString(Constants.TRIP_ID);
+            tripNameString = getArguments().getString(Constants.TRIP_NAME);
+            itineraryId = getArguments().getString(Constants.ITINERARY_ID);
+            startDate = getArguments().getString(Constants.TRIP_START_DATE);
             destination = getArguments().getString(Constants.DESTINATION);
+            canShare = getArguments().getBoolean(Constants.CAN_SHARE);
 
         }
 
         Log.d(TAG, "Id ->" + itineraryId);
         Log.d(TAG, "Start Date in fragment ->" + startDate);
         Log.d(TAG, "Original destination ->" + destination);
-        TextView tripName = getView().findViewById(R.id.tripNameTextView);
+        Log.d(TAG, "Original Can_share ->" + canShare);
+        tripName = getView().findViewById(R.id.tripNameTextView);
+
+
+
         tripName.setText(tripNameString);
         FloatingActionButton addDaysButton = getView().findViewById(R.id.floatingActionButton);
         editTrip = getView().findViewById(R.id.editTrip);
 
-        TextView startDateView = getView().findViewById(R.id.startDate);
+        startDateView = getView().findViewById(R.id.startDate);
+
+
         startDateView.setText(ItineraryDaysAdapter.getDateForDay(startDate,0));
         addDaysButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,11 +115,14 @@ public class ItineraryViewActivity extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), TripCreationActivity.class);
                 intent.putExtra("displayButtonType", "editTrip");
-                intent.putExtra("tripId", tripId);
-                intent.putExtra("tripName", tripNameString);
-                intent.putExtra("startDate",startDate);
+                intent.putExtra(Constants.TRIP_ID, tripId);
+                intent.putExtra(Constants.TRIP_NAME, tripNameString);
+                intent.putExtra(Constants.TRIP_START_DATE,startDate);
                 intent.putExtra(Constants.DESTINATION,destination);
+                intent.putExtra(Constants.CAN_SHARE, canShare);
+                Log.d(TAG, "Can_Share in Itinerary fragment -> " + canShare);
                 startActivity(intent);
+
             }
         });
 
@@ -117,8 +131,24 @@ public class ItineraryViewActivity extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        createRecyclerView();
+
+        itineraryViewModel.getTrip(tripId);
+        itineraryViewModel.getTripLiveData().observe(getActivity(),trip -> {
+            tripName.setText(trip.getTripName());
+            startDate = TripCreationActivity.getDateForDay(trip.getStartDate().toString());
+            startDateView.setText(startDate);
+            Log.d(TAG,"Start Date after update "+startDate);
+            createRecyclerView();
+        });
+
+
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
 
     private void createRecyclerView() {
         Log.d(TAG,"Creating recycler view for Itinerary: "+itineraryId);
@@ -148,10 +178,7 @@ public class ItineraryViewActivity extends Fragment {
 
     }
 
-
     private void initItineraryViewModel() {
         itineraryViewModel = new ViewModelProvider(getActivity()).get(ItineraryViewModel.class);
     }
-
-
 }

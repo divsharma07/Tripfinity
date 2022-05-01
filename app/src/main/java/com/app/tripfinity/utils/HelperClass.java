@@ -83,5 +83,4 @@ public class HelperClass {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         return firebaseAuth.getCurrentUser();
     }
-
 }

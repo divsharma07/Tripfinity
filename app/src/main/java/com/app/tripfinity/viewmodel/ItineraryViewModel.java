@@ -7,12 +7,18 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.app.tripfinity.model.Itinerary;
+import com.app.tripfinity.model.Trip;
 import com.app.tripfinity.repository.ItineraryRepository;
 
 public class ItineraryViewModel extends AndroidViewModel {
     ItineraryRepository itineraryRepository;
     private LiveData<Itinerary> createdItineraryLiveData;
 
+    public LiveData<Trip> getTripLiveData() {
+        return tripLiveData;
+    }
+
+    private LiveData<Trip> tripLiveData;
     public LiveData<Itinerary> getCreatedItineraryLiveData() {
         return createdItineraryLiveData;
     }
@@ -26,6 +32,9 @@ public class ItineraryViewModel extends AndroidViewModel {
     // Need to check if an itinerary with a trip id exists or not
     public void updateItinerary(String tripId) {
         createdItineraryLiveData = itineraryRepository.updateItinerary(tripId);
+    }
 
+    public void getTrip(String tripId) {
+        tripLiveData = itineraryRepository.getTrip(tripId);
     }
 }

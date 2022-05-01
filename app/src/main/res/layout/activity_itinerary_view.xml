@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.ItineraryViewActivity">
+    tools:context=".view.ItineraryViewFragment">
 
     <View
         android:id="@+id/viewHeaderBackground"
@@ -12,7 +12,6 @@
         android:layout_height="@dimen/_125sdp"
         android:background="@color/app_primary"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <ImageView
         android:layout_width="@dimen/_100sdp"
@@ -22,7 +21,6 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/tripitineraryicon" />
-
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardHeader"
@@ -49,9 +47,9 @@
                 android:layout_marginEnd="16dp"
                 android:src="@drawable/edit_trip"
                 android:text="Edit Trip"
-                app:layout_constraintStart_toEndOf="@+id/tripNameTextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.98"
+                app:layout_constraintStart_toEndOf="@+id/tripNameTextView"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -63,10 +61,10 @@
                 android:textAlignment="center"
                 android:textSize="@dimen/_18sdp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/startDate"
@@ -76,8 +74,7 @@
                 android:textAlignment="center"
                 android:textSize="@dimen/_10sdp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@+id/tripNameTextView"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/tripNameTextView" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
