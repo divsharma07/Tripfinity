@@ -138,7 +138,10 @@ public class InviteFragment extends Fragment {
 
     public void onInviteClicked(){
         String userEmail = text.getText().toString().trim();
-        if(!userEmail.equals("")) {
+        if(!userEmail.endsWith("@gmail.com")){
+            Toast.makeText(this.getContext(), "Invalid email address", Toast.LENGTH_SHORT).show();
+        }
+        else {
             inviteViewModel.checkUserExists(userEmail).observe(getViewLifecycleOwner(), user -> {
                 if (user == null || !user.isRegistered()) {
                     inviteUserToApp(userEmail);
