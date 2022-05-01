@@ -19,7 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/maintrips" />
+        app:srcCompat="@drawable/trip_image" />
 
 
     <com.google.android.material.card.MaterialCardView
@@ -108,6 +108,5 @@
         app:layout_constraintVertical_bias="0.425"
         android:textSize="30sp"
         />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

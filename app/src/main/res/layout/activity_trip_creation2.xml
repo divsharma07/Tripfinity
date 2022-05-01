@@ -15,14 +15,12 @@
 
 
     <ImageView
-        android:layout_width="@dimen/_100sdp"
+        android:layout_width="@dimen/_150sdp"
         android:layout_height="@dimen/_80sdp"
         app:layout_constraintBottom_toTopOf="@id/cardHeader"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/placedetailplaceholder" />
-
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardHeader"
@@ -46,7 +44,7 @@
                 android:id="@+id/mode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Trip Creation"
+                android:text="What's the plan, huh?"
                 android:textAlignment="center"
                 android:textSize="@dimen/_18sdp"
                 android:textStyle="bold"
@@ -182,7 +180,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.4"
-                    android:text="Sharable with other Tripsters?"
+                    android:text="Share with other Tripsters?"
                     android:hint="Notes"
                     android:textSize="@dimen/_15sdp"
                     tools:ignore="UseSwitchCompatOrMaterialXml" />
@@ -299,7 +297,6 @@
         android:layout_marginTop="20dp"
         android:layout_marginRight="@dimen/_20sdp"
         android:layout_weight="0.4"
-        android:background="@color/app_primary"
         android:gravity="center"
         android:text="@string/create_trip"
         android:textSize="@dimen/_15sdp"
@@ -310,7 +307,7 @@
         app:layout_constraintTop_toBottomOf="@+id/inviteCard"
         app:layout_constraintVertical_bias="0.0"
         tools:ignore="MissingConstraints"
-
+        android:background="@drawable/rounded_corner"
         />
 
     <Button
@@ -321,7 +318,6 @@
         android:layout_marginTop="20dp"
         android:layout_marginRight="@dimen/_20sdp"
         android:layout_weight="0.4"
-        android:background="@color/app_primary"
         android:gravity="center"
         android:text="@string/create_trip"
         android:textSize="@dimen/_15sdp"
@@ -331,6 +327,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inviteCard"
         app:layout_constraintVertical_bias="0.0"
+        android:background="@drawable/rounded_corner"
         tools:ignore="MissingConstraints" />
 
 
