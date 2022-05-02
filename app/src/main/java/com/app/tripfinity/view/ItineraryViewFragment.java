@@ -133,7 +133,7 @@ public class ItineraryViewFragment extends Fragment {
         super.onResume();
 
         itineraryViewModel.getTrip(tripId);
-        itineraryViewModel.getTripLiveData().observe(getActivity(),trip -> {
+        itineraryViewModel.getTripLiveData().observe(getViewLifecycleOwner(),trip -> {
             tripName.setText(trip.getTripName());
             startDate = TripCreationActivity.getDateForDay(trip.getStartDate().toString());
             startDateView.setText(startDate);

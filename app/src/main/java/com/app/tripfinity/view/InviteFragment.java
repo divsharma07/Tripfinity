@@ -82,6 +82,11 @@ public class InviteFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_invite, container, false);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         ImageButton inviteButton = view.findViewById(R.id.addUser);
         text = view.findViewById(R.id.editTextInviteEmail);
         progressBar = view.findViewById(R.id.progressBar);
@@ -97,7 +102,6 @@ public class InviteFragment extends Fragment {
         recyclerView = view.findViewById(R.id.inviteRecyclerView);
         createRecyclerView();
         inviteButton.setOnClickListener(view1 -> onInviteClicked());
-        return view;
     }
 
     private void initInviteViewModel() {

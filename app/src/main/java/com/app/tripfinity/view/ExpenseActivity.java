@@ -70,7 +70,6 @@ public class ExpenseActivity extends Fragment {
         super.onStart();
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         loggedInUser = firebaseUser.getEmail();
@@ -90,6 +89,7 @@ public class ExpenseActivity extends Fragment {
         }
 
         initMainExpenseViewModel();
+
     }
 
     @Override
@@ -98,11 +98,11 @@ public class ExpenseActivity extends Fragment {
 
         expenseUserName.setText("Hello " + loggedInName + ",");
 
-        mainExpenseViewModel.getUserDataForTrip(tripId).observe(getActivity(), list -> {
+        mainExpenseViewModel.getUserDataForTrip(tripId).observe(getViewLifecycleOwner(), list -> {
             userList = new ArrayList<>();
             userList = list;
 
-            mainExpenseViewModel.getExpensesForTrip(tripId).observe(getActivity(), expList -> {
+            mainExpenseViewModel.getExpensesForTrip(tripId).observe(getViewLifecycleOwner(), expList -> {
                 expenseList = new ArrayList<>();
                 expenseList = expList;
 
