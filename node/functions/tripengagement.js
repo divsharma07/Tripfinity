@@ -12,7 +12,7 @@ exports.tripengagement = functions.firestore
       const payload = {
         notification: {
           title: `Let's Go!!!`,
-          body: `Users around you are traveling to ${destination}. Pack your bags and prepare for an unforgattable expedition.`,
+          body: `Users around you are traveling to ${destination}. Pack your bags and prepare for an unforgettable expedition.`,
         },
       };
       fcm.sendToTopic(sourceLocation, payload);
