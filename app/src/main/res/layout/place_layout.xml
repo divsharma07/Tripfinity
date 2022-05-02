@@ -36,7 +36,9 @@
             android:layout_marginBottom="5dp"
             android:textSize="15dp"
             android:textColor="@color/black"
-            android:text="Place Name"/>
+            android:text="Place Name"
+            android:fontFamily="@font/open_sans"
+            />
 
         <TextView
             android:id="@+id/placeTime"
@@ -47,7 +49,8 @@
             android:layout_marginLeft="10dp"
             android:textColor="@color/black"
             android:layout_marginBottom="2dp"
-            android:text="No Time Added!" />
+            android:text="No Time Added!"
+            android:fontFamily="@font/open_sans"/>
     </LinearLayout>
 
 

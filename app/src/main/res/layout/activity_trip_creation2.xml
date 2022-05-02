@@ -51,7 +51,10 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                android:fontFamily="@font/open_sans_italic"
+
+                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
@@ -92,7 +95,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.4"
                     android:hint="Trip Name"
-                    android:textSize="@dimen/_15sdp" />
+                    android:textSize="@dimen/_15sdp"
+                    android:fontFamily="@font/open_sans"/>
 
             </LinearLayout>
 
@@ -139,7 +143,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.498"
                     app:layout_constraintStart_toEndOf="@id/timeIcon"
-                    app:layout_constraintVertical_bias="0.145" />
+                    app:layout_constraintVertical_bias="0.145"
+                    android:fontFamily="@font/open_sans"/>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
@@ -183,7 +188,8 @@
                     android:text="Share with other Tripsters?"
                     android:hint="Notes"
                     android:textSize="@dimen/_15sdp"
-                    tools:ignore="UseSwitchCompatOrMaterialXml" />
+                    tools:ignore="UseSwitchCompatOrMaterialXml"
+                    android:fontFamily="@font/open_sans"/>
 
             </LinearLayout>
 
@@ -224,9 +230,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.4"
-                    android:text="Start Date"
+                    android:hint="Start Date"
                     android:textSize="@dimen/_15sdp"
-                    tools:ignore="UseSwitchCompatOrMaterialXml" />
+                    tools:ignore="UseSwitchCompatOrMaterialXml"
+                    android:fontFamily="@font/open_sans"/>
 
             </LinearLayout>
 
@@ -270,7 +277,8 @@
                     android:layout_weight="0.4"
                     android:text="Invite Users"
                     android:textSize="@dimen/_15sdp"
-                    tools:ignore="UseSwitchCompatOrMaterialXml" />
+                    tools:ignore="UseSwitchCompatOrMaterialXml"
+                    android:fontFamily="@font/open_sans"/>
 
                 <TextView
                     android:id="@+id/users_count"
@@ -280,7 +288,8 @@
                     android:layout_weight="0.4"
                     android:textSize="@dimen/_15sdp"
                     android:gravity="right"
-                    tools:ignore="UseSwitchCompatOrMaterialXml" />
+                    tools:ignore="UseSwitchCompatOrMaterialXml"
+                    android:fontFamily="@font/open_sans" />
 
 
             </LinearLayout>
@@ -308,6 +317,7 @@
         app:layout_constraintVertical_bias="0.0"
         tools:ignore="MissingConstraints"
         android:background="@drawable/rounded_corner"
+        android:textAllCaps="false"
         />
 
     <Button
@@ -328,7 +338,10 @@
         app:layout_constraintTop_toBottomOf="@+id/inviteCard"
         app:layout_constraintVertical_bias="0.0"
         android:background="@drawable/rounded_corner"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        android:textAllCaps="false"
+        android:fontFamily="@font/open_sans"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
