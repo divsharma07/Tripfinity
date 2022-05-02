@@ -20,7 +20,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/openwallet" />
+        app:srcCompat="@drawable/openwallet"
+        android:fontFamily="@font/open_sans"/>
 
 
     <com.google.android.material.card.MaterialCardView
@@ -52,7 +53,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                android:fontFamily="@font/open_sans_italic"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -78,7 +80,8 @@
             android:layout_marginTop="6dp"
             android:text="TextView"
             android:textSize="@dimen/_10sdp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:fontFamily="@font/open_sans"/>
 
         <TextView
             android:id="@+id/expenseYouOwe"
@@ -87,7 +90,8 @@
             android:layout_marginLeft="15dp"
             android:layout_marginTop="35dp"
             android:text="You Owe $"
-            android:textSize="@dimen/_10sdp" />
+            android:textSize="@dimen/_10sdp"
+            android:fontFamily="@font/open_sans"/>
 
         <TextView
             android:id="@+id/expenseYouAreOwed"
@@ -96,7 +100,8 @@
             android:layout_marginLeft="15dp"
             android:layout_marginTop="65dp"
             android:text="You are Owed $"
-            android:textSize="@dimen/_10sdp" />
+            android:textSize="@dimen/_10sdp"
+            android:fontFamily="@font/open_sans"/>
 
         <ImageView
             android:id="@+id/imageView"

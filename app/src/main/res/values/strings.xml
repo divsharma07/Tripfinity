@@ -33,4 +33,5 @@
     <string name="create_trip">Create Trip</string>
     <string name="save">Save</string>
     <string name="planning_message">No message, yet. Let\'s start planning.</string>
+    <string name="lets_go">Let\'s Go!</string>
 </resources>

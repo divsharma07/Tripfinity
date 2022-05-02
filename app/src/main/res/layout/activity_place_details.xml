@@ -53,7 +53,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                android:fontFamily="@font/open_sans_italic"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -93,7 +94,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.4"
                     android:text="Notes"
-                    android:textSize="@dimen/_15sdp" />
+                    android:textSize="@dimen/_15sdp"
+                    android:fontFamily="@font/open_sans"/>
 
             </LinearLayout>
 
@@ -140,7 +142,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.498"
                     app:layout_constraintStart_toEndOf="@id/timeIcon"
-                    app:layout_constraintVertical_bias="0.145" />
+                    app:layout_constraintVertical_bias="0.145"
+                    android:fontFamily="@font/open_sans"/>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
