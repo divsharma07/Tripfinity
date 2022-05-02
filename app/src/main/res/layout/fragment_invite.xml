@@ -45,7 +45,7 @@
                 android:id="@+id/addUsersCardText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Your Tripsters"
+                android:text="Fellow Tripsters"
                 android:textAlignment="center"
                 android:textSize="@dimen/_18sdp"
                 android:textStyle="bold"
