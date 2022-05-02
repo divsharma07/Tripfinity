@@ -45,14 +45,15 @@
                 android:id="@+id/addUsersCardText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Fellow Tripsters"
+                android:text="Your Tripsters"
                 android:textAlignment="center"
                 android:textSize="@dimen/_18sdp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                android:fontFamily="@font/open_sans_italic"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -83,7 +84,8 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:hint="Enter email">
+        android:hint="Enter email"
+        android:fontFamily="@font/open_sans">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editTextInviteEmail"
@@ -93,6 +95,7 @@
             android:typeface="monospace"
             android:ems="10"
             android:textColorHighlight="@color/quantum_lightblue"
+            android:fontFamily="@font/open_sans"
             />
 
     </com.google.android.material.textfield.TextInputLayout>

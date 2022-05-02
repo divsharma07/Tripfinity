@@ -41,7 +41,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    app:layout_constraintVertical_bias="0.042" />
+                    app:layout_constraintVertical_bias="0.042"
+                    android:fontFamily="@font/open_sans_italic"
+                    android:textStyle="bold"
+                    />
 
                 <TextView
                     android:id="@+id/dayDate"
@@ -50,7 +53,9 @@
                     android:layout_weight="1"
                     android:text="No Time added"
                     android:textAlignment="viewEnd"
-                    app:layout_constraintVertical_bias="0.042" />
+                    app:layout_constraintVertical_bias="0.042"
+                    android:fontFamily="@font/open_sans_italic"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -68,6 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
+                android:fontFamily="@font/open_sans"
                 android:layout_gravity="center"
                 android:clickable="true"
                 android:text="Add Place"

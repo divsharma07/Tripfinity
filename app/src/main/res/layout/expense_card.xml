@@ -21,7 +21,8 @@
             android:textSize="15sp"
             android:textStyle="bold"
             android:textColor="@color/white"
-            android:text="Expense" />
+            android:text="Expense"
+            android:fontFamily="@font/open_sans"/>
 
     </RelativeLayout>
 
