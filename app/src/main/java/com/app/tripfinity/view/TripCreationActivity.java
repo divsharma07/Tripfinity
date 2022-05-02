@@ -242,8 +242,6 @@ public class TripCreationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // all data from the user is there now
 
-                Toast.makeText(TripCreationActivity.this, "On Create", Toast.LENGTH_SHORT).show();
-
                 if (tripNameInput.getText().toString().trim().length() > 0 &&
                         startDate.getText().toString().trim().length() > 0 &&
                         destination.getText().toString().trim().length() > 0) {
@@ -261,7 +259,7 @@ public class TripCreationActivity extends AppCompatActivity {
 
                         List<String> userEmails = invitedUsers.stream().map(UserBio::getEmail).collect(Collectors.toList());
                         userEmails.add(0, userId);
-
+                        Log.d(TAG, "User ids: "+userEmails);
                         tripCreationViewModel.createNewTrip(tripNameInput.getText().toString(),
                                 startDate.getText().toString(),userEmails,destination.getText().toString(),toggle.isChecked());
 
