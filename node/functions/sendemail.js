@@ -3,17 +3,16 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
-admin.initializeApp();
 
 exports.sendemail = functions.https.onCall(async (data, context) => {
     const OAuth2 = google.auth.OAuth2;
     const APP_NAME = "Tripfinity";
-    const clientID = "821614554376-k3pqfgb75dpqal3nc5ttjl07pfjo3has.apps.googleusercontent.com";
-    const clientSecret = "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";
-    const refreshToken = "1//04A-6odlZhYr1CgYIARAAGAQSNwF-L9Irti6VJH-YNIVemp_6oVOW7rdDvB19Z6hJ4Ulh9pLn21rSlViRrky63xE83COs0vNSAkI"
+    const clientID = process.env.CLIENT_ID;
+    const clientSecret = process.env.CLIENT_SECRET;
+    const refreshToken = process.env.REFRESH_TOKEN;
     
     // Checking attribute.`
-    if (!(typeof data.text === "string") || data.text.length === 0) {
+    if (!(typeof data.receiver === "string") || data.receiver.length === 0) {
       // Throwing an HttpsError so that the client gets the error details.
       throw new functions.https.HttpsError(
         "invalid-argument",
@@ -52,10 +51,19 @@ exports.sendemail = functions.https.onCall(async (data, context) => {
       }
     });
     const mailOptions = {
-      from: `${APP_NAME} <tripfinity.developers@gmail.com>`,
-      to: data.text, //sending to email IDs in app request, please check README.md
+      from: `${data.sender} <tripfinity.developers@gmail.com>`,
+      to: data.receiver, //sending to email IDs in app request, please check README.md
       subject: `Hello from ${APP_NAME}!`,
-      text: `Hi,\n Test email from ${APP_NAME}.`
+      html: `<html>
+    
+      Hi ${data.receiver},
+    <br/>
+    <br/>
+    Your friend ${data.sender} has invited you to join ${APP_NAME}
+    <br/>
+    <br/>
+    <img src="https://firebasestorage.googleapis.com/v0/b/tripfinity-3ccc3.appspot.com/o/tripfinity_icon.png?alt=media"/>
+    </html>`
     };
   
     smtpTransport.sendMail(mailOptions, (error, info) => {

@@ -8,7 +8,7 @@ exports.tripengagement = functions.firestore
       const trip = snapshot.data();
       const destination = trip.destination;
       const sourceLocation = trip.sourceLocation;
-      console.log("this is the sourceLocation" + sourceLocation);
+      console.log("this is the sourceLocation" + snapshot);
       const payload = {
         notification: {
           title: `Let's Go!!!`,
