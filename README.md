@@ -7,11 +7,14 @@ With Tripfinity planning trips has never been this easy, be it a weekend getaway
 Confused about where to go? Tired of endless indecisive WhatsApp chats? Now Tripfinity has got you covered with polls that help you decide amongst your favorite destinations. And we’ll also notify all your friends. It’s that simple. Back from your memorable trip? Help others experience the same “wander”-ful bliss by sharing your trip with others.
 
 ## Screenshots
-![Notifications](screenshots/engagement.png)
-![Trips](screenshots/trips.png)
-![Trip Planning](screenshots/tripPlanning.png)
-![Messaging](screenshots/messaging.png)
-![Expense Management](screenshots/expenses.png)
+
+<p float="left">
+  <img src="https://github.com/divsharma07/Tripfinity/blob/main/screenshots/trips.PNG" width="200" height="380">
+  <img src="https://github.com/divsharma07/Tripfinity/blob/main/screenshots/tripPlanning.PNG" width="200" height="380">
+  <img src="https://github.com/divsharma07/Tripfinity/blob/main/screenshots/messaging.PNG" width="200" height="380">
+  <img src="https://github.com/divsharma07/Tripfinity/blob/main/screenshots/engagement.PNG" width="200" height="380">
+</p>
+
 
 ## Features
 
