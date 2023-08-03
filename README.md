@@ -40,8 +40,9 @@ Follow these steps to get the Android project up and running on your local machi
 
 3. **Build the Project**: Once the project is opened in Android Studio, wait for the IDE to sync and build the project. This process will download any necessary dependencies and prepare the project for running.
 
-4. 
-
 5. **Run the Application**: Click on the green play button (Run 'app') in the toolbar. Choose an AVD from the list of available devices, or connect a physical Android device to your computer and select it as the target device.
 
 6. **Explore the Application**: The Android application should now be running on the selected device. Interact with the app to explore its features and functionality.
+
+Additional Notes:
+Google Places API key and a Firebase account are required to run the application.  
